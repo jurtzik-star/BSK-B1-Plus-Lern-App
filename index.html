@@ -1364,7 +1364,7 @@ const SECTION_LABELS_BY_CHAPTER = {
 };
 
 const FORM_CONFIG = {
-  1: {url:"https://docs.google.com/forms/d/e/1FAIpQLScL2DTVoRW0b6ai_hmAIU81A829PqqCGqkHD9AZ4a8Pyc0s7g/formResponse", entryName:"entry.2141485338", entryMinutes:"entry.423765705"},
+  1: {url:"https://docs.google.com/forms/d/e/1FAIpQLScL2DTVoRW0b6ai_hmAIU81A829PqqCGqkHD9AZ4a8Pyc0s7g/formResponse", entryName:"entry.2141485338", entryMinutes:"entry.423765705", entryTrack:"entry.1245216086", entryResult:"entry.166313472"},
   2: {url:"https://docs.google.com/forms/d/e/1FAIpQLScA70TNFJncO6uNAFZsmjMfQtU4T4kU6YuZULo4jZaM4P1r_w/formResponse", entryName:"entry.1949479733", entryMinutes:"entry.733490098"}
   /* Kapitel 3 hat noch kein eigenes Google-Formular – die Nutzungszeit wird für
      Kapitel 3 daher aktuell nicht übermittelt (das Üben selbst funktioniert
@@ -1685,6 +1685,28 @@ function sendUsageBeacon(){
 }
 document.addEventListener("visibilitychange", ()=>{ if(document.hidden) sendUsageBeacon(); });
 window.addEventListener("pagehide", sendUsageBeacon);
+
+/* Sendet zusätzlich, sobald eine Hörübung fertig beantwortet ist (Ergebnis-
+   Bildschirm erreicht), einmalig Name, Titel der Hörübung und Ergebnis ans
+   Google-Formular des jeweiligen Kapitels (nur wenn dafür entryTrack/entryResult
+   in FORM_CONFIG hinterlegt sind). Es wird bewusst KEIN Minutenwert mitgeschickt -
+   falls "Minuten" im Formular als Pflichtfeld markiert ist, muss das dort auf
+   optional gestellt werden, sonst kommt diese Zeile nicht an. */
+function sendHoerenBeacon(track, score, total){
+  const cfg = FORM_CONFIG[track.k];
+  if(!cfg || !cfg.entryTrack || !cfg.entryResult) return;
+  const params = new URLSearchParams();
+  params.append(cfg.entryName, state.name || "Unbekannt");
+  params.append(cfg.entryTrack, track.title);
+  params.append(cfg.entryResult, score + " von " + total + " richtig");
+  try{
+    if(navigator.sendBeacon){
+      navigator.sendBeacon(cfg.url, params);
+    } else {
+      fetch(cfg.url, {method:"POST", mode:"no-cors", body: params, keepalive:true});
+    }
+  }catch(e){ /* Übermittlung fehlgeschlagen - Übung läuft trotzdem normal weiter */ }
+}
 
 /* ---------------- MENU -> SECTION PICKER ---------------- */
 document.querySelectorAll(".menu-item[data-go]").forEach(item=>{
@@ -2149,6 +2171,7 @@ function nextHoerenQuestion(){
     const ratio = state.hoerenScore / state.hoerenQueue.length;
     document.getElementById("hoerenResultEmoji").textContent = ratio>=0.8 ? "🎉" : ratio>=0.5 ? "👍" : "💪";
     document.getElementById("hoerenResultBlock").style.display = "block";
+    sendHoerenBeacon(state.hoerenTrack, state.hoerenScore, state.hoerenQueue.length);
   }
 }
 document.getElementById("btnHoerenRetry").addEventListener("click", ()=>{
