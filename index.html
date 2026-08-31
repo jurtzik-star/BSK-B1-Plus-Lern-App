@@ -1397,7 +1397,7 @@ const CHAPTER_META = {
 /* Welches Kapitel ist gerade "aktuell" (wird auf der Kapitel-Auswahl oben und
    hervorgehoben angezeigt)? Einfach die Zahl ändern und die Datei neu
    hochladen, wenn der Kurs weiter ist. */
-const CURRENT_CHAPTER = 3;
+const CURRENT_CHAPTER = 1;
 /* Alle bereits gebauten Kapitel, aufsteigend. Neue Kapitel-Nummer hier
    ergänzen, sobald ihr Wortschatz oben in VOCAB usw. eingefügt wurde. */
 const RELEASED_CHAPTERS = [1, 2, 3];
@@ -1611,7 +1611,11 @@ function renderChapterPicker(){
   curWrap.appendChild(curLabel);
   curWrap.appendChild(buildChapterCard(CURRENT_CHAPTER, true));
 
-  const others = RELEASED_CHAPTERS.filter(k => k !== CURRENT_CHAPTER).sort((a,b)=>a-b);
+  // Nur wirklich VORHERGEHENDE Kapitel (kleinere Nummer als das aktuelle) werden
+  // als "Frühere Kapitel · zur Wiederholung" angezeigt. Schon gebaute, aber noch
+  // nicht behandelte spätere Kapitel bleiben hier unsichtbar, bis sie "aktuell"
+  // werden (CURRENT_CHAPTER hochzählen) - dann rutschen sie automatisch nach.
+  const others = RELEASED_CHAPTERS.filter(k => k < CURRENT_CHAPTER).sort((a,b)=>a-b);
   if(others.length){
     const pastLabel = document.createElement("p");
     pastLabel.className = "section-label-small";
