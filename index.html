@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSK B1+ – Wortschatz &amp; Grammatik</title>
+<style>
+  :root{
+    --green-900:#2f5a45;
+    --green-700:#3f7a5c;
+    --green-600:#4b8a6c;
+    --green-500:#5fa17e;
+    --green-100:#e5f1eb;
+    --green-50:#f4f9f6;
+    --gold:#d3963e;
+    --red:#c0554a;
+    --ink:#233229;
+    --card:#ffffff;
+    --shadow:0 4px 14px rgba(47,90,69,0.12);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:linear-gradient(180deg,var(--green-50),#eef5f0 60%);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .app{max-width:760px;margin:0 auto;padding:20px 16px 60px;}
+  header.top{
+    display:flex;align-items:center;gap:14px;
+    background:linear-gradient(120deg,var(--green-700),var(--green-500));
+    color:#fff;border-radius:16px;padding:18px 20px;box-shadow:var(--shadow);
+    margin-bottom:20px;
+  }
+  header.top .badge{
+    width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,0.18);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:20px;flex:none;
+  }
+  header.top h1{font-size:1.15rem;margin:0;line-height:1.3;}
+  header.top p{margin:2px 0 0;font-size:0.85rem;opacity:0.9;}
+  header.top .badge-tag{
+    background:rgba(255,255,255,0.22);border-radius:6px;padding:1px 7px;font-size:0.66rem;font-weight:800;
+    letter-spacing:.04em;text-transform:uppercase;margin-left:8px;vertical-align:1px;
+  }
+  header.top .pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;}
+  header.top .pill-row span{
+    display:inline-flex;align-items:center;gap:5px;
+    background:rgba(255,255,255,0.2);border-radius:999px;padding:3px 11px 3px 8px;font-size:0.76rem;font-weight:700;
+  }
+  .card{
+    background:var(--card);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:16px;
+  }
+  .screen{display:none;}
+  .screen.active{display:block;animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  label{display:block;font-weight:600;margin-bottom:6px;font-size:0.95rem;color:var(--green-900);}
+  input[type=text], select{
+    width:100%;padding:11px 12px;border-radius:10px;border:1.5px solid #cfe0d6;
+    font-size:1rem;margin-bottom:16px;background:#fbfdfc;
+  }
+  input[type=text]:focus, select:focus{outline:2px solid var(--green-500);border-color:var(--green-500);}
+  button{
+    font-family:inherit;cursor:pointer;border:none;border-radius:10px;
+    padding:11px 18px;font-size:0.98rem;font-weight:600;transition:transform .12s ease, box-shadow .12s ease;
+  }
+  button:active{transform:scale(0.97);}
+  .btn-primary{background:var(--green-600);color:#fff;box-shadow:0 3px 10px rgba(75,138,108,0.35);}
+  .btn-primary:hover{background:var(--green-700);}
+  .btn-secondary{background:var(--green-100);color:var(--green-900);}
+  .btn-secondary:hover{background:#d7ebe0;}
+  .btn-ghost{background:transparent;color:var(--green-700);text-decoration:underline;padding:8px 4px;}
+  .row-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;}
+  .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:520px){.menu-grid{grid-template-columns:1fr;}}
+  .menu-item{
+    background:var(--card);border:2px solid var(--green-100);border-radius:14px;padding:16px;
+    cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:border-color .15s ease, transform .12s ease;
+  }
+  .menu-item:hover{border-color:var(--green-500);transform:translateY(-2px);}
+  .menu-item .emoji{font-size:1.6rem;}
+  .menu-item h3{margin:8px 0 4px;font-size:1.02rem;color:var(--green-900);}
+  .menu-item p{margin:0;font-size:0.85rem;color:#5b6d62;}
+  .pill{
+    display:inline-block;background:var(--green-100);color:var(--green-900);
+    border-radius:999px;padding:3px 12px;font-size:0.78rem;font-weight:700;letter-spacing:.02em;
+  }
+  .topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+  .progress-wrap{background:#e3ede7;border-radius:999px;height:9px;overflow:hidden;margin:6px 0 18px;}
+  .progress-bar{background:var(--green-500);height:100%;width:0%;transition:width .25s ease;}
+  .word-display{
+    text-align:center;padding:22px 10px 6px;
+  }
+  .word-display .term{font-size:1.6rem;font-weight:800;color:var(--green-900);}
+  .word-display .section-tag{font-size:0.8rem;color:var(--gold);font-weight:700;letter-spacing:.05em;margin-bottom:6px;display:block;}
+  .translate-input{margin-top:18px;}
+  .flash-actions{display:flex;justify-content:center;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .quiz-options{display:flex;gap:10px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+  .quiz-options button{min-width:90px;}
+  .quiz-options button.opt-correct{background:var(--green-600);color:#fff;}
+  .quiz-options button.opt-wrong{background:#fbe6e3;color:var(--red);border:2px solid var(--red);}
+  .quiz-options button:disabled{opacity:0.55;cursor:default;}
+  .quiz-options button.opt-full{display:block;width:100%;text-align:left;min-width:0;}
+  audio.listen-audio{width:100%;margin:6px 0 4px;}
+  .checklist{display:flex;flex-direction:column;gap:8px;margin:10px 0 4px;}
+  .checklist label{
+    display:flex;align-items:center;gap:10px;background:var(--green-50);border:2px solid var(--green-100);
+    border-radius:10px;padding:10px 14px;cursor:pointer;font-size:0.95rem;
+  }
+  .checklist label:hover{border-color:var(--green-500);}
+  .checklist input{width:18px;height:18px;accent-color:var(--green-600);}
+  .checklist label.correct-yes{border-color:var(--green-600);background:var(--green-100);}
+  .checklist label.correct-no{border-color:var(--red);background:#fbe6e3;}
+  .track-card{
+    background:var(--card);border:2px solid var(--green-100);border-radius:14px;padding:16px 18px;
+    cursor:pointer;text-align:left;box-shadow:var(--shadow);margin-bottom:12px;
+    transition:border-color .15s ease, transform .12s ease;
+  }
+  .track-card:hover{border-color:var(--green-500);transform:translateY(-2px);}
+  .track-card .tracktitle{font-weight:700;color:var(--green-900);font-size:1rem;margin:0 0 4px;}
+  .track-card .tracktask{font-size:0.82rem;color:#5b6d62;}
+  .feedback{margin-top:14px;text-align:center;font-weight:700;min-height:24px;}
+  .feedback.correct{color:var(--green-700);}
+  .feedback.wrong{color:var(--red);}
+  input.input-error{border-color:var(--red) !important;background:#fdeceb;}
+  .shake{animation:shake .35s ease;}
+  @keyframes shake{
+    10%,90%{transform:translateX(-2px);}
+    20%,80%{transform:translateX(4px);}
+    30%,50%,70%{transform:translateX(-7px);}
+    40%,60%{transform:translateX(7px);}
+  }
+  .fill-sentence{font-size:1.15rem;text-align:center;line-height:1.7;margin:18px 0 6px;color:var(--green-900);}
+  .fill-sentence .gap{display:inline-block;min-width:90px;border-bottom:2px solid var(--green-500);}
+  .match-wrap{display:flex;gap:14px;}
+  .match-col{flex:1;display:flex;flex-direction:column;gap:8px;}
+  .match-item{
+    border:2px solid var(--green-100);background:#fff;border-radius:10px;padding:10px 12px;
+    font-size:0.88rem;text-align:left;cursor:pointer;line-height:1.35;
+  }
+  .match-item.selected{border-color:var(--gold);background:#fdf3e3;}
+  .match-item.correct{border-color:var(--green-600);background:var(--green-100);color:var(--green-900);cursor:default;}
+  .match-item.wrong-flash{border-color:var(--red);background:#fbe6e3;}
+  table.wordlist{width:100%;border-collapse:collapse;font-size:0.88rem;}
+  table.wordlist th, table.wordlist td{text-align:left;padding:8px 6px;border-bottom:1px solid #e3ede7;vertical-align:top;}
+  table.wordlist th{color:var(--green-900);font-size:0.78rem;text-transform:uppercase;letter-spacing:.03em;}
+  .check-icon{display:inline-block;margin-right:5px;font-size:0.85em;}
+  .check-ok{color:var(--green-700);}
+  .check-warn{color:var(--gold);}
+  .check-na{color:#9aa8a0;}
+  #checkStatus{font-size:0.82rem;color:#5b6d62;margin:8px 0 0;min-height:18px;}
+  #checkLegend{font-size:0.76rem;color:#7c8b81;margin:2px 0 10px;}
+  .score-box{
+    text-align:center;background:var(--green-100);border-radius:14px;padding:20px;margin:16px 0;
+  }
+  .score-box .big{font-size:2rem;font-weight:800;color:var(--green-900);}
+  .hint-text{font-size:0.82rem;color:#6d7d72;text-align:center;margin-top:8px;}
+  footer.note{text-align:center;font-size:0.78rem;color:#7c8b81;margin-top:24px;}
+  .chapter-card{
+    background:var(--card);border:2px solid var(--green-100);border-radius:14px;padding:18px;
+    cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:border-color .15s ease, transform .12s ease;
+    margin-bottom:12px;
+  }
+  .chapter-card:hover{border-color:var(--green-500);transform:translateY(-2px);}
+  .chapter-card.current{border-color:var(--green-600);background:linear-gradient(120deg,var(--green-50),#fff);}
+  .chapter-card .chapnum{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:50%;background:var(--green-100);color:var(--green-900);
+    font-weight:800;font-size:0.95rem;margin-right:10px;flex:none;
+  }
+  .chapter-card.current .chapnum{background:var(--green-600);color:#fff;}
+  .chapter-card .chaphead{display:flex;align-items:center;margin-bottom:6px;}
+  .chapter-card .chaptitle{font-weight:700;color:var(--green-900);font-size:1.02rem;}
+  .chapter-card .chapthemes{font-size:0.82rem;color:#5b6d62;margin:0 0 4px;}
+  .chapter-card .chapmeta{font-size:0.76rem;color:#8a978f;}
+  .section-label-small{font-size:0.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8a978f;margin:18px 0 8px;}
+  @media print{
+    header.top, .menu-grid, .row-btns, footer.note, #btnPrint{display:none !important;}
+    body{background:#fff;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <div class="badge">📚</div>
+    <div>
+      <h1>BSK B1+<span class="badge-tag">Brückenkurs</span></h1>
+      <div class="pill-row">
+        <span>📚 Wortschatz</span>
+        <span>🧩 Grammatik</span>
+        <span>🎧 Hören</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- START SCREEN -->
+  <section id="screen-start" class="screen active">
+    <div class="card">
+      <p style="margin-top:0;">Willkommen! Bevor es losgeht, ein paar kurze Fragen.</p>
+      <p id="welcomeBack" class="hint-text" style="display:none;color:var(--green-700);font-weight:600;text-align:left;margin:0 0 12px;"></p>
+      <label for="inpName">Wie heißt du?</label>
+      <input type="text" id="inpName" placeholder="Dein Vorname">
+      <p id="nameError" class="hint-text" style="display:none;color:var(--red);text-align:left;margin:-10px 0 14px;">Bitte gib deinen Vornamen ein, damit deine Lehrkraft sehen kann, wer schon geübt hat.</p>
+
+      <label for="selLang">Was ist deine Muttersprache?</label>
+      <select id="selLang">
+        <option value="">– bitte auswählen –</option>
+        <option>Arabisch</option>
+        <option>Bulgarisch</option>
+        <option>Dari</option>
+        <option>Englisch</option>
+        <option>Farsi / Persisch</option>
+        <option>Französisch</option>
+        <option>Griechisch</option>
+        <option>Italienisch</option>
+        <option>Kurdisch</option>
+        <option>Polnisch</option>
+        <option>Portugiesisch</option>
+        <option>Rumänisch</option>
+        <option>Russisch</option>
+        <option>Serbisch/Kroatisch/Bosnisch</option>
+        <option>Spanisch</option>
+        <option>Thailändisch</option>
+        <option>Türkisch</option>
+        <option>Ukrainisch</option>
+        <option>Urdu</option>
+        <option>Vietnamesisch</option>
+        <option>Andere</option>
+      </select>
+      <div id="otherLangWrap" style="display:none;">
+        <label for="inpOtherLang">Welche Sprache?</label>
+        <input type="text" id="inpOtherLang" placeholder="z. B. Amharisch, Tigrinya ...">
+      </div>
+
+      <p class="hint-text" style="margin-bottom:0;">Dein Vorname und deine Übungszeit werden an deine Lehrkraft übermittelt, damit sie euren Lernfortschritt sehen kann. Deine Übersetzungen werden nur auf diesem Gerät gespeichert (Browser-Speicher), damit sie beim nächsten Öffnen noch da sind.</p>
+      <div class="row-btns">
+        <button class="btn-primary" id="btnStart">Los geht's →</button>
+      </div>
+      <p style="text-align:center;margin:16px 0 0;">
+        <button type="button" class="btn-ghost" id="btnClearData" style="font-size:0.78rem;">🗑️ Gespeicherte Daten auf diesem Gerät löschen</button>
+      </p>
+    </div>
+  </section>
+
+  <!-- CHAPTER PICKER -->
+  <section id="screen-chapters" class="screen">
+    <div class="card">
+      <p style="margin:0 0 4px;">Hallo<span id="chGreetName"></span> 👋 Welches Kapitel möchtest du üben?</p>
+      <p class="hint-text" style="text-align:left;margin:0;">Du kannst jederzeit zwischen Kapiteln wechseln – deine Übersetzungen und Ergebnisse bleiben dabei erhalten.</p>
+    </div>
+    <div id="currentChapterWrap"></div>
+    <div id="pastChaptersWrap"></div>
+  </section>
+
+  <!-- MENU SCREEN -->
+  <section id="screen-menu" class="screen">
+    <div class="card">
+      <div class="topline" style="margin-bottom:0;">
+        <p style="margin:0 0 4px;">Hallo<span id="greetName"></span> 👋 Du übersetzt die Wörter auf <strong id="greetLang">Deutsch</strong>.</p>
+        <button class="btn-ghost" id="btnSwitchChapter" style="font-size:0.82rem;white-space:nowrap;">🔀 Kapitel wechseln</button>
+      </div>
+      <p class="hint-text" style="text-align:left;margin:0;" id="menuChapterHint">—</p>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-item" data-go="flashcards">
+        <span class="emoji">🗂️</span>
+        <h3>Karteikarten</h3>
+        <p>Wörter ansehen, selbst übersetzen und lernen.</p>
+        <p class="hint-text" id="scoreBadge-fc" style="text-align:left;display:none;margin:4px 0 0;"></p>
+      </div>
+      <div class="menu-item" data-go="article">
+        <span class="emoji">🎯</span>
+        <h3>Artikel-Quiz</h3>
+        <p>der, die oder das? Teste dein Wissen.</p>
+        <p class="hint-text" id="scoreBadge-art" style="text-align:left;display:none;margin:4px 0 0;"></p>
+      </div>
+      <div class="menu-item" data-go="gap">
+        <span class="emoji">✏️</span>
+        <h3>Lücken füllen</h3>
+        <p>Ergänze feste Wortverbindungen.</p>
+        <p class="hint-text" id="scoreBadge-gap" style="text-align:left;display:none;margin:4px 0 0;"></p>
+      </div>
+      <div class="menu-item" data-go="match">
+        <span class="emoji">🔗</span>
+        <h3>Zuordnen</h3>
+        <p>Verbinde Wort und Erklärung.</p>
+      </div>
+      <div class="menu-item" data-go="grammar">
+        <span class="emoji">🧩</span>
+        <h3>Grammatik</h3>
+        <p>Übe die Grammatik dieses Kapitels.</p>
+        <p class="hint-text" id="scoreBadge-gram" style="text-align:left;display:none;margin:4px 0 0;"></p>
+      </div>
+      <div class="menu-item" data-go="hoeren">
+        <span class="emoji">🎧</span>
+        <h3>Hören</h3>
+        <p>Höre den Dialog und beantworte die Fragen.</p>
+      </div>
+      <div class="menu-item" data-go="wordlist" style="grid-column:1/-1;">
+        <span class="emoji">📋</span>
+        <h3>Meine Wortliste</h3>
+        <p>Alle Wörter des Kapitels mit deinen eigenen Übersetzungen – zum Ausdrucken.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION PICKER (shared) -->
+  <section id="screen-section" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Zurück zum Menü</button>
+      </div>
+      <p style="margin-top:0;font-weight:700;color:var(--green-900);" id="sectionPickerTitle">Welche Wörter möchtest du üben?</p>
+      <div class="row-btns" id="sectionButtons"></div>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS -->
+  <section id="screen-flashcards" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+        <span class="pill" id="fcCounter">1 / 1</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="fcProgress"></div></div>
+      <div class="word-display">
+        <span class="section-tag" id="fcSection">A</span>
+        <div class="term" id="fcClue" style="font-size:1.05rem;font-weight:600;">—</div>
+      </div>
+      <div class="quiz-options" id="fcOptions"></div>
+      <div class="feedback" id="fcFeedback"></div>
+      <div id="fcRevealBlock" style="display:none;">
+        <p style="text-align:center;font-weight:800;color:var(--green-900);margin:14px 0 0;" id="fcRevealTerm"></p>
+        <div class="translate-input">
+          <label id="fcTranslateLabel" for="fcTranslate">Möchtest du deine Übersetzung notieren? (optional)</label>
+          <input type="text" id="fcTranslate" placeholder="Deine Übersetzung ...">
+        </div>
+        <div class="flash-actions">
+          <button class="btn-primary" id="fcNext">Weiter →</button>
+        </div>
+      </div>
+      <p class="hint-text">Richtig beim ersten Versuch: <span id="fcKnownCount">0</span> / <span id="fcTotalSeen">0</span></p>
+    </div>
+  </section>
+
+  <!-- ARTICLE QUIZ -->
+  <section id="screen-article" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+        <span class="pill" id="artCounter">1 / 10</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="artProgress"></div></div>
+      <div class="word-display">
+        <span class="section-tag">Welcher Artikel?</span>
+        <div class="term" id="artNoun">—</div>
+      </div>
+      <div class="quiz-options">
+        <button class="btn-secondary" data-art="der">der</button>
+        <button class="btn-secondary" data-art="die">die</button>
+        <button class="btn-secondary" data-art="das">das</button>
+      </div>
+      <div class="row-btns" style="justify-content:center;">
+        <button class="btn-secondary" id="artHint">Tipp 💡</button>
+      </div>
+      <div class="feedback" id="artFeedback"></div>
+    </div>
+  </section>
+
+  <!-- GAP FILL -->
+  <section id="screen-gap" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+        <span class="pill" id="gapCounter">1 / 10</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="gapProgress"></div></div>
+      <p class="fill-sentence" id="gapSentence">—</p>
+      <div class="quiz-options" id="gapOptions"></div>
+      <div class="row-btns" style="justify-content:center;">
+        <button class="btn-secondary" id="gapHint">Tipp 💡</button>
+      </div>
+      <div class="feedback" id="gapFeedback"></div>
+    </div>
+  </section>
+
+  <!-- GRAMMATIK -->
+  <section id="screen-grammar" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+        <span class="pill" id="gramCounter">1 / 10</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="gramProgress"></div></div>
+      <p class="fill-sentence" id="gramSentence">—</p>
+      <div class="quiz-options" id="gramOptions"></div>
+      <div class="row-btns" style="justify-content:center;">
+        <button class="btn-secondary" id="gramHint">Tipp 💡</button>
+      </div>
+      <div class="feedback" id="gramFeedback"></div>
+    </div>
+  </section>
+
+  <!-- HÖREN: TRACK-LISTE -->
+  <section id="screen-hoeren-list" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+      </div>
+      <p style="margin-top:0;font-weight:700;color:var(--green-900);">Hörübungen dieses Kapitels</p>
+      <div id="trackListWrap"></div>
+      <p class="hint-text" id="trackListEmpty" style="display:none;">Für dieses Kapitel gibt es noch keine Hörübung.</p>
+    </div>
+  </section>
+
+  <!-- HÖREN: EINE AUFGABE -->
+  <section id="screen-hoeren-task" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="hoeren-list">← Hörübungen</button>
+      </div>
+      <h2 class="tasktitle" id="hoerenTrackTitle" style="font-size:1.02rem;color:var(--green-900);margin:0 0 4px;">—</h2>
+      <p class="hint-text" id="hoerenTrackTask" style="text-align:left;margin:0 0 10px;">—</p>
+      <audio controls class="listen-audio" id="hoerenAudio"></audio>
+
+      <div id="hoerenChecklistBlock" style="display:none;">
+        <p style="margin:14px 0 6px;font-size:0.92rem;color:var(--green-900);font-weight:600;" id="hoerenChecklistInstruction"></p>
+        <div class="checklist" id="hoerenChecklistWrap"></div>
+        <div class="row-btns">
+          <button class="btn-primary" id="btnHoerenCheck2a">Prüfen</button>
+          <button class="btn-secondary" id="btnHoerenToQuestions">Weiter zu den Fragen →</button>
+        </div>
+        <div class="feedback" id="hoerenChecklistFeedback"></div>
+      </div>
+
+      <div id="hoerenQuestionsBlock" style="display:none;">
+        <div class="topline" style="margin:18px 0 0;">
+          <span class="pill" id="hoerenQCounter">1 / 10</span>
+        </div>
+        <div class="progress-wrap"><div class="progress-bar" id="hoerenQProgress"></div></div>
+        <p class="fill-sentence" id="hoerenQSentence">—</p>
+        <div class="quiz-options" id="hoerenQOptions"></div>
+        <div class="feedback" id="hoerenQFeedback"></div>
+      </div>
+
+      <div id="hoerenResultBlock" style="display:none;">
+        <div class="score-box">
+          <div style="font-size:2rem;" id="hoerenResultEmoji">🎉</div>
+          <div class="big"><span id="hoerenResultScore">0</span>/<span id="hoerenResultTotal">0</span></div>
+          <p id="hoerenResultText">Gut gemacht!</p>
+        </div>
+        <div class="row-btns" style="justify-content:center;">
+          <button class="btn-secondary" data-back="hoeren-list">Zurück zu den Hörübungen</button>
+          <button class="btn-primary" id="btnHoerenRetry">Nochmal üben</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MATCHING -->
+  <section id="screen-match" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+        <span class="pill" id="matchCounter">0 / 6</span>
+      </div>
+      <p class="hint-text" style="margin-top:0;">Klicke zuerst ein Wort, dann die passende Erklärung.</p>
+      <div class="match-wrap">
+        <div class="match-col" id="matchWords"></div>
+        <div class="match-col" id="matchDefs"></div>
+      </div>
+      <div class="row-btns" id="matchDoneBtns" style="display:none;justify-content:center;">
+        <button class="btn-primary" id="matchAgain">Neue Runde 🔁</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="screen-result" class="screen">
+    <div class="card">
+      <div class="score-box">
+        <div id="resultEmoji" style="font-size:2rem;">🎉</div>
+        <div class="big"><span id="resultScore">0</span>/<span id="resultTotal">0</span></div>
+        <p id="resultText">Gut gemacht!</p>
+      </div>
+      <div class="row-btns" style="justify-content:center;">
+        <button class="btn-secondary" data-back="menu">Zurück zum Menü</button>
+        <button class="btn-primary" id="resultRetry">Nochmal üben</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORDLIST -->
+  <section id="screen-wordlist" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+        <button class="btn-secondary" id="btnPrint">🖨️ Drucken</button>
+      </div>
+      <h2 style="margin-top:0;color:var(--green-900);font-size:1.05rem;" id="wordlistTitle">Meine Wortliste</h2>
+      <div class="row-btns">
+        <button class="btn-secondary" id="btnCheckTranslations">🌐 Übersetzungen prüfen</button>
+      </div>
+      <p id="checkLegend" style="display:none;">✅ Übersetzung passt vermutlich &nbsp;·&nbsp; ⚠️ bitte selbst noch mal prüfen &nbsp;·&nbsp; 🔌 automatische Prüfung nicht möglich. Diese Prüfung ist eine automatische, unverbindliche Einschätzung (maschinelle Übersetzung) – bei Redewendungen oder Fachbegriffen kann sie ungenau sein.</p>
+      <p id="checkStatus"></p>
+      <table class="wordlist" id="wordlistTable">
+        <thead><tr><th>Wort</th><th>Abschn.</th><th>Meine Übersetzung</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="note">Wichtige Wörter · Erstellt von Thomas Jurtzik für den Brückenkurs B1+</footer>
+</div>
+
+<script>
+/* ---------------- DATA ---------------- */
+const VOCAB = [
+  // ---- Kapitel 1 ----
+  {t:"die Abteilung, die Abteilungen", s:"A", k:1},
+  {t:"der Arbeitgeber, die Arbeitgeber", s:"A", k:1},
+  {t:"die Arbeitgeberin, die Arbeitgeberinnen", s:"A", k:1},
+  {t:"das Asylverfahren, die Asylverfahren", s:"A", k:1},
+  {t:"die Ausbildung, die Ausbildungen", s:"A", k:1},
+  {t:"auffallen", s:"A", k:1},
+  {t:"(eine Prüfung) bestehen", s:"A", k:1},
+  {t:"das Berufsinformationszentrum (BIZ)", s:"A", k:1},
+  {t:"der Betrieb, die Betriebe", s:"A", k:1},
+  {t:"sich bewerben", s:"A", k:1},
+  {t:"jdn. einstellen", s:"A", k:1},
+  {t:"das E-Learning (Sg.)", s:"A", k:1},
+  {t:"der E-Learning-Kurs, die E-Learning-Kurse", s:"A", k:1},
+  {t:"der Facharbeiter, die Facharbeiter", s:"A", k:1},
+  {t:"die Facharbeiterin, die Facharbeiterinnen", s:"A", k:1},
+  {t:"der Gabelstapler, die Gabelstapler", s:"A", k:1},
+  {t:"die Geschäftsführung, die Geschäftsführungen", s:"A", k:1},
+  {t:"sich informieren", s:"A", k:1},
+  {t:"das Lager, die Lager", s:"A", k:1},
+  {t:"die Lagerlogistik (Sg.)", s:"A", k:1},
+  {t:"der Mitarbeiter, die Mitarbeiter", s:"A", k:1},
+  {t:"die Mitarbeiterin, die Mitarbeiterinnen", s:"A", k:1},
+  {t:"jdm. etw. raten", s:"A", k:1},
+  {t:"der Schulabschluss, die Schulabschlüsse", s:"A", k:1},
+  {t:"steigen", s:"A", k:1},
+  {t:"teilnehmen an (+Dat.)", s:"A", k:1},
+  {t:"der Umsatz, die Umsätze", s:"A", k:1},
+  {t:"die Umschulung, die Umschulungen", s:"A", k:1},
+  {t:"wahrscheinlich", s:"A", k:1},
+  {t:"die Weiterbildung, die Weiterbildungen", s:"A", k:1},
+  {t:"der Antrag, die Anträge", s:"B", k:1},
+  {t:"einen Antrag stellen", s:"B", k:1},
+  {t:"die Aufenthaltsgenehmigung, die Aufenthaltsgenehmigungen", s:"B", k:1},
+  {t:"aufwachsen", s:"B", k:1},
+  {t:"der Berater, die Berater", s:"B", k:1},
+  {t:"die Beraterin, die Beraterinnen", s:"B", k:1},
+  {t:"jdn. beschäftigen", s:"B", k:1},
+  {t:"der Businessplan, die Businesspläne", s:"B", k:1},
+  {t:"das Einkommen, die Einkommen", s:"B", k:1},
+  {t:"die Entscheidung, die Entscheidungen", s:"B", k:1},
+  {t:"eine Entscheidung treffen", s:"B", k:1},
+  {t:"die Existenzgründung, die Existenzgründungen", s:"B", k:1},
+  {t:"die Fortbildung, die Fortbildungen", s:"B", k:1},
+  {t:"eine Fortbildung machen", s:"B", k:1},
+  {t:"(ein Unternehmen) gründen", s:"B", k:1},
+  {t:"einen Kredit bewilligen", s:"B", k:1},
+  {t:"der Küchenhelfer, die Küchenhelfer", s:"B", k:1},
+  {t:"die Küchenhelferin, die Küchenhelferinnen", s:"B", k:1},
+  {t:"sich selbstständig machen", s:"B", k:1},
+  {t:"die Selbstständigkeit (Sg.)", s:"B", k:1},
+  {t:"überlegen", s:"B", k:1},
+  {t:"Verantwortung tragen für (+Akk.)", s:"B", k:1},
+  {t:"etw. anerkennen lassen", s:"C", k:1},
+  {t:"der Berufsabschluss, die Berufsabschlüsse", s:"C", k:1},
+  {t:"die Berufsausbildung, die Berufsausbildungen", s:"C", k:1},
+  {t:"etw. beschließen", s:"C", k:1},
+  {t:"das Zeugnis, die Zeugnisse", s:"C", k:1},
+  {t:"die Anerkennung, die Anerkennungen", s:"D", k:1},
+  {t:"das Anerkennungsverfahren, die Anerkennungsverfahren", s:"D", k:1},
+  {t:"die Arbeitserlaubnis, die Arbeitserlaubnisse", s:"D", k:1},
+  {t:"die Fachkraft, die Fachkräfte", s:"D", k:1},
+  {t:"die Kompetenz, die Kompetenzen", s:"D", k:1},
+  {t:"Kosten übernehmen", s:"D", k:1},
+  {t:"der Nachweis, die Nachweise", s:"D", k:1},
+  {t:"das Praktikum, die Praktika", s:"D", k:1},
+  {t:"die Qualifikation, die Qualifikationen", s:"D", k:1},
+  {t:"reglementiert", s:"D", k:1},
+  {t:"die Unterlage, die Unterlagen", s:"D", k:1},
+  {t:"etw. vergleichen mit (+Dat.)", s:"D", k:1},
+
+  // ---- Kapitel 2 ----
+  {t:"der Ansprechpartner, die Ansprechpartner", s:"A", k:2},
+  {t:"die Ansprechpartnerin, die Ansprechpartnerinnen", s:"A", k:2},
+  {t:"der Aushang, die Aushänge", s:"A", k:2},
+  {t:"das Bewerbungsschreiben, die Bewerbungsschreiben", s:"A", k:2},
+  {t:"das Bewerbungsverfahren, die Bewerbungsverfahren", s:"A", k:2},
+  {t:"der Eindruck, die Eindrücke", s:"A", k:2},
+  {t:"die Elektrofirma, die Elektrofirmen", s:"A", k:2},
+  {t:"erwarten", s:"A", k:2},
+  {t:"das Fachpersonal (Sg.)", s:"A", k:2},
+  {t:"fehlerfrei", s:"A", k:2},
+  {t:"die Initiativbewerbung, die Initiativbewerbungen", s:"A", k:2},
+  {t:"die Installateurfirma, die Installateurfirmen", s:"A", k:2},
+  {t:"die Konkurrenz (Sg.)", s:"A", k:2},
+  {t:"der Leiharbeiter, die Leiharbeiter", s:"A", k:2},
+  {t:"die Leiharbeiterin, die Leiharbeiterinnen", s:"A", k:2},
+  {t:"das Leitbild, die Leitbilder", s:"A", k:2},
+  {t:"der Stand der Dinge", s:"A", k:2},
+  {t:"einen Termin bestätigen", s:"A", k:2},
+  {t:"die Unterlage, die Unterlagen", s:"A", k:2},
+  {t:"die Wartezeit, die Wartezeiten", s:"A", k:2},
+  {t:"die Zeitarbeitsfirma, die Zeitarbeitsfirmen", s:"A", k:2},
+  {t:"zukünftig", s:"A", k:2},
+  {t:"die Arbeitskraft, die Arbeitskräfte", s:"B", k:2},
+  {t:"das Arbeitsverhältnis, die Arbeitsverhältnisse", s:"B", k:2},
+  {t:"ausleihen", s:"B", k:2},
+  {t:"die Berufsberatung, die Berufsberatungen", s:"B", k:2},
+  {t:"die Berufserfahrung, die Berufserfahrungen", s:"B", k:2},
+  {t:"beschäftigen", s:"B", k:2},
+  {t:"die Beschäftigung (Sg.)", s:"B", k:2},
+  {t:"der Betrieb, die Betriebe", s:"B", k:2},
+  {t:"die Genehmigung, die Genehmigungen", s:"B", k:2},
+  {t:"die Leiharbeit (Sg.)", s:"B", k:2},
+  {t:"der Leiharbeiter, die Leiharbeiter", s:"B", k:2},
+  {t:"die Leiharbeiterin, die Leiharbeiterinnen", s:"B", k:2},
+  {t:"staatlich", s:"B", k:2},
+  {t:"die Tätigkeit, die Tätigkeiten", s:"B", k:2},
+  {t:"einen Termin vereinbaren", s:"B", k:2},
+  {t:"verleihen", s:"B", k:2},
+  {t:"die Vermittlung, die Vermittlungen", s:"B", k:2},
+  {t:"die Vermittlungsgebühr, die Vermittlungsgebühren", s:"B", k:2},
+  {t:"der Agraringenieur, die Agraringenieure", s:"C", k:2},
+  {t:"die Agraringenieurin, die Agraringenieurinnen", s:"C", k:2},
+  {t:"der Arbeitseinsatz, die Arbeitseinsätze", s:"C", k:2},
+  {t:"der Bereich, die Bereiche", s:"C", k:2},
+  {t:"die Bereitschaft (Sg.)", s:"C", k:2},
+  {t:"der Einsatzort, die Einsatzorte", s:"C", k:2},
+  {t:"examiniert", s:"C", k:2},
+  {t:"das Familienunternehmen, die Familienunternehmen", s:"C", k:2},
+  {t:"der Informatiker, die Informatiker", s:"C", k:2},
+  {t:"die Informatikerin, die Informatikerinnen", s:"C", k:2},
+  {t:"der Ingenieur, die Ingenieure", s:"C", k:2},
+  {t:"die Ingenieurin, die Ingenieurinnen", s:"C", k:2},
+  {t:"innovativ", s:"C", k:2},
+  {t:"die Karrierechance, die Karrierechancen", s:"C", k:2},
+  {t:"die Kommunikationsfähigkeit, die Kommunikationsfähigkeiten", s:"C", k:2},
+  {t:"der Kundenservice (Sg.)", s:"C", k:2},
+  {t:"die Pflegekraft, die Pflegekräfte", s:"C", k:2},
+  {t:"der Pflegeservice (Sg.)", s:"C", k:2},
+  {t:"der Sicherheitsmitarbeiter, die Sicherheitsmitarbeiter", s:"C", k:2},
+  {t:"die Sicherheitsmitarbeiterin, die Sicherheitsmitarbeiterinnen", s:"C", k:2},
+  {t:"der Teamgeist (Sg.)", s:"C", k:2},
+  {t:"die Verantwortung (Sg.)", s:"C", k:2},
+  {t:"der Verkäufer, die Verkäufer", s:"C", k:2},
+  {t:"die Verkäuferin, die Verkäuferinnen", s:"C", k:2},
+  {t:"die Verstärkung, die Verstärkungen", s:"C", k:2},
+  {t:"die Zukunftsperspektive, die Zukunftsperspektiven", s:"C", k:2},
+  {t:"die Zusammenarbeit (Sg.)", s:"C", k:2},
+  {t:"zuständig", s:"C", k:2},
+  {t:"das Bauvorhaben, die Bauvorhaben", s:"D", k:2},
+  {t:"die Berufsausbildung, die Berufsausbildungen", s:"D", k:2},
+  {t:"der Einsatz, die Einsätze", s:"D", k:2},
+  {t:"das Einverständnis, die Einverständnisse", s:"D", k:2},
+  {t:"der Fachinformatiker, die Fachinformatiker", s:"D", k:2},
+  {t:"die Fachinformatikerin, die Fachinformatikerinnen", s:"D", k:2},
+  {t:"die Krankheitsvertretung, die Krankheitsvertretungen", s:"D", k:2},
+  {t:"der Realschulabschluss, die Realschulabschlüsse", s:"D", k:2},
+  {t:"die Urlaubsvertretung, die Urlaubsvertretungen", s:"D", k:2},
+  {t:"der Zeitraum, die Zeiträume", s:"D", k:2},
+  // ---- Kapitel 3 ----
+  {t:"der erste Arbeitstag, die ersten Arbeitstage", s:"A", k:3},
+  {t:"sich vorstellen", s:"A", k:3},
+  {t:"das Einführungsgespräch, die Einführungsgespräche", s:"A", k:3},
+  {t:"der Vorgesetzte, die Vorgesetzten", s:"A", k:3},
+  {t:"die Vorgesetzte, die Vorgesetzten", s:"A", k:3},
+  {t:"der Empfang (Sg.)", s:"A", k:3},
+  {t:"der Hausausweis, die Hausausweise", s:"A", k:3},
+  {t:"die Hausordnung, die Hausordnungen", s:"A", k:3},
+  {t:"der Pausenraum, die Pausenräume", s:"A", k:3},
+  {t:"die Sicherheitsunterweisung, die Sicherheitsunterweisungen", s:"A", k:3},
+  {t:"sich zurechtfinden", s:"A", k:3},
+  {t:"jdn. begrüßen", s:"A", k:3},
+  {t:"der Rundgang, die Rundgänge", s:"A", k:3},
+  {t:"die Volkshochschule, die Volkshochschulen", s:"B", k:3},
+  {t:"sich anmelden für (+Akk.)", s:"B", k:3},
+  {t:"das Kursprogramm, die Kursprogramme", s:"B", k:3},
+  {t:"die Teilnahmegebühr, die Teilnahmegebühren", s:"B", k:3},
+  {t:"berufsbegleitend", s:"B", k:3},
+  {t:"das Interesse, die Interessen", s:"B", k:3},
+  {t:"sich weiterbilden", s:"B", k:3},
+  {t:"der Abendkurs, die Abendkurse", s:"B", k:3},
+  {t:"die Bescheinigung, die Bescheinigungen", s:"B", k:3},
+  {t:"freiwillig", s:"B", k:3},
+  {t:"der Zeitaufwand (Sg.)", s:"B", k:3},
+  {t:"sich Zeit nehmen für (+Akk.)", s:"B", k:3},
+  {t:"die Freizeitgestaltung (Sg.)", s:"B", k:3},
+  {t:"die Teambesprechung, die Teambesprechungen", s:"C", k:3},
+  {t:"die Tagesordnung, die Tagesordnungen", s:"C", k:3},
+  {t:"das Protokoll, die Protokolle", s:"C", k:3},
+  {t:"ein Protokoll führen", s:"C", k:3},
+  {t:"das Wort ergreifen", s:"C", k:3},
+  {t:"der Vorschlag, die Vorschläge", s:"C", k:3},
+  {t:"einen Vorschlag machen", s:"C", k:3},
+  {t:"zustimmen (+Dat.)", s:"C", k:3},
+  {t:"ablehnen", s:"C", k:3},
+  {t:"das Ergebnis, die Ergebnisse", s:"C", k:3},
+  {t:"einen Termin vereinbaren", s:"C", k:3},
+  {t:"die Teilnehmerliste, die Teilnehmerlisten", s:"C", k:3},
+  {t:"unterbrechen", s:"C", k:3},
+  {t:"sich einleben", s:"D", k:3},
+  {t:"jdn. einarbeiten", s:"D", k:3},
+  {t:"der Ansprechpartner, die Ansprechpartner", s:"D", k:3},
+  {t:"die Ansprechpartnerin, die Ansprechpartnerinnen", s:"D", k:3},
+  {t:"der Kollegenkreis (Sg.)", s:"D", k:3},
+  {t:"der Pate, die Paten", s:"D", k:3},
+  {t:"eine Frage klären", s:"D", k:3},
+  {t:"sich austauschen mit (+Dat.)", s:"D", k:3},
+  {t:"jdn. freundlich aufnehmen", s:"D", k:3},
+  {t:"hilfsbereit", s:"D", k:3},
+  {t:"die Zusammenarbeit (Sg.)", s:"D", k:3},
+  {t:"sich integrieren", s:"D", k:3},
+  {t:"neugierig", s:"D", k:3}
+];
+
+
+/* Kurze deutsche Hinweise, parallel zu VOCAB (gleicher Index) — Prompt bei den Karteikarten. */
+const CLUES = [
+  // ---- Kapitel 1 ----
+  "ein Teilbereich einer Firma oder Behörde, z. B. die Personalabteilung",
+  "eine Person oder Firma, die andere Menschen beschäftigt (männlich)",
+  "eine Person oder Firma, die andere Menschen beschäftigt (weiblich)",
+  "der offizielle Prozess, in dem geprüft wird, ob jemand als Flüchtling anerkannt wird",
+  "eine berufliche Lehre, in der man einen Beruf lernt",
+  "besonders bemerkt werden, ins Auge fallen",
+  "eine Prüfung erfolgreich abschließen",
+  "eine Einrichtung, in der man sich über Berufe und Ausbildungen informieren kann",
+  "eine Firma, ein Unternehmen",
+  "sich offiziell um eine Stelle oder einen Ausbildungsplatz bemühen",
+  "jemandem eine Arbeitsstelle geben",
+  "das Lernen mithilfe von digitalen Medien, z. B. am Computer",
+  "ein Kurs, der online bzw. digital stattfindet",
+  "eine Person mit einer abgeschlossenen beruflichen Ausbildung (männlich)",
+  "eine Person mit einer abgeschlossenen beruflichen Ausbildung (weiblich)",
+  "ein Fahrzeug, mit dem man schwere Lasten im Lager transportiert und hebt",
+  "die Leitung eines Unternehmens",
+  "sich Wissen über ein Thema beschaffen",
+  "ein Ort, an dem Waren aufbewahrt werden",
+  "die Planung und Organisation von Warenlagern und -transporten",
+  "eine Person, die in einer Firma angestellt ist (männlich)",
+  "eine Person, die in einer Firma angestellt ist (weiblich)",
+  "jemandem einen Vorschlag oder Tipp geben",
+  "ein Zeugnis, das den erfolgreichen Abschluss der Schule bestätigt",
+  "größer oder mehr werden, ansteigen",
+  "bei etwas mitmachen, z. B. bei einem Kurs",
+  "das Geld, das eine Firma durch Verkäufe einnimmt",
+  "eine neue berufliche Ausbildung für einen anderen Beruf",
+  "vermutlich, mit hoher Sicherheit zu erwarten",
+  "eine zusätzliche berufliche Qualifizierung nach der Ausbildung",
+  "ein offizielles Schreiben, mit dem man etwas bei einer Behörde beantragt",
+  "offiziell um etwas bei einer Behörde bitten",
+  "ein offizielles Dokument, das erlaubt, in einem Land zu leben",
+  "als Kind an einem Ort leben und größer werden",
+  "eine Person, die andere fachlich informiert und unterstützt (männlich)",
+  "eine Person, die andere fachlich informiert und unterstützt (weiblich)",
+  "jemanden als Arbeitskraft anstellen",
+  "ein schriftliches Konzept für eine geplante Firmengründung",
+  "das Geld, das man regelmäßig verdient",
+  "eine Wahl zwischen mehreren Möglichkeiten",
+  "sich für eine von mehreren Möglichkeiten entscheiden",
+  "der Start einer eigenen selbstständigen Tätigkeit oder Firma",
+  "ein Kurs, um berufliche Kenntnisse zu erweitern",
+  "an einem Kurs zur beruflichen Weiterqualifizierung teilnehmen",
+  "eine Firma neu erstellen",
+  "jemandem offiziell Geld als Darlehen zusagen",
+  "eine Person, die in der Küche einfache Arbeiten übernimmt (männlich)",
+  "eine Person, die in der Küche einfache Arbeiten übernimmt (weiblich)",
+  "eine eigene Firma gründen, für sich selbst arbeiten",
+  "das Arbeiten in der eigenen Firma, nicht als Angestellte/r",
+  "über etwas nachdenken, bevor man sich entscheidet",
+  "für etwas zuständig sein und dafür geradestehen",
+  "offiziell bestätigen lassen, dass eine Qualifikation gültig ist",
+  "der erfolgreiche Abschluss einer beruflichen Ausbildung",
+  "die praktische und theoretische Ausbildung für einen Beruf",
+  "sich endgültig für etwas entscheiden",
+  "ein Dokument, das eine Leistung oder Qualifikation bestätigt",
+  "die offizielle Bestätigung, dass etwas (z. B. ein Abschluss) gültig ist",
+  "der offizielle Prozess, um eine ausländische Qualifikation anerkennen zu lassen",
+  "ein offizielles Dokument, das erlaubt, in einem Land zu arbeiten",
+  "eine Person mit einer bestimmten beruflichen Qualifikation",
+  "eine Fähigkeit, die jemand besitzt",
+  "für die Bezahlung von etwas aufkommen",
+  "ein Dokument, das etwas beweist oder bestätigt",
+  "eine Zeit, in der man praktische Erfahrung in einem Beruf sammelt",
+  "eine berufliche Fähigkeit oder ein Abschluss",
+  "durch offizielle Regeln oder Gesetze streng geregelt",
+  "ein Dokument oder Papier, das man z. B. bei einer Behörde vorlegt",
+  "zwei oder mehr Dinge gegenüberstellen, um Unterschiede oder Gemeinsamkeiten zu finden",
+
+  // ---- Kapitel 2 ----
+  "eine Person, an die man sich mit Fragen wenden kann (männlich)",
+  "eine Person, an die man sich mit Fragen wenden kann (weiblich)",
+  "eine Mitteilung, die öffentlich sichtbar aufgehängt wird",
+  "ein Brief, in dem man sich um eine Stelle bewirbt",
+  "der gesamte Ablauf einer Bewerbung, von der Bewerbung bis zur Entscheidung",
+  "wie eine Person oder Sache auf jemanden wirkt",
+  "eine Firma, die im Bereich Elektrotechnik arbeitet",
+  "damit rechnen, dass etwas passiert oder kommt",
+  "Mitarbeiter:innen mit einer bestimmten fachlichen Qualifikation",
+  "ohne Fehler",
+  "eine Bewerbung ohne konkrete Stellenanzeige, aus eigener Initiative",
+  "eine Firma, die z. B. Heizungen oder Sanitäranlagen einbaut",
+  "andere Personen oder Firmen, die dasselbe Ziel verfolgen",
+  "eine Person, die über eine Zeitarbeitsfirma bei einem anderen Betrieb arbeitet (männlich)",
+  "eine Person, die über eine Zeitarbeitsfirma bei einem anderen Betrieb arbeitet (weiblich)",
+  "die grundlegenden Werte und Ziele einer Organisation",
+  "die aktuelle Situation, wie etwas gerade steht",
+  "einem vereinbarten Termin offiziell zustimmen",
+  "ein Dokument oder Papier, das man z. B. bei einer Bewerbung einreicht",
+  "die Zeit, die man warten muss",
+  "eine Firma, die Arbeitskräfte an andere Betriebe verleiht",
+  "in der Zukunft, ab jetzt",
+  "eine Person, die arbeitet",
+  "die rechtliche Beziehung zwischen Arbeitgeber und Arbeitnehmer",
+  "sich etwas für eine begrenzte Zeit geben lassen",
+  "eine professionelle Beratung zur Berufswahl",
+  "praktisches Wissen, das man durch Arbeiten in einem Beruf gesammelt hat",
+  "jemanden als Arbeitskraft anstellen",
+  "eine berufliche Tätigkeit, ein Job",
+  "eine Firma, ein Unternehmen",
+  "die offizielle Erlaubnis für etwas",
+  "das Arbeiten über eine Zeitarbeitsfirma bei einem anderen Betrieb",
+  "eine Person, die über eine Zeitarbeitsfirma bei einem anderen Betrieb arbeitet (männlich)",
+  "eine Person, die über eine Zeitarbeitsfirma bei einem anderen Betrieb arbeitet (weiblich)",
+  "vom Staat organisiert oder kontrolliert",
+  "eine Arbeit, eine Beschäftigung",
+  "einen gemeinsamen Zeitpunkt für ein Treffen festlegen",
+  "jemandem etwas für eine begrenzte Zeit zur Verfügung stellen",
+  "das Herstellen einer Verbindung, z. B. zwischen Arbeitnehmer und Arbeitgeber",
+  "das Geld, das man für eine Vermittlung bezahlt",
+  "eine Person mit einer akademischen Ausbildung in der Landwirtschaft (männlich)",
+  "eine Person mit einer akademischen Ausbildung in der Landwirtschaft (weiblich)",
+  "die Zeit, in der jemand an einem bestimmten Ort arbeitet",
+  "ein Teilgebiet, ein Abschnitt",
+  "der Wille, etwas zu tun",
+  "der Ort, an dem jemand arbeitet",
+  "mit einer staatlichen Prüfung abgeschlossen (z. B. examinierte Pflegekraft)",
+  "eine Firma, die einer Familie gehört und oft von ihr geleitet wird",
+  "eine Person, die beruflich mit Computern und Software arbeitet (männlich)",
+  "eine Person, die beruflich mit Computern und Software arbeitet (weiblich)",
+  "eine Person mit einer technischen, akademischen Ausbildung (männlich)",
+  "eine Person mit einer technischen, akademischen Ausbildung (weiblich)",
+  "neu und modern, mit neuen Ideen",
+  "eine Möglichkeit zur beruflichen Weiterentwicklung",
+  "die Fähigkeit, sich klar und verständlich mit anderen auszutauschen",
+  "der Bereich, der sich um Kundinnen und Kunden kümmert",
+  "eine Person, die beruflich Menschen pflegt",
+  "ein Dienst, der Pflege für Menschen anbietet",
+  "eine Person, die für den Schutz von Personen oder Orten zuständig ist (männlich)",
+  "eine Person, die für den Schutz von Personen oder Orten zuständig ist (weiblich)",
+  "die Bereitschaft, gut mit anderen zusammenzuarbeiten",
+  "die Pflicht, für etwas zuständig zu sein und dafür geradezustehen",
+  "eine Person, die beruflich Waren verkauft (männlich)",
+  "eine Person, die beruflich Waren verkauft (weiblich)",
+  "zusätzliche Unterstützung, z. B. neue Mitarbeitende",
+  "eine Aussicht oder Chance für die Zukunft",
+  "gemeinsames Arbeiten mehrerer Personen an einer Sache",
+  "verantwortlich für einen bestimmten Bereich",
+  "ein geplantes Bauprojekt",
+  "die praktische und theoretische Ausbildung für einen Beruf",
+  "die Zeit oder der Ort, an dem jemand arbeitet",
+  "die Zustimmung zu etwas",
+  "eine Person mit einer Berufsausbildung im Bereich Informatik (männlich)",
+  "eine Person mit einer Berufsausbildung im Bereich Informatik (weiblich)",
+  "die Übernahme der Aufgaben einer erkrankten Person",
+  "ein mittlerer Schulabschluss in Deutschland",
+  "die Übernahme der Aufgaben einer Person während ihres Urlaubs",
+  "eine bestimmte Zeitspanne",
+  // ---- Kapitel 3 ----
+  "der Tag, an dem man in einer neuen Firma zum ersten Mal arbeitet",
+  "sich einer anderen Person mit Namen bekannt machen",
+  "ein Gespräch, in dem neue Mitarbeiter:innen die Firma und ihre Aufgaben kennenlernen",
+  "eine Person, die in der Firma Anweisungen gibt (männlich)",
+  "eine Person, die in der Firma Anweisungen gibt (weiblich)",
+  "der Bereich am Eingang einer Firma, an dem Besucher:innen empfangen werden",
+  "eine Karte, mit der man Zugang zum Firmengebäude bekommt",
+  "die Regeln, die im Gebäude einer Firma gelten",
+  "ein Raum, in dem Mitarbeiter:innen ihre Pause machen",
+  "eine Einweisung in die Sicherheitsregeln am Arbeitsplatz",
+  "sich in einer neuen Umgebung orientieren können",
+  "jemanden freundlich willkommen heißen",
+  "ein kurzer Gang durch die Firma, bei dem man die Räume kennenlernt",
+  "eine Einrichtung, die günstige Kurse für Erwachsene anbietet (z. B. Sprachen, Computer)",
+  "sich offiziell für einen Kurs eintragen",
+  "eine Übersicht über alle angebotenen Kurse",
+  "das Geld, das man für die Teilnahme an einem Kurs bezahlt",
+  "so organisiert, dass man es neben der Arbeit machen kann",
+  "etwas, wofür man sich besonders interessiert",
+  "neue Kenntnisse und Fähigkeiten lernen",
+  "ein Kurs, der abends stattfindet",
+  "ein Dokument, das die Teilnahme an einem Kurs bestätigt",
+  "ohne Verpflichtung, aus eigenem Wunsch",
+  "die Zeit, die man für etwas braucht",
+  "sich Zeit für eine bestimmte Sache reservieren",
+  "wie man seine freie Zeit verbringt",
+  "ein Treffen, bei dem sich ein Team über Aufgaben und Themen austauscht",
+  "die Liste der Themen, die in einer Besprechung behandelt werden",
+  "ein schriftlicher Bericht über den Verlauf einer Besprechung",
+  "während einer Besprechung mitschreiben, was besprochen wird",
+  "anfangen zu sprechen, sich zu Wort melden",
+  "eine Idee, die man einbringt",
+  "eine Idee zur Diskussion stellen",
+  "mit etwas einverstanden sein",
+  "etwas nicht akzeptieren, Nein sagen zu etwas",
+  "das, was am Ende einer Diskussion herauskommt",
+  "sich mit jemandem auf einen Zeitpunkt einigen",
+  "eine Liste aller Personen, die an einer Besprechung teilnehmen",
+  "jemanden beim Sprechen stören",
+  "sich an eine neue Umgebung gewöhnen und sich dort wohlfühlen",
+  "einer neuen Person die Aufgaben und Abläufe zeigen",
+  "eine Person, an die man sich mit Fragen wenden kann (männlich)",
+  "eine Person, an die man sich mit Fragen wenden kann (weiblich)",
+  "alle Kolleginnen und Kollegen zusammen",
+  "eine erfahrene Person, die neue Mitarbeiter:innen begleitet und unterstützt",
+  "eine offene Frage beantworten und damit lösen",
+  "sich mit jemandem über Erfahrungen oder Informationen unterhalten",
+  "jemanden neuen herzlich willkommen heißen",
+  "bereit, anderen zu helfen",
+  "das gemeinsame Arbeiten mehrerer Personen",
+  "sich in eine Gruppe einfügen",
+  "mit Interesse an vielen Dingen"
+];
+
+const ARTICLE_ITEMS = [
+  // ---- Kapitel 1 ----
+  {n:"Abteilung", a:"die", s:"A", k:1},
+  {n:"Arbeitgeber", a:"der", s:"A", k:1},
+  {n:"Arbeitgeberin", a:"die", s:"A", k:1},
+  {n:"Asylverfahren", a:"das", s:"A", k:1},
+  {n:"Ausbildung", a:"die", s:"A", k:1},
+  {n:"Berufsinformationszentrum", a:"das", s:"A", k:1},
+  {n:"Betrieb", a:"der", s:"A", k:1},
+  {n:"E-Learning", a:"das", s:"A", k:1},
+  {n:"E-Learning-Kurs", a:"der", s:"A", k:1},
+  {n:"Facharbeiter", a:"der", s:"A", k:1},
+  {n:"Facharbeiterin", a:"die", s:"A", k:1},
+  {n:"Gabelstapler", a:"der", s:"A", k:1},
+  {n:"Geschäftsführung", a:"die", s:"A", k:1},
+  {n:"Lager", a:"das", s:"A", k:1},
+  {n:"Lagerlogistik", a:"die", s:"A", k:1},
+  {n:"Mitarbeiter", a:"der", s:"A", k:1},
+  {n:"Mitarbeiterin", a:"die", s:"A", k:1},
+  {n:"Schulabschluss", a:"der", s:"A", k:1},
+  {n:"Umsatz", a:"der", s:"A", k:1},
+  {n:"Umschulung", a:"die", s:"A", k:1},
+  {n:"Weiterbildung", a:"die", s:"A", k:1},
+  {n:"Antrag", a:"der", s:"B", k:1},
+  {n:"Aufenthaltsgenehmigung", a:"die", s:"B", k:1},
+  {n:"Berater", a:"der", s:"B", k:1},
+  {n:"Beraterin", a:"die", s:"B", k:1},
+  {n:"Businessplan", a:"der", s:"B", k:1},
+  {n:"Einkommen", a:"das", s:"B", k:1},
+  {n:"Entscheidung", a:"die", s:"B", k:1},
+  {n:"Existenzgründung", a:"die", s:"B", k:1},
+  {n:"Fortbildung", a:"die", s:"B", k:1},
+  {n:"Küchenhelfer", a:"der", s:"B", k:1},
+  {n:"Küchenhelferin", a:"die", s:"B", k:1},
+  {n:"Selbstständigkeit", a:"die", s:"B", k:1},
+  {n:"Berufsabschluss", a:"der", s:"C", k:1},
+  {n:"Berufsausbildung", a:"die", s:"C", k:1},
+  {n:"Zeugnis", a:"das", s:"C", k:1},
+  {n:"Anerkennung", a:"die", s:"D", k:1},
+  {n:"Anerkennungsverfahren", a:"das", s:"D", k:1},
+  {n:"Arbeitserlaubnis", a:"die", s:"D", k:1},
+  {n:"Fachkraft", a:"die", s:"D", k:1},
+  {n:"Kompetenz", a:"die", s:"D", k:1},
+  {n:"Nachweis", a:"der", s:"D", k:1},
+  {n:"Praktikum", a:"das", s:"D", k:1},
+  {n:"Qualifikation", a:"die", s:"D", k:1},
+  {n:"Unterlage", a:"die", s:"D", k:1},
+
+  // ---- Kapitel 2 ----
+  {n:"Ansprechpartner", a:"der", s:"A", k:2},
+  {n:"Ansprechpartnerin", a:"die", s:"A", k:2},
+  {n:"Aushang", a:"der", s:"A", k:2},
+  {n:"Bewerbungsschreiben", a:"das", s:"A", k:2},
+  {n:"Bewerbungsverfahren", a:"das", s:"A", k:2},
+  {n:"Eindruck", a:"der", s:"A", k:2},
+  {n:"Elektrofirma", a:"die", s:"A", k:2},
+  {n:"Fachpersonal", a:"das", s:"A", k:2},
+  {n:"Initiativbewerbung", a:"die", s:"A", k:2},
+  {n:"Installateurfirma", a:"die", s:"A", k:2},
+  {n:"Konkurrenz", a:"die", s:"A", k:2},
+  {n:"Leiharbeiter", a:"der", s:"A", k:2},
+  {n:"Leiharbeiterin", a:"die", s:"A", k:2},
+  {n:"Leitbild", a:"das", s:"A", k:2},
+  {n:"Unterlage", a:"die", s:"A", k:2},
+  {n:"Wartezeit", a:"die", s:"A", k:2},
+  {n:"Zeitarbeitsfirma", a:"die", s:"A", k:2},
+  {n:"Arbeitskraft", a:"die", s:"B", k:2},
+  {n:"Arbeitsverhältnis", a:"das", s:"B", k:2},
+  {n:"Berufsberatung", a:"die", s:"B", k:2},
+  {n:"Berufserfahrung", a:"die", s:"B", k:2},
+  {n:"Beschäftigung", a:"die", s:"B", k:2},
+  {n:"Betrieb", a:"der", s:"B", k:2},
+  {n:"Genehmigung", a:"die", s:"B", k:2},
+  {n:"Leiharbeit", a:"die", s:"B", k:2},
+  {n:"Tätigkeit", a:"die", s:"B", k:2},
+  {n:"Vermittlung", a:"die", s:"B", k:2},
+  {n:"Vermittlungsgebühr", a:"die", s:"B", k:2},
+  {n:"Agraringenieur", a:"der", s:"C", k:2},
+  {n:"Agraringenieurin", a:"die", s:"C", k:2},
+  {n:"Arbeitseinsatz", a:"der", s:"C", k:2},
+  {n:"Bereich", a:"der", s:"C", k:2},
+  {n:"Bereitschaft", a:"die", s:"C", k:2},
+  {n:"Einsatzort", a:"der", s:"C", k:2},
+  {n:"Familienunternehmen", a:"das", s:"C", k:2},
+  {n:"Informatiker", a:"der", s:"C", k:2},
+  {n:"Informatikerin", a:"die", s:"C", k:2},
+  {n:"Ingenieur", a:"der", s:"C", k:2},
+  {n:"Ingenieurin", a:"die", s:"C", k:2},
+  {n:"Karrierechance", a:"die", s:"C", k:2},
+  {n:"Kommunikationsfähigkeit", a:"die", s:"C", k:2},
+  {n:"Kundenservice", a:"der", s:"C", k:2},
+  {n:"Pflegekraft", a:"die", s:"C", k:2},
+  {n:"Pflegeservice", a:"der", s:"C", k:2},
+  {n:"Sicherheitsmitarbeiter", a:"der", s:"C", k:2},
+  {n:"Sicherheitsmitarbeiterin", a:"die", s:"C", k:2},
+  {n:"Teamgeist", a:"der", s:"C", k:2},
+  {n:"Verantwortung", a:"die", s:"C", k:2},
+  {n:"Verkäufer", a:"der", s:"C", k:2},
+  {n:"Verkäuferin", a:"die", s:"C", k:2},
+  {n:"Verstärkung", a:"die", s:"C", k:2},
+  {n:"Zukunftsperspektive", a:"die", s:"C", k:2},
+  {n:"Zusammenarbeit", a:"die", s:"C", k:2},
+  {n:"Bauvorhaben", a:"das", s:"D", k:2},
+  {n:"Berufsausbildung", a:"die", s:"D", k:2},
+  {n:"Einsatz", a:"der", s:"D", k:2},
+  {n:"Einverständnis", a:"das", s:"D", k:2},
+  {n:"Fachinformatiker", a:"der", s:"D", k:2},
+  {n:"Fachinformatikerin", a:"die", s:"D", k:2},
+  {n:"Krankheitsvertretung", a:"die", s:"D", k:2},
+  {n:"Realschulabschluss", a:"der", s:"D", k:2},
+  {n:"Urlaubsvertretung", a:"die", s:"D", k:2},
+  {n:"Zeitraum", a:"der", s:"D", k:2},
+  // ---- Kapitel 3 ----
+  {n:"Arbeitstag", a:"der", s:"A", k:3},
+  {n:"Einführungsgespräch", a:"das", s:"A", k:3},
+  {n:"Empfang", a:"der", s:"A", k:3},
+  {n:"Hausausweis", a:"der", s:"A", k:3},
+  {n:"Hausordnung", a:"die", s:"A", k:3},
+  {n:"Pausenraum", a:"der", s:"A", k:3},
+  {n:"Sicherheitsunterweisung", a:"die", s:"A", k:3},
+  {n:"Rundgang", a:"der", s:"A", k:3},
+  {n:"Volkshochschule", a:"die", s:"B", k:3},
+  {n:"Kursprogramm", a:"das", s:"B", k:3},
+  {n:"Teilnahmegebühr", a:"die", s:"B", k:3},
+  {n:"Interesse", a:"das", s:"B", k:3},
+  {n:"Abendkurs", a:"der", s:"B", k:3},
+  {n:"Bescheinigung", a:"die", s:"B", k:3},
+  {n:"Zeitaufwand", a:"der", s:"B", k:3},
+  {n:"Freizeitgestaltung", a:"die", s:"B", k:3},
+  {n:"Teambesprechung", a:"die", s:"C", k:3},
+  {n:"Tagesordnung", a:"die", s:"C", k:3},
+  {n:"Protokoll", a:"das", s:"C", k:3},
+  {n:"Vorschlag", a:"der", s:"C", k:3},
+  {n:"Ergebnis", a:"das", s:"C", k:3},
+  {n:"Teilnehmerliste", a:"die", s:"C", k:3},
+  {n:"Ansprechpartner", a:"der", s:"D", k:3},
+  {n:"Ansprechpartnerin", a:"die", s:"D", k:3},
+  {n:"Kollegenkreis", a:"der", s:"D", k:3},
+  {n:"Pate", a:"der", s:"D", k:3},
+  {n:"Zusammenarbeit", a:"die", s:"D", k:3}
+];
+
+const GAP_ITEMS = [
+  // ---- Kapitel 1 ----
+  {before:"sich", answer:"bewerben", after:"bei der neuen Firma", hint:"A: sich offiziell um eine Stelle bemühen", k:1},
+  {before:"einen neuen Mitarbeiter", answer:"einstellen", after:"", hint:"A: jemandem eine Arbeitsstelle geben", k:1},
+  {before:"die Abschlussprüfung", answer:"bestehen", after:"", hint:"A: eine Prüfung erfolgreich abschließen", k:1},
+  {before:"sich über die Ausbildung", answer:"informieren", after:"", hint:"A: sich Wissen über ein Thema beschaffen", k:1},
+  {before:"an einem Deutschkurs", answer:"teilnehmen", after:"", hint:"A: bei etwas mitmachen", k:1},
+  {before:"einen", answer:"Antrag", after:"stellen", hint:"B: offizielles Schreiben, mit dem man etwas beantragt", k:1},
+  {before:"eine wichtige Entscheidung", answer:"treffen", after:"", hint:"B: sich für eine von mehreren Möglichkeiten entscheiden", k:1},
+  {before:"", answer:"aufwachsen", after:"in einer kleinen Stadt", hint:"B: als Kind an einem Ort leben und größer werden", k:1},
+  {before:"eine Fortbildung", answer:"machen", after:"", hint:"B: an einem Kurs zur beruflichen Weiterqualifizierung teilnehmen", k:1},
+  {before:"ein eigenes Unternehmen", answer:"gründen", after:"", hint:"B: eine Firma neu erstellen", k:1},
+  {before:"sich nach der Ausbildung", answer:"selbstständig", after:"machen", hint:"B: eine eigene Firma gründen", k:1},
+  {before:"Verantwortung", answer:"tragen", after:"für das Team (+Akk.)", hint:"B: für etwas zuständig sein und dafür geradestehen", k:1},
+  {before:"den ausländischen Abschluss", answer:"anerkennen", after:"lassen", hint:"C: offiziell bestätigen lassen, dass eine Qualifikation gültig ist", k:1},
+  {before:"", answer:"beschließen", after:"eine Umschulung zu machen", hint:"C: sich endgültig für etwas entscheiden", k:1},
+  {before:"die Reisekosten", answer:"übernehmen", after:"", hint:"D: für die Bezahlung von etwas aufkommen", k:1},
+  {before:"die beiden Angebote miteinander", answer:"vergleichen", after:"", hint:"D: zwei Dinge gegenüberstellen, um Unterschiede zu finden", k:1},
+
+  // ---- Kapitel 2 ----
+  {before:"einen guten", answer:"Eindruck", after:"hinterlassen", hint:"A: wie eine Person oder Sache auf jemanden wirkt", k:2},
+  {before:"einen Termin", answer:"bestätigen", after:"", hint:"A: einem vereinbarten Termin offiziell zustimmen", k:2},
+  {before:"eine schnelle Antwort", answer:"erwarten", after:"", hint:"A: damit rechnen, dass etwas passiert", k:2},
+  {before:"sich mit einer", answer:"Initiativbewerbung", after:"bewerben", hint:"A: eine Bewerbung ohne konkrete Stellenanzeige", k:2},
+  {before:"eine neue Arbeitskraft", answer:"beschäftigen", after:"", hint:"B: jemanden als Arbeitskraft anstellen", k:2},
+  {before:"einen Termin", answer:"vereinbaren", after:"", hint:"B: einen gemeinsamen Zeitpunkt für ein Treffen festlegen", k:2},
+  {before:"ein Werkzeug", answer:"ausleihen", after:"", hint:"B: sich etwas für eine begrenzte Zeit geben lassen", k:2},
+  {before:"Fachkräfte an andere Betriebe", answer:"verleihen", after:"", hint:"B: jemandem etwas für eine begrenzte Zeit zur Verfügung stellen", k:2},
+  {before:"für das Projekt", answer:"zuständig", after:"sein", hint:"C: verantwortlich für einen bestimmten Bereich", k:2},
+  {before:"", answer:"Verantwortung", after:"für das Team übernehmen", hint:"C: die Pflicht, für etwas zuständig zu sein", k:2},
+  {before:"gute", answer:"Kommunikationsfähigkeit", after:"besitzen", hint:"C: die Fähigkeit, sich klar mit anderen auszutauschen", k:2},
+  {before:"", answer:"Teamgeist", after:"zeigen", hint:"C: die Bereitschaft, gut mit anderen zusammenzuarbeiten", k:2},
+  {before:"eine gute", answer:"Zukunftsperspektive", after:"haben", hint:"C: eine Aussicht oder Chance für die Zukunft", k:2},
+  {before:"", answer:"innovativ", after:"denken", hint:"C: neu und modern, mit neuen Ideen", k:2},
+  {before:"die Aufgaben der Kollegin während ihrer Krankheit", answer:"Krankheitsvertretung", after:"übernehmen", hint:"D: die Übernahme der Aufgaben einer erkrankten Person", k:2},
+  {before:"", answer:"Einverständnis", after:"geben", hint:"D: die Zustimmung zu etwas", k:2},
+
+  // ---- Kapitel 3 ----
+  {before:"Am ersten Arbeitstag muss man sich den neuen Kolleg:innen", answer:"vorstellen", after:"", hint:"A: sich mit Namen bekannt machen", k:3},
+  {before:"Der neue Mitarbeiter hat einen", answer:"Rundgang", after:"durch die Firma gemacht", hint:"A: ein kurzer Gang durch die Firma", k:3},
+  {before:"Bitte lies dir zuerst die", answer:"Hausordnung", after:"durch", hint:"A: die Regeln im Firmengebäude", k:3},
+  {before:"Sie hat sich für einen Deutschkurs an der", answer:"Volkshochschule", after:"angemeldet", hint:"B: Einrichtung mit günstigen Kursen für Erwachsene", k:3},
+  {before:"Der Kurs ist so organisiert, dass man ihn", answer:"berufsbegleitend", after:"machen kann", hint:"B: neben der Arbeit möglich", k:3},
+  {before:"Für die Teilnahme am Kurs muss man eine kleine", answer:"Teilnahmegebühr", after:"bezahlen", hint:"B: das Geld für die Kursteilnahme", k:3},
+  {before:"In der Besprechung hat niemand dem Vorschlag", answer:"zugestimmt", after:"", hint:"C: mit etwas einverstanden sein (Perfekt von zustimmen)", k:3},
+  {before:"Am Ende der Teambesprechung wurde ein", answer:"Protokoll", after:"geschrieben", hint:"C: schriftlicher Bericht über eine Besprechung", k:3},
+  {before:"Wer im Meeting sprechen möchte, sollte das", answer:"Wort", after:"ergreifen", hint:"C: anfangen zu sprechen", k:3},
+  {before:"Der neue Kollege konnte sich schnell", answer:"einleben", after:"", hint:"D: sich an eine neue Umgebung gewöhnen", k:3},
+  {before:"Für Fragen ist Frau Meyer die richtige", answer:"Ansprechpartnerin", after:"", hint:"D: Person, an die man sich mit Fragen wendet", k:3},
+  {before:"Ein guter", answer:"Pate", after:"hilft neuen Kolleg:innen in den ersten Wochen", hint:"D: erfahrene Person, die neue Mitarbeiter:innen begleitet", k:3}
+];
+
+const MATCH_ITEMS = [
+  // ---- Kapitel 1 ----
+  {w:"die Abteilung", d:"Teilbereich einer Firma oder Behörde", k:1},
+  {w:"der Arbeitgeber", d:"Person oder Firma, die andere beschäftigt", k:1},
+  {w:"das Asylverfahren", d:"offizieller Prozess zur Prüfung eines Flüchtlingsstatus", k:1},
+  {w:"das Berufsinformationszentrum (BIZ)", d:"Einrichtung zur Information über Berufe und Ausbildungen", k:1},
+  {w:"der Betrieb", d:"eine Firma, ein Unternehmen", k:1},
+  {w:"der Gabelstapler", d:"Fahrzeug zum Transportieren und Heben schwerer Lasten im Lager", k:1},
+  {w:"die Geschäftsführung", d:"die Leitung eines Unternehmens", k:1},
+  {w:"das Lager", d:"Ort, an dem Waren aufbewahrt werden", k:1},
+  {w:"die Lagerlogistik", d:"Planung und Organisation von Warenlagern und -transporten", k:1},
+  {w:"der Schulabschluss", d:"Zeugnis über den erfolgreichen Schulabschluss", k:1},
+  {w:"der Umsatz", d:"Geld, das eine Firma durch Verkäufe einnimmt", k:1},
+  {w:"die Umschulung", d:"neue berufliche Ausbildung für einen anderen Beruf", k:1},
+  {w:"der Antrag", d:"offizielles Schreiben, mit dem man etwas beantragt", k:1},
+  {w:"die Aufenthaltsgenehmigung", d:"Dokument, das erlaubt, in einem Land zu leben", k:1},
+  {w:"der Berater", d:"Person, die andere fachlich berät", k:1},
+  {w:"der Businessplan", d:"schriftliches Konzept für eine Firmengründung", k:1},
+  {w:"das Einkommen", d:"Geld, das man regelmäßig verdient", k:1},
+  {w:"die Existenzgründung", d:"Start einer eigenen selbstständigen Tätigkeit", k:1},
+  {w:"die Fortbildung", d:"Kurs zur Erweiterung beruflicher Kenntnisse", k:1},
+  {w:"der Küchenhelfer", d:"Person, die in der Küche einfache Arbeiten übernimmt", k:1},
+  {w:"die Selbstständigkeit", d:"das Arbeiten in der eigenen Firma", k:1},
+  {w:"der Berufsabschluss", d:"erfolgreicher Abschluss einer beruflichen Ausbildung", k:1},
+  {w:"die Berufsausbildung", d:"praktische und theoretische Ausbildung für einen Beruf", k:1},
+  {w:"das Zeugnis", d:"Dokument, das eine Leistung bestätigt", k:1},
+  {w:"die Anerkennung", d:"offizielle Bestätigung, dass etwas gültig ist", k:1},
+  {w:"das Anerkennungsverfahren", d:"Prozess zur Anerkennung einer ausländischen Qualifikation", k:1},
+  {w:"die Arbeitserlaubnis", d:"Dokument, das erlaubt, in einem Land zu arbeiten", k:1},
+  {w:"die Fachkraft", d:"Person mit einer bestimmten beruflichen Qualifikation", k:1},
+  {w:"die Kompetenz", d:"eine Fähigkeit, die jemand besitzt", k:1},
+  {w:"das Praktikum", d:"Zeit, in der man praktische Erfahrung sammelt", k:1},
+
+  // ---- Kapitel 2 ----
+  {w:"der Ansprechpartner", d:"Person, an die man sich mit Fragen wenden kann", k:2},
+  {w:"der Aushang", d:"Mitteilung, die öffentlich sichtbar aufgehängt wird", k:2},
+  {w:"das Bewerbungsschreiben", d:"Brief, in dem man sich um eine Stelle bewirbt", k:2},
+  {w:"die Elektrofirma", d:"Firma, die im Bereich Elektrotechnik arbeitet", k:2},
+  {w:"das Fachpersonal", d:"Mitarbeiter:innen mit einer bestimmten fachlichen Qualifikation", k:2},
+  {w:"die Initiativbewerbung", d:"Bewerbung ohne konkrete Stellenanzeige", k:2},
+  {w:"die Konkurrenz", d:"andere Personen oder Firmen, die dasselbe Ziel verfolgen", k:2},
+  {w:"der Leiharbeiter", d:"Person, die über eine Zeitarbeitsfirma bei einem anderen Betrieb arbeitet", k:2},
+  {w:"das Leitbild", d:"die grundlegenden Werte und Ziele einer Organisation", k:2},
+  {w:"die Zeitarbeitsfirma", d:"Firma, die Arbeitskräfte an andere Betriebe verleiht", k:2},
+  {w:"die Arbeitskraft", d:"eine Person, die arbeitet", k:2},
+  {w:"das Arbeitsverhältnis", d:"die rechtliche Beziehung zwischen Arbeitgeber und Arbeitnehmer", k:2},
+  {w:"die Berufsberatung", d:"professionelle Beratung zur Berufswahl", k:2},
+  {w:"die Genehmigung", d:"die offizielle Erlaubnis für etwas", k:2},
+  {w:"die Vermittlungsgebühr", d:"Geld, das man für eine Vermittlung bezahlt", k:2},
+  {w:"der Agraringenieur", d:"Person mit akademischer Ausbildung in der Landwirtschaft", k:2},
+  {w:"das Familienunternehmen", d:"Firma, die einer Familie gehört", k:2},
+  {w:"der Informatiker", d:"Person, die beruflich mit Computern und Software arbeitet", k:2},
+  {w:"der Ingenieur", d:"Person mit einer technischen, akademischen Ausbildung", k:2},
+  {w:"die Karrierechance", d:"Möglichkeit zur beruflichen Weiterentwicklung", k:2},
+  {w:"der Kundenservice", d:"Bereich, der sich um Kundinnen und Kunden kümmert", k:2},
+  {w:"die Pflegekraft", d:"Person, die beruflich Menschen pflegt", k:2},
+  {w:"der Sicherheitsmitarbeiter", d:"Person, die für den Schutz von Personen oder Orten zuständig ist", k:2},
+  {w:"der Teamgeist", d:"Bereitschaft, gut mit anderen zusammenzuarbeiten", k:2},
+  {w:"der Verkäufer", d:"Person, die beruflich Waren verkauft", k:2},
+  {w:"die Zukunftsperspektive", d:"Aussicht oder Chance für die Zukunft", k:2},
+  {w:"das Bauvorhaben", d:"geplantes Bauprojekt", k:2},
+  {w:"der Fachinformatiker", d:"Person mit einer Berufsausbildung im Bereich Informatik", k:2},
+  {w:"der Realschulabschluss", d:"mittlerer Schulabschluss in Deutschland", k:2},
+  {w:"der Zeitraum", d:"eine bestimmte Zeitspanne", k:2},
+
+  // ---- Kapitel 3 ----
+  {w:"der Empfang", d:"Bereich am Eingang einer Firma, an dem Besucher:innen empfangen werden", k:3},
+  {w:"der Hausausweis", d:"Karte für den Zugang zum Firmengebäude", k:3},
+  {w:"die Sicherheitsunterweisung", d:"Einweisung in die Sicherheitsregeln am Arbeitsplatz", k:3},
+  {w:"sich zurechtfinden", d:"sich in einer neuen Umgebung orientieren können", k:3},
+  {w:"das Einführungsgespräch", d:"Gespräch, in dem neue Mitarbeiter:innen die Firma kennenlernen", k:3},
+  {w:"die Volkshochschule", d:"Einrichtung mit günstigen Kursen für Erwachsene", k:3},
+  {w:"berufsbegleitend", d:"so organisiert, dass es neben der Arbeit möglich ist", k:3},
+  {w:"die Bescheinigung", d:"Dokument, das die Teilnahme an einem Kurs bestätigt", k:3},
+  {w:"sich weiterbilden", d:"neue Kenntnisse und Fähigkeiten lernen", k:3},
+  {w:"freiwillig", d:"ohne Verpflichtung, aus eigenem Wunsch", k:3},
+  {w:"die Tagesordnung", d:"Liste der Themen einer Besprechung", k:3},
+  {w:"das Protokoll", d:"schriftlicher Bericht über eine Besprechung", k:3},
+  {w:"zustimmen", d:"mit etwas einverstanden sein", k:3},
+  {w:"ablehnen", d:"etwas nicht akzeptieren", k:3},
+  {w:"einen Termin vereinbaren", d:"sich mit jemandem auf einen Zeitpunkt einigen", k:3},
+  {w:"sich einleben", d:"sich an eine neue Umgebung gewöhnen", k:3},
+  {w:"der Ansprechpartner", d:"Person, an die man sich mit Fragen wenden kann", k:3},
+  {w:"der Pate", d:"erfahrene Person, die neue Mitarbeiter:innen begleitet", k:3},
+  {w:"hilfsbereit", d:"bereit, anderen zu helfen", k:3},
+  {w:"sich austauschen", d:"sich mit jemandem über Erfahrungen unterhalten", k:3}
+];
+
+/* ---------------- GRAMMATIK-ÜBUNGEN ----------------
+   Eigene, für diese App geschriebene Übungssätze (keine Texte aus dem
+   Lehrbuch). type:"gap" = Lückensatz mit before/answer/after + falschen
+   Formen (wrong). type:"choice" = Mehrfachauswahl aus ganzen Sätzen anhand
+   einer Situationsbeschreibung (prompt) + falschen Formulierungen (wrong). */
+const GRAMMAR_ITEMS = [
+  // ---- Kapitel 1: Perfekt/Präteritum (Wdh.), Infinitiv mit zu ----
+  {type:"gap", before:"Letzte Woche", answer:"habe ich mich beworben", after:"bei einer neuen Firma.", wrong:["bin ich mich beworben","habe ich mich bewerbt","habe ich beworben"], hint:"Perfekt von 'sich bewerben': reflexives Verb + haben + Partizip II", k:1, s:"A"},
+  {type:"gap", before:"Er", answer:"ist gestern zur Arbeit gegangen", after:"", wrong:["hat gestern zur Arbeit gegangen","ist gestern zur Arbeit gegehen","hat gestern zur Arbeit gehen"], hint:"Bewegungsverben bilden das Perfekt meist mit 'sein'", k:1, s:"A"},
+  {type:"gap", before:"Früher", answer:"machte", after:"sie eine Ausbildung zur Krankenschwester.", wrong:["machen","gemacht","hat gemacht"], hint:"Präteritum von 'machen' (regelmäßiges Verb)", k:1, s:"B"},
+  {type:"gap", before:"Als Kind", answer:"wollte", after:"er Pilot werden.", wrong:["will","gewollt hat","wollen"], hint:"Präteritum von 'wollen' (Modalverb)", k:1, s:"B"},
+  {type:"gap", before:"Die Prüfung", answer:"hat er im zweiten Versuch bestanden", after:"", wrong:["ist er im zweiten Versuch bestanden","hat er im zweiten Versuch besteht","hat er im zweiten Versuch bestehen"], hint:"Perfekt von 'bestehen': haben + Partizip II (bestanden)", k:1, s:"C"},
+  {type:"gap", before:"Sein Abschluss", answer:"wurde", after:"in Deutschland anerkannt.", wrong:["war","ist geworden","wird"], hint:"Präteritum von 'werden' (Passiv-Hilfsverb)", k:1, s:"D"},
+  {type:"gap", before:"Es ist wichtig,", answer:"sich rechtzeitig zu bewerben", after:".", wrong:["sich rechtzeitig bewerben","sich rechtzeitig bewerben zu","zu sich rechtzeitig bewerben"], hint:"Infinitiv mit zu: 'zu' steht direkt vor dem Infinitiv", k:1, s:"A"},
+  {type:"gap", before:"Sie hat vor,", answer:"sich selbstständig zu machen", after:".", wrong:["sich selbstständig machen zu","selbstständig zu sich machen","sich selbstständig zu gemacht"], hint:"nach 'vorhaben' folgt der Infinitiv mit zu", k:1, s:"B"},
+  {type:"gap", before:"Er hofft,", answer:"seinen Berufsabschluss anerkennen zu lassen", after:".", wrong:["seinen Berufsabschluss zu anerkennen lassen","seinen Berufsabschluss anerkennen lassen zu","seinen Berufsabschluss anzuerkennen lassen"], hint:"bei 'lassen'-Konstruktionen steht 'zu' vor 'lassen': … anerkennen zu lassen", k:1, s:"C"},
+  {type:"gap", before:"Ohne", answer:"lange zu überlegen", after:", nahm sie die Stelle an.", wrong:["zu lange überlegen","lange überlegen zu","zu überlegen lange"], hint:"'ohne … zu' + Infinitiv", k:1, s:"D"},
+
+  // ---- Kapitel 2: Relativsätze/Relativpronomen, Adjektivdeklination ----
+  {type:"gap", before:"Das ist die Stellenanzeige,", answer:"die", after:"mich am meisten interessiert.", wrong:["der","das","den"], hint:"Relativpronomen bezieht sich auf 'die Stellenanzeige' (feminin, Nominativ)", k:2, s:"A"},
+  {type:"gap", before:"Der Job, um", answer:"den", after:"sie sich beworben hat, ist schon vergeben.", wrong:["der","dem","die"], hint:"'sich bewerben um' + Akkusativ → maskulines Relativpronomen 'den'", k:2, s:"A"},
+  {type:"gap", before:"Die Arbeitsvermittlerin,", answer:"deren", after:"Rat ich sehr geschätzt habe, hat mir sehr geholfen.", wrong:["die","der","deren Rat den"], hint:"Genitiv-Relativpronomen 'deren' (feminin) zeigt Besitz: ihr Rat", k:2, s:"B"},
+  {type:"gap", before:"Das Jobcenter,", answer:"bei dem", after:"ich mich gemeldet habe, war sehr hilfsbereit.", wrong:["das","bei den","bei der"], hint:"'sich melden bei' + Dativ → 'bei dem' (neutral, Dativ)", k:2, s:"B"},
+  {type:"gap", before:"Die Anzeige,", answer:"in der", after:"die Stelle beschrieben wird, war sehr ausführlich.", wrong:["in dem","in die","die"], hint:"'in der Anzeige' → feminin, Dativ nach 'in'", k:2, s:"C"},
+  {type:"gap", before:"Das Formular,", answer:"das", after:"ich ausfüllen musste, war ziemlich lang.", wrong:["der","die","dem"], hint:"Relativpronomen bezieht sich auf 'das Formular' (neutral, Akkusativ)", k:2, s:"D"},
+  {type:"gap", before:"Sie hat eine", answer:"gute", after:"Stelle gefunden.", wrong:["guten","gutes","gut"], hint:"unbestimmter Artikel + Adjektiv, feminin, Akkusativ: eine gute Stelle", k:2, s:"A"},
+  {type:"gap", before:"Das ist ein", answer:"seriöses", after:"Angebot.", wrong:["seriöser","seriöse","seriösen"], hint:"unbestimmter Artikel + Adjektiv, neutral, Nominativ: ein seriöses Angebot", k:2, s:"B"},
+  {type:"gap", before:"In der", answer:"aktuellen", after:"Stellenanzeige stehen alle Details.", wrong:["aktuelle","aktuelles","aktueller"], hint:"bestimmter Artikel + Adjektiv, feminin, Dativ: in der aktuellen Anzeige", k:2, s:"C"},
+  {type:"gap", before:"Er hat den", answer:"ausgefüllten", after:"Informationsbogen abgegeben.", wrong:["ausgefüllte","ausgefülltes","ausgefüllten Bogens"], hint:"bestimmter Artikel + Adjektiv, maskulin, Akkusativ: den ausgefüllten Bogen", k:2, s:"D"},
+
+  // ---- Kapitel 3: Verben mit festen Präpositionen, höfliche Bitten (Konjunktiv II) ----
+  {type:"gap", before:"Ich freue mich schon", answer:"auf", after:"meinen ersten Arbeitstag.", wrong:["für","über","an"], hint:"sich freuen auf (+Akk.) = etwas Zukünftiges erwarten", k:3, s:"A"},
+  {type:"gap", before:"Bitte wenden Sie sich bei Fragen", answer:"an", after:"Ihre Ansprechpartnerin.", wrong:["zu","bei","auf"], hint:"sich wenden an (+Akk.)", k:3, s:"A"},
+  {type:"gap", before:"Sie interessiert sich sehr", answer:"für", after:"den neuen Kurs.", wrong:["an","auf","mit"], hint:"sich interessieren für (+Akk.)", k:3, s:"B"},
+  {type:"gap", before:"Er hat sich", answer:"für", after:"einen Abendkurs entschieden.", wrong:["auf","über","zu"], hint:"sich entscheiden für (+Akk.)", k:3, s:"B"},
+  {type:"gap", before:"Alle im Team haben", answer:"an", after:"der Besprechung teilgenommen.", wrong:["bei","zu","auf"], hint:"teilnehmen an (+Dat.)", k:3, s:"C"},
+  {type:"gap", before:"Die Kolleg:innen haben", answer:"über", after:"den Vorschlag diskutiert.", wrong:["von","für","an"], hint:"diskutieren über (+Akk.)", k:3, s:"C"},
+  {type:"gap", before:"Der neue Kollege hat sich schnell", answer:"an", after:"das Team gewöhnt.", wrong:["auf","für","mit"], hint:"sich gewöhnen an (+Akk.)", k:3, s:"D"},
+  {type:"choice", prompt:"Wie fragst du eine neue Kollegin höflich nach dem Weg zum Pausenraum?", answer:"Könnten Sie mir bitte den Weg zum Pausenraum zeigen?", wrong:["Zeig mir den Weg zum Pausenraum!","Wo ist der Pausenraum?","Ich will wissen, wo der Pausenraum ist."], hint:"Konjunktiv II von 'können' (könnten) klingt höflicher als ein Imperativ oder eine sehr direkte Frage", k:3, s:"A"},
+  {type:"choice", prompt:"Du möchtest deinen Vorgesetzten höflich um ein kurzes Gespräch bitten. Was sagst du?", answer:"Dürfte ich Sie kurz etwas fragen?", wrong:["Ich muss Sie kurz etwas fragen.","Sie müssen mir kurz zuhören.","Darf ich?"], hint:"Konjunktiv II von 'dürfen' (dürfte) für eine besonders höfliche Bitte", k:3, s:"C"},
+  {type:"choice", prompt:"In der Teambesprechung möchtest du höflich um das Protokoll bitten. Was sagst du?", answer:"Würden Sie mir bitte kurz das Protokoll zeigen?", wrong:["Zeigen Sie mir das Protokoll.","Geben Sie mir das Protokoll!","Ich brauche jetzt das Protokoll."], hint:"Konjunktiv II von 'werden' (würden) + Infinitiv = höfliche Bitte", k:3, s:"C"}
+];
+
+/* ---------------- HÖRVERSTÄNDNIS ----------------
+   Eigene Audioaufnahmen von Thomas + eigene, dazu geschriebene Aufgaben
+   (keine Cornelsen-Hörtexte). checklist ist optional (Aufgabe "a": welche
+   Themen kommen vor?), questions ist die Sequenz der Verständnisfragen
+   (Aufgabe "b"), im gleichen Frage-für-Frage-Format wie bei Grammatik. */
+const LISTENING_TRACKS = [
+  {
+    id:"k1-a-track2", k:1, s:"A",
+    title:"Vorstellungsgespräch",
+    taskLabel:"Aufgabe 2a/b",
+    audio:"audio/k1/track2.mp3",
+    checklist:{
+      instruction:"Hören Sie das Vorstellungsgespräch. Welche Themen kommen im Gespräch vor?",
+      topics:[
+        {id:"ausbildung", label:"Ausbildung"},
+        {id:"studium", label:"Studium"},
+        {id:"grundschule", label:"Grundschule"},
+        {id:"weiterbildung", label:"Umschulung / Weiterbildung"},
+        {id:"elearning", label:"E-Learning-Kurs"},
+        {id:"deutschkurs", label:"Deutschkurs"}
+      ],
+      correct:["grundschule","weiterbildung","deutschkurs"]
+    },
+    questions:[
+      {q:"Um welche Stelle bewirbt sich Herr Mohammed?", answer:"Fachkraft für Lagerlogistik", wrong:["Teamleiter Logistik","Personalchefin","Fachinformatiker"], hint:"Das sagt Frau Siegmüller gleich zu Beginn des Gesprächs."},
+      {q:"Woher kommt Herr Mohammed?", answer:"Aus Aleppo, Syrien", wrong:["Aus Damaskus, Syrien","Aus dem Irak","Aus Afghanistan"], hint:"Er nennt Land und Stadt gleich am Anfang seiner Antwort."},
+      {q:"Wie lange ist er zur Grundschule gegangen, bevor er auf die Mittlere Schule kam?", answer:"Sechs Jahre", wrong:["Drei Jahre","Vier Jahre","Acht Jahre"], hint:"Danach besuchte er noch drei Jahre lang eine Mittlere Schule."},
+      {q:"Was waren seine Lieblingsfächer?", answer:"Englisch und Mathe", wrong:["Deutsch und Sport","Physik und Chemie","Geschichte und Kunst"], hint:"Er hatte bei diesen zwei Fächern sehr gute Lehrer."},
+      {q:"Welche Deutschprüfung hat er bestanden?", answer:"B1", wrong:["A2","B2","C1"], hint:"Er hat eineinhalb Jahre an der Volkshochschule gelernt."},
+      {q:"Was hat er zusätzlich während der Weiterbildung gemacht?", answer:"den Staplerführerschein gemacht", wrong:["ein Praktikum im Ausland gemacht","eine zweite Ausbildung begonnen","ein Studium abgeschlossen"], hint:"Das ist wichtig für die Arbeit im Lager."}
+    ]
+  },
+  {
+    id:"k1-c-track3", k:1, s:"C",
+    title:"Wege in die Arbeitswelt",
+    taskLabel:"Aufgabe 2a/b",
+    audio:"audio/k1/track3.mp3",
+    questions:[
+      {q:"Woher kommt Frau Srisai und seit wann lebt sie in Deutschland?", answer:"Aus Thailand, seit sieben Jahren", wrong:["Aus Thailand, seit einem Jahr","Aus Vietnam, seit sieben Jahren","Aus Thailand, seit zwei Jahren"], hint:"Das sagt sie ganz am Anfang, als sie sich vorstellt."},
+      {q:"Welchen Beruf hatte Frau Srisai schon in Thailand?", answer:"Krankenschwester", wrong:["Pflegehelferin","Hotelfachfrau","Ärztin"], hint:"In Deutschland wurde dieser Beruf zunächst nicht anerkannt."},
+      {q:"Welches Deutsch-Sprachniveau musste sie für ihren Beruf nachweisen?", answer:"B2", wrong:["A2","B1","C1"], hint:"Sie musste nach der Arbeit noch einen Kurs auf diesem Niveau besuchen."},
+      {q:"Woher kommt Herr Hassan?", answer:"Aus Somalia", wrong:["Aus Syrien","Aus Eritrea","Aus dem Sudan"], hint:"Das sagt er direkt bei der Vorstellung."},
+      {q:"Wo hat sich Herr Hassan über Berufsmöglichkeiten und Fortbildungen beraten lassen?", answer:"Im Berufsinformationszentrum (BIZ)", wrong:["Im Jobcenter","An der Volkshochschule","Bei der Arbeitsagentur"], hint:"Die Abkürzung dafür ist BIZ."},
+      {q:"Welche Fortbildung hat Herr Hassan gemacht?", answer:"Eine einjährige Fortbildung zum Metallbauer", wrong:["Eine zweijährige Ausbildung zum Elektriker","Ein Praktikum als Paketfahrer","Ein Studium im Fahrzeugbau"], hint:"Danach hat er schnell eine Stelle im Fahrzeugbau gefunden."},
+      {q:"Was hat Frau Popescu in Bukarest gemacht, bevor sie nach Deutschland kam?", answer:"Abitur gemacht und fünf Jahre in einem Hotel gearbeitet", wrong:["Eine Ausbildung zur Hotelfachfrau gemacht","Studiert und danach als Lehrerin gearbeitet","Nichts, sie kam direkt nach der Schule nach Deutschland"], hint:"Dort hat sie auch ihren späteren Mann kennengelernt."},
+      {q:"Warum ist Frau Popescu nach Deutschland gekommen?", answer:"Wegen der Liebe", wrong:["Wegen eines Jobangebots","Wegen eines Studienplatzes","Wegen ihrer Familie"], hint:"Sie hat ihren Mann im Hotel in Bukarest kennengelernt."},
+      {q:"Welchen Beruf hat Frau Popescu heute?", answer:"Hotelkauffrau", wrong:["Hotelfachfrau in Ausbildung","Rezeptionistin","Reiseverkehrskauffrau"], hint:"Sie arbeitet in einem Vier-Sterne-Hotel."}
+    ]
+  },
+  {
+    id:"k1-c-track4", k:1, s:"C",
+    title:"Wege in die Arbeitswelt (Fortsetzung)",
+    taskLabel:"Aufgabe 2c",
+    audio:"audio/k1/track4.mp3",
+    questions:[
+      {q:"Wer musste nach der Ankunft in Deutschland lange nach einer Wohnung suchen?", answer:"Herr Hassan", wrong:["Frau Srisai","Frau Popescu"], hint:"Diese Person hat mehr als sechs Monate gesucht."},
+      {q:"Wer hat die Deutschprüfung beim ersten Versuch nicht bestanden?", answer:"Herr Hassan", wrong:["Frau Srisai","Frau Popescu"], hint:"Beim zweiten Mal hat es dann geklappt."},
+      {q:"Wer musste keine Wohnung suchen, weil er/sie beim Partner eingezogen ist?", answer:"Frau Popescu", wrong:["Herr Hassan","Frau Srisai"], hint:"Diese Person ist wegen der Liebe nach Deutschland gekommen."},
+      {q:"Für wen war Deutsch kein großes Problem, weil sie es schon in der Schule im Heimatland gelernt hatte?", answer:"Frau Popescu", wrong:["Herr Hassan","Frau Srisai"], hint:"Sie kommt aus Rumänien."},
+      {q:"Wer hat eine Fortbildung in Teilzeit neben der Arbeit gemacht und hatte dadurch weniger Zeit für den Partner?", answer:"Frau Popescu", wrong:["Herr Hassan","Frau Srisai"], hint:"Es war eine Fortbildung zur Hotelfachfrau."},
+      {q:"Wer bekam beim Finden einer passenden Weiterbildung Hilfe von den Mitarbeiter:innen im BIZ?", answer:"Herr Hassan", wrong:["Frau Srisai","Frau Popescu"], hint:"Er hat danach eine Weiterbildung zum Metallbauer gemacht."},
+      {q:"Wessen Ausbildung aus dem Heimatland wurde in Deutschland zunächst nicht anerkannt?", answer:"Frau Srisai", wrong:["Herr Hassan","Frau Popescu"], hint:"Sie musste erst alle Dokumente und Zeugnisse zusammenstellen."},
+      {q:"Wer hatte irgendwann keine Lust mehr, als Angestellte zu arbeiten, und hat sich deshalb selbstständig gemacht?", answer:"Frau Srisai", wrong:["Herr Hassan","Frau Popescu"], hint:"Dafür brauchte sie auch einen Kredit von der Bank."}
+    ]
+  },
+  {
+    id:"k1-a-track5", k:1, s:"A",
+    title:"Vorstellungsgespräch: Ausbildung als Zahntechnikerin",
+    taskLabel:"Übungen · Aufgabe 1c",
+    audio:"audio/k1/track5.mp3",
+    questions:[
+      {q:"Wie alt ist Maria Ivanova und woher kommt sie?", answer:"19 Jahre, aus Bulgarien", wrong:["17 Jahre, aus Rumänien","19 Jahre, aus Polen","21 Jahre, aus Bulgarien"], hint:"Das sagt sie, als Herr Schneider sie bittet, etwas über sich zu erzählen."},
+      {q:"Seit wann lebt sie in Deutschland?", answer:"Seit fünf Jahren", wrong:["Seit zwei Jahren","Seit einem Jahr","Seit zehn Jahren"], hint:"Sie ist mit ihren Eltern gekommen."},
+      {q:"Welchen Schulabschluss macht sie im Juni?", answer:"Abitur", wrong:["Realschulabschluss","Hauptschulabschluss","Fachabitur"], hint:"Sie geht in die 12. Klasse."},
+      {q:"Was sind ihre Lieblingsfächer?", answer:"Englisch und Chemie", wrong:["Deutsch und Mathe","Sport und Kunst","Biologie und Geschichte"], hint:"Deutsch macht ihr dagegen nicht so viel Spaß."},
+      {q:"Was macht sie in ihrer Freizeit?", answer:"Lesen und Volleyball spielen", wrong:["Schwimmen und Musik machen","Malen und Kochen","Fußball und Gitarre spielen"], hint:"Den Sport macht sie in einem Verein."},
+      {q:"Für welche Ausbildung bewirbt sich Maria Ivanova?", answer:"Zahntechnikerin", wrong:["Krankenschwester","Hotelfachfrau","Bürokauffrau"], hint:"Das sagt Herr Schneider gleich am Anfang des Gesprächs."},
+      {q:"Warum möchte sie diese Ausbildung machen?", answer:"Sie arbeitet gern mit den Händen und ist sehr genau", wrong:["Sie mag den Kontakt mit vielen Menschen","Sie möchte viel Geld verdienen","Ihre Eltern haben es ihr empfohlen"], hint:"Auch ihre Lehrer hatten ihr diesen Beruf empfohlen."},
+      {q:"Wie lange dauert die Ausbildung?", answer:"Drei Jahre", wrong:["Zwei Jahre","Vier Jahre","Eineinhalb Jahre"], hint:"Sie beginnt am 1.9."}
+    ]
+  },
+  {
+    id:"k1-c-track6", k:1, s:"C",
+    title:"Bunt ist schön: Drei Wege in den Arbeitsmarkt",
+    taskLabel:"Übungen · Aufgabe 3",
+    audio:"audio/k1/track6.mp3",
+    questions:[
+      {q:"Wer hat in der Heimat vier Jahre lang Jura studiert?", answer:"Herr Al-Hamdani", wrong:["Frau Ivanova","Frau Tran"], hint:"Er kommt aus dem Irak und möchte als Jurist arbeiten."},
+      {q:"Wer möchte eine Umschulung zum Altenpfleger machen?", answer:"Herr Al-Hamdani", wrong:["Frau Ivanova","Frau Tran"], hint:"Er hofft, dass die Agentur für Arbeit die Umschulung bezahlt."},
+      {q:"Wer arbeitet zurzeit als Hilfsarbeiter bei einer Baufirma?", answer:"Herr Al-Hamdani", wrong:["Frau Ivanova","Frau Tran"], hint:"Sein Studienabschluss wurde in Deutschland nicht anerkannt."},
+      {q:"Wer hat in der Heimat als Ärztin gearbeitet?", answer:"Frau Ivanova", wrong:["Herr Al-Hamdani","Frau Tran"], hint:"Sie hat von 2004 bis 2013 in diesem Beruf gearbeitet."},
+      {q:"Wessen Antrag auf Anerkennung wurde abgelehnt, weil die B2-Prüfung noch fehlte?", answer:"Frau Ivanova", wrong:["Herr Al-Hamdani","Frau Tran"], hint:"Sie macht jetzt einen B2-Kurs."},
+      {q:"Wer ist aus Russland nach Augsburg gekommen?", answer:"Frau Ivanova", wrong:["Herr Al-Hamdani","Frau Tran"], hint:"Das war im Jahr 2014."},
+      {q:"Wer hat in der Heimat eine Lehre zur Einzelhandelskauffrau gemacht?", answer:"Frau Tran", wrong:["Herr Al-Hamdani","Frau Ivanova"], hint:"Sie kommt aus Vietnam und hat auch dort in diesem Beruf gearbeitet."},
+      {q:"Wer hat in Deutschland ein Restaurant eröffnet?", answer:"Frau Tran", wrong:["Herr Al-Hamdani","Frau Ivanova"], hint:"Es liegt in Schwerin und ist inzwischen gut besucht."},
+      {q:"Wer ist wegen der Liebe zu einem deutschen Geschäftsmann nach Deutschland gekommen?", answer:"Frau Tran", wrong:["Herr Al-Hamdani","Frau Ivanova"], hint:"Sie hat ihn schon in Vietnam kennengelernt, wo er gearbeitet hat."}
+    ]
+  }
+];
+
+const SECTION_LABELS_BY_CHAPTER = {
+  1: {"A": "A · Schule, Ausbildung, Weiterbildung", "B": "B · Lebenswege", "C": "C · Fit für den Arbeitsmarkt", "D": "D · Bald am Ziel!?", "ALL": "Alle Wörter (A–D)"},
+  2: {"A": "A · Wie finde ich Arbeit?", "B": "B · Arbeitsvermittlung in Deutschland", "C": "C · Stellenanzeigen verstehen", "D": "D · Informationsbogen bei Zeitarbeit", "ALL": "Alle Wörter (A–D)"},
+  3: {"A": "A · Der erste Arbeitstag", "B": "B · Sich in der Freizeit weiterbilden", "C": "C · Eine Teambesprechung", "D": "D · Ein neuer Kollege kommt", "ALL": "Alle Wörter (A–D)"}
+};
+
+const FORM_CONFIG = {
+  1: {url:"https://docs.google.com/forms/d/e/1FAIpQLScL2DTVoRW0b6ai_hmAIU81A829PqqCGqkHD9AZ4a8Pyc0s7g/formResponse", entryName:"entry.2141485338", entryMinutes:"entry.423765705"},
+  2: {url:"https://docs.google.com/forms/d/e/1FAIpQLScA70TNFJncO6uNAFZsmjMfQtU4T4kU6YuZULo4jZaM4P1r_w/formResponse", entryName:"entry.1949479733", entryMinutes:"entry.733490098"}
+  /* Kapitel 3 hat noch kein eigenes Google-Formular – die Nutzungszeit wird für
+     Kapitel 3 daher aktuell nicht übermittelt (das Üben selbst funktioniert
+     trotzdem ganz normal). Sag Bescheid, falls du ein drittes Formular wie bei
+     1 und 2 möchtest, dann ergänze ich hier den Eintrag "3: {...}". */
+};
+/* Zuordnung der Sprachauswahl (Startbildschirm) zu ISO-639-1-Codes für die
+   automatische Übersetzungsprüfung. Sprachen ohne Eintrag (z. B. "Andere")
+   werden bei der Prüfung übersprungen. Manche Zuordnungen sind Näherungen
+   (z. B. Dari → Farsi/Persisch), da der genutzte freie Übersetzungsdienst
+   nicht jeden Dialekt einzeln unterstützt. */
+const LANG_CODES = {
+  "Arabisch":"ar", "Bulgarisch":"bg", "Dari":"fa", "Englisch":"en",
+  "Farsi / Persisch":"fa", "Französisch":"fr", "Griechisch":"el",
+  "Italienisch":"it", "Kurdisch":"ku", "Polnisch":"pl", "Portugiesisch":"pt",
+  "Rumänisch":"ro", "Russisch":"ru", "Serbisch/Kroatisch/Bosnisch":"sr",
+  "Spanisch":"es", "Thailändisch":"th", "Türkisch":"tr", "Ukrainisch":"uk",
+  "Urdu":"ur", "Vietnamesisch":"vi"
+};
+
+/* ---------------- CHAPTER META ----------------
+   Kurze Beschreibung pro Kapitel für die Kapitel-Auswahl. Neue Kapitel werden
+   hier einfach ergänzt, sobald sie gebaut sind (VOCAB/CLUES/... oben erweitern
+   und hier einen Eintrag + in RELEASED_CHAPTERS aufnehmen). */
+const CHAPTER_META = {
+  1: {title:"Schule & Lebenswege", themes:"Schule, Ausbildung, Weiterbildung · Lebenswege · Fit für den Arbeitsmarkt · Bald am Ziel!?"},
+  2: {title:"Arbeitssuche & Vermittlung", themes:"Wie finde ich Arbeit? · Arbeitsvermittlung in Deutschland · Stellenanzeigen verstehen · Informationsbogen bei Zeitarbeit"},
+  3: {title:"Ein neuer Arbeitsplatz", themes:"Der erste Arbeitstag · Sich in der Freizeit weiterbilden · Eine Teambesprechung · Ein neuer Kollege kommt"}
+};
+/* Welches Kapitel ist gerade "aktuell" (wird auf der Kapitel-Auswahl oben und
+   hervorgehoben angezeigt)? Einfach die Zahl ändern und die Datei neu
+   hochladen, wenn der Kurs weiter ist. */
+const CURRENT_CHAPTER = 3;
+/* Alle bereits gebauten Kapitel, aufsteigend. Neue Kapitel-Nummer hier
+   ergänzen, sobald ihr Wortschatz oben in VOCAB usw. eingefügt wurde. */
+const RELEASED_CHAPTERS = [1, 2, 3];
+
+function shortTerm(t){
+  let s = t.split(",")[0];
+  s = s.replace(/\s*\(Sg\.\)/g, "");
+  s = s.replace(/\s*\(z\. ?B\.[^)]*\)/g, "");
+  return s.trim();
+}
+function poolIndices(chapter, sec){
+  return VOCAB.map((v,i)=>i).filter(i => VOCAB[i].k===chapter && (sec==="ALL" ? true : VOCAB[i].s===sec));
+}
+function bysection(list, chapter, sec){
+  return list.filter(x => x.k===chapter && (sec==="ALL" ? true : x.s===sec));
+}
+
+/* ---------------- STATE ---------------- */
+let state = {
+  name:"", lang:"Deutsch", langCode:null, rawLang:"", otherLang:"",
+  chapter:null,
+  translations:{},
+  fcQueue:[], fcIndex:0, fcSection:"ALL", fcCurrentIdx:null, fcScore:0, fcSeen:0, fcAttempts:0, fcLocked:false,
+  artQueue:[], artIndex:0, artScore:0, artAttempts:0, artLocked:false,
+  gapQueue:[], gapIndex:0, gapScore:0, gapAttempts:0, gapLocked:false,
+  matchPairs:[], matchSelectedWord:null, matchSolved:0,
+  resultReturnTo:"menu", resultRetryFn:null
+};
+
+/* ---------------- LOKALE SPEICHERUNG (Browser-Speicher auf diesem Gerät) ----------------
+   Speichert Name, Sprache und die eigenen Übersetzungen im localStorage dieses
+   Geräts, damit Schüler:innen beim erneuten Öffnen nicht wieder bei Null anfangen.
+   Es verlässt nie dieses Gerät (kein Server-Zugriff, keine Übertragung). Ergebnisse
+   werden pro Kapitel gespeichert (savedScores[Kapitel][Modus]). */
+const STORAGE_KEY = "wortschatz_brueckenkurs_gesamt_v1";
+function loadSavedData(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+function saveData(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      name: state.name,
+      rawLang: state.rawLang || "",
+      otherLang: state.otherLang || "",
+      translations: state.translations,
+      scores: state.savedScores || {}
+    }));
+  }catch(e){ /* z. B. privater Modus oder Speicher voll – Übung läuft trotzdem normal weiter */ }
+}
+let saveTimer = null;
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 500);
+}
+const SAVED = loadSavedData();
+if(SAVED && SAVED.translations) state.translations = SAVED.translations;
+state.savedScores = (SAVED && SAVED.scores) || {};
+function saveScore(mode, score, total){
+  if(!state.savedScores[state.chapter]) state.savedScores[state.chapter] = {};
+  state.savedScores[state.chapter][mode] = {score, total};
+  saveData();
+  renderScoreBadges();
+}
+const SCORE_BADGE_LABELS = {fc:"scoreBadge-fc", art:"scoreBadge-art", gap:"scoreBadge-gap", gram:"scoreBadge-gram"};
+function renderScoreBadges(){
+  const chapterScores = state.savedScores[state.chapter] || {};
+  Object.keys(SCORE_BADGE_LABELS).forEach(mode=>{
+    const el = document.getElementById(SCORE_BADGE_LABELS[mode]);
+    if(!el) return;
+    const s = chapterScores[mode];
+    if(s){
+      el.textContent = "Letztes Ergebnis: " + s.score + " / " + s.total;
+      el.style.display = "block";
+    } else {
+      el.style.display = "none";
+    }
+  });
+}
+
+/* Small, hedged article hints based on common German suffix patterns.
+   These are learning aids ("meistens"/"oft"), not absolute rules. */
+function articleHint(noun){
+  const n = noun.toLowerCase();
+  const suffixRules = [
+    ["ung","Wörter auf -ung sind fast immer feminin → die"],
+    ["heit","Wörter auf -heit sind feminin → die"],
+    ["keit","Wörter auf -keit sind feminin → die"],
+    ["schaft","Wörter auf -schaft sind feminin → die"],
+    ["tion","Wörter auf -tion sind feminin → die"],
+    ["sion","Wörter auf -sion sind feminin → die"],
+    ["enz","Wörter auf -enz sind feminin → die"],
+    ["anz","Wörter auf -anz sind feminin → die"],
+    ["in","weibliche Personenbezeichnungen auf -in sind feminin → die"],
+    ["chen","Verkleinerungsformen auf -chen sind neutral → das"],
+    ["lein","Verkleinerungsformen auf -lein sind neutral → das"],
+    ["ment","Wörter auf -ment sind meist neutral → das"],
+    ["um","Wörter auf -um sind oft neutral → das"],
+    ["ie","Wörter auf -ie sind feminin → die"],
+    ["ling","Wörter auf -ling sind maskulin → der"]
+  ];
+  for(const [suf, hint] of suffixRules){
+    if(n.endsWith(suf)) return hint;
+  }
+  if(n.endsWith("er")) return "Personenbezeichnungen auf -er sind meist maskulin → der";
+  if(n.endsWith("en")) return "Manche Nomen auf -en (aus Verben gebildet) sind neutral → das (z. B. das Leben)";
+  return "Lerntipp: Bei zusammengesetzten Wörtern bestimmt meist der letzte Wortteil den Artikel (z. B. der Dienst, die Kraft, das Zertifikat).";
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+/* ---------------- SCREEN NAV ---------------- */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-"+id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-back]").forEach(b=>{
+  b.addEventListener("click", ()=> showScreen(b.getAttribute("data-back")));
+});
+
+/* ---------------- START ---------------- */
+document.getElementById("selLang").addEventListener("change", (e)=>{
+  document.getElementById("otherLangWrap").style.display = e.target.value==="Andere" ? "block" : "none";
+});
+
+/* Gespeicherte Angaben (Name/Sprache) vorausfüllen, damit man sie nicht bei
+   jedem Besuch neu eingeben muss. */
+(function prefillFromStorage(){
+  if(!SAVED) return;
+  if(SAVED.name) document.getElementById("inpName").value = SAVED.name;
+  const sel = document.getElementById("selLang");
+  if(SAVED.rawLang && [...sel.options].some(o=>o.value===SAVED.rawLang)){
+    sel.value = SAVED.rawLang;
+    if(SAVED.rawLang === "Andere"){
+      document.getElementById("otherLangWrap").style.display = "block";
+      document.getElementById("inpOtherLang").value = SAVED.otherLang || "";
+    }
+  }
+  if(SAVED.name || SAVED.rawLang){
+    const wb = document.getElementById("welcomeBack");
+    wb.textContent = "👋 Willkommen zurück" + (SAVED.name ? ", " + SAVED.name : "") + "! Deine Angaben und deine bisherigen Übersetzungen sind schon gespeichert – einfach unten weiter klicken.";
+    wb.style.display = "block";
+  }
+})();
+
+document.getElementById("btnClearData").addEventListener("click", ()=>{
+  if(confirm("Möchtest du wirklich alle auf diesem Gerät gespeicherten Daten (Name, Sprache, deine Übersetzungen, deine Ergebnisse) löschen?")){
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+    location.reload();
+  }
+});
+
+document.getElementById("inpName").addEventListener("input", ()=>{
+  const inp = document.getElementById("inpName");
+  if(inp.value.trim()){
+    inp.classList.remove("input-error");
+    document.getElementById("nameError").style.display = "none";
+  }
+});
+document.getElementById("btnStart").addEventListener("click", ()=>{
+  const nameInput = document.getElementById("inpName");
+  const name = nameInput.value.trim();
+  if(!name){
+    nameInput.classList.add("input-error","shake");
+    document.getElementById("nameError").style.display = "block";
+    nameInput.focus();
+    setTimeout(()=>nameInput.classList.remove("shake"), 400);
+    return;
+  }
+  const rawLang = document.getElementById("selLang").value;
+  let lang = rawLang;
+  let otherLang = "";
+  if(lang==="Andere"){
+    otherLang = document.getElementById("inpOtherLang").value.trim();
+    lang = otherLang || "meiner Sprache";
+  }
+  if(!lang){ lang = "meiner Sprache"; }
+  state.name = name; state.lang = lang;
+  state.langCode = LANG_CODES[rawLang] || null;
+  state.rawLang = rawLang;
+  state.otherLang = otherLang;
+  document.getElementById("greetName").textContent = name ? ", " + name : "";
+  document.getElementById("greetLang").textContent = lang;
+  document.getElementById("chGreetName").textContent = name ? ", " + name : "";
+  document.getElementById("fcTranslateLabel").textContent = "Wie sagt man das auf Deutsch → " + lang + "?";
+  saveData();
+  renderChapterPicker();
+  showScreen("chapters");
+});
+
+/* ---------------- KAPITEL-AUSWAHL ---------------- */
+function renderChapterPicker(){
+  const curWrap = document.getElementById("currentChapterWrap");
+  const pastWrap = document.getElementById("pastChaptersWrap");
+  curWrap.innerHTML = ""; pastWrap.innerHTML = "";
+
+  const curLabel = document.createElement("p");
+  curLabel.className = "section-label-small";
+  curLabel.textContent = "Aktuelles Kapitel";
+  curWrap.appendChild(curLabel);
+  curWrap.appendChild(buildChapterCard(CURRENT_CHAPTER, true));
+
+  const others = RELEASED_CHAPTERS.filter(k => k !== CURRENT_CHAPTER).sort((a,b)=>a-b);
+  if(others.length){
+    const pastLabel = document.createElement("p");
+    pastLabel.className = "section-label-small";
+    pastLabel.textContent = "Frühere Kapitel · zur Wiederholung";
+    pastWrap.appendChild(pastLabel);
+    others.forEach(k => pastWrap.appendChild(buildChapterCard(k, false)));
+  }
+}
+function buildChapterCard(k, isCurrent){
+  const meta = CHAPTER_META[k] || {title:"", themes:""};
+  const wordCount = VOCAB.filter(v=>v.k===k).length;
+  const card = document.createElement("div");
+  card.className = "chapter-card" + (isCurrent ? " current" : "");
+  card.innerHTML =
+    '<div class="chaphead"><span class="chapnum">' + k + '</span>' +
+    '<span class="chaptitle">Kapitel ' + k + ' · ' + meta.title + '</span></div>' +
+    '<p class="chapthemes">' + meta.themes + '</p>' +
+    '<p class="chapmeta">' + wordCount + ' Wörter' + (isCurrent ? "" : " · Wiederholung") + '</p>';
+  card.addEventListener("click", ()=> selectChapter(k));
+  return card;
+}
+function selectChapter(k){
+  if(state.chapter !== null && state.chapter !== k){
+    sendUsageBeacon(); // Zeit im vorherigen Kapitel noch verbuchen
+  }
+  state.chapter = k;
+  startUsageTracking();
+  const meta = CHAPTER_META[k] || {title:"", themes:""};
+  document.getElementById("menuChapterHint").textContent = "Kapitel " + k + " · " + meta.title + ": " + meta.themes;
+  document.getElementById("wordlistTitle").textContent = "Meine Wortliste – Kapitel " + k;
+  renderScoreBadges();
+  showScreen("menu");
+}
+document.getElementById("btnSwitchChapter").addEventListener("click", ()=>{
+  sendUsageBeacon();
+  renderChapterPicker();
+  showScreen("chapters");
+});
+
+/* ---------------- USAGE TRACKING (für die Lehrkraft) ----------------
+   Schickt beim Kapitelwechsel bzw. beim Verlassen der Seite einmalig Vorname +
+   genutzte Minuten an das zum aktuellen Kapitel gehörende Google-Formular
+   (weiterhin eines pro Kapitel, siehe FORM_CONFIG), damit die Antworten weiter
+   im passenden Tabellenblatt landen. Es werden keine weiteren Daten (Übersetzungen,
+   IP, etc.) gesendet. */
+let usageSessionStart = null;
+let usageSent = false;
+let usageChapterAtStart = null;
+function startUsageTracking(){
+  usageSessionStart = Date.now();
+  usageSent = false;
+  usageChapterAtStart = state.chapter;
+}
+function sendUsageBeacon(){
+  if(usageSent || !usageSessionStart || !usageChapterAtStart) return;
+  const cfg = FORM_CONFIG[usageChapterAtStart];
+  if(!cfg) return;
+  const minutes = Math.round(((Date.now() - usageSessionStart) / 60000) * 10) / 10;
+  if(minutes < 0.1) return;
+  usageSent = true;
+  const params = new URLSearchParams();
+  params.append(cfg.entryName, state.name || "Unbekannt");
+  params.append(cfg.entryMinutes, String(minutes));
+  try{
+    if(navigator.sendBeacon){
+      navigator.sendBeacon(cfg.url, params);
+    } else {
+      fetch(cfg.url, {method:"POST", mode:"no-cors", body: params, keepalive:true});
+    }
+  }catch(e){ /* Übermittlung fehlgeschlagen - Übung läuft trotzdem normal weiter */ }
+}
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden) sendUsageBeacon(); });
+window.addEventListener("pagehide", sendUsageBeacon);
+
+/* ---------------- MENU -> SECTION PICKER ---------------- */
+document.querySelectorAll(".menu-item[data-go]").forEach(item=>{
+  item.addEventListener("click", ()=>{
+    const mode = item.getAttribute("data-go");
+    if(mode === "wordlist"){ renderWordlist(); showScreen("wordlist"); return; }
+    if(mode === "hoeren"){ renderTrackList(); showScreen("hoeren-list"); return; }
+    openSectionPicker(mode);
+  });
+});
+function openSectionPicker(mode){
+  const wrap = document.getElementById("sectionButtons");
+  wrap.innerHTML = "";
+  const labels = SECTION_LABELS_BY_CHAPTER[state.chapter];
+  Object.keys(labels).forEach(sec=>{
+    const b = document.createElement("button");
+    b.className = "btn-secondary";
+    b.textContent = labels[sec];
+    b.addEventListener("click", ()=> startMode(mode, sec));
+    wrap.appendChild(b);
+  });
+  const titles = {flashcards:"Karteikarten – welche Wörter?", article:"Artikel-Quiz – welche Wörter?", gap:"Lücken füllen – welche Wörter?", match:"Zuordnen – welche Wörter?", grammar:"Grammatik – welcher Bereich?"};
+  document.getElementById("sectionPickerTitle").textContent = titles[mode] || "Wähle einen Bereich";
+  showScreen("section");
+}
+function startMode(mode, sec){
+  if(mode==="flashcards") startFlashcards(sec);
+  if(mode==="article") startArticleQuiz(sec);
+  if(mode==="gap") startGapFill(sec);
+  if(mode==="match") startMatching(sec);
+  if(mode==="grammar") startGrammar(sec);
+}
+
+/* ---------------- FLASHCARDS (Multiple-Choice-Erkennung) ---------------- */
+function startFlashcards(sec){
+  state.fcSection = sec;
+  state.fcQueue = shuffle(poolIndices(state.chapter, sec));
+  state.fcIndex = 0; state.fcScore = 0; state.fcSeen = 0;
+  renderFlashcard();
+  showScreen("flashcards");
+}
+function renderFlashcard(){
+  const idx = state.fcQueue[state.fcIndex];
+  state.fcCurrentIdx = idx;
+  state.fcAttempts = 0; state.fcLocked = false;
+  const item = VOCAB[idx];
+  document.getElementById("fcCounter").textContent = (state.fcIndex+1)+" / "+state.fcQueue.length;
+  document.getElementById("fcProgress").style.width = Math.round((state.fcIndex/state.fcQueue.length)*100)+"%";
+  document.getElementById("fcSection").textContent = "Abschnitt " + item.s;
+  document.getElementById("fcClue").textContent = CLUES[idx];
+  document.getElementById("fcFeedback").textContent = "";
+  document.getElementById("fcFeedback").className = "feedback";
+  document.getElementById("fcRevealBlock").style.display = "none";
+  document.getElementById("fcTranslate").value = state.translations[item.t] || "";
+  document.getElementById("fcKnownCount").textContent = state.fcScore;
+  document.getElementById("fcTotalSeen").textContent = state.fcSeen;
+
+  const distractors = shuffle(poolIndices(state.chapter, state.fcSection).filter(i => i !== idx)).slice(0,3);
+  const options = shuffle([idx, ...distractors]);
+  const wrap = document.getElementById("fcOptions");
+  wrap.innerHTML = "";
+  options.forEach(oi=>{
+    const btn = document.createElement("button");
+    btn.className = "btn-secondary";
+    btn.textContent = shortTerm(VOCAB[oi].t);
+    btn.dataset.idx = oi;
+    btn.addEventListener("click", ()=> onFcOptionClick(btn, idx));
+    wrap.appendChild(btn);
+  });
+}
+function onFcOptionClick(btn, correctIdx){
+  if(state.fcLocked || btn.disabled) return;
+  const chosenIdx = parseInt(btn.dataset.idx, 10);
+  const fb = document.getElementById("fcFeedback");
+  if(chosenIdx === correctIdx){
+    state.fcLocked = true;
+    state.fcSeen++;
+    if(state.fcAttempts === 0) state.fcScore++;
+    btn.classList.add("opt-correct");
+    document.querySelectorAll("#fcOptions button").forEach(b=>b.disabled=true);
+    fb.textContent = "Richtig! ✅";
+    fb.className = "feedback correct";
+    document.getElementById("fcRevealTerm").textContent = VOCAB[correctIdx].t;
+    document.getElementById("fcRevealBlock").style.display = "block";
+    document.getElementById("fcKnownCount").textContent = state.fcScore;
+    document.getElementById("fcTotalSeen").textContent = state.fcSeen;
+  } else {
+    state.fcAttempts++;
+    btn.classList.add("opt-wrong");
+    btn.disabled = true;
+    fb.textContent = state.fcAttempts === 1
+      ? "Das ist leider nicht richtig. Versuch's noch mal! 💡 Lies die Erklärung noch einmal genau."
+      : "Fast! Es bleibt nur noch eine Möglichkeit.";
+    fb.className = "feedback wrong";
+  }
+}
+document.getElementById("fcTranslate").addEventListener("input", (e)=>{
+  const item = VOCAB[state.fcCurrentIdx];
+  if(item) state.translations[item.t] = e.target.value;
+  scheduleSave();
+});
+document.getElementById("fcNext").addEventListener("click", ()=>{
+  if(state.fcIndex < state.fcQueue.length-1){
+    state.fcIndex++;
+    renderFlashcard();
+  } else {
+    document.getElementById("fcProgress").style.width = "100%";
+    saveScore("fc", state.fcScore, state.fcQueue.length);
+    showResult(state.fcScore, state.fcQueue.length, "menu", ()=>startFlashcards(state.fcSection), "Karteikarten geschafft! 🗂️");
+  }
+});
+
+/* ---------------- ARTICLE QUIZ ---------------- */
+function startArticleQuiz(sec){
+  const pool = shuffle(bysection(ARTICLE_ITEMS, state.chapter, sec));
+  state.artQueue = pool.slice(0, Math.min(10, pool.length));
+  state.artIndex = 0; state.artScore = 0;
+  renderArticleQuiz();
+  showScreen("article");
+}
+function renderArticleQuiz(){
+  const item = state.artQueue[state.artIndex];
+  document.getElementById("artCounter").textContent = (state.artIndex+1)+" / "+state.artQueue.length;
+  document.getElementById("artProgress").style.width = Math.round((state.artIndex/state.artQueue.length)*100)+"%";
+  document.getElementById("artNoun").textContent = item.n;
+  document.getElementById("artFeedback").textContent = "";
+  document.getElementById("artFeedback").className = "feedback";
+  state.artAttempts = 0;
+  state.artLocked = false;
+  document.querySelectorAll("[data-art]").forEach(b=>{
+    b.disabled = false;
+    b.classList.remove("opt-correct","opt-wrong");
+  });
+}
+function nextArticleQuestion(){
+  if(state.artIndex < state.artQueue.length-1){
+    state.artIndex++;
+    renderArticleQuiz();
+  } else {
+    document.getElementById("artProgress").style.width = "100%";
+    saveScore("art", state.artScore, state.artQueue.length);
+    showResult(state.artScore, state.artQueue.length, "menu", ()=>startArticleQuiz("ALL"), "Artikel-Quiz beendet! 🎯");
+  }
+}
+document.querySelectorAll("[data-art]").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if(state.artLocked || btn.disabled) return;
+    const item = state.artQueue[state.artIndex];
+    const fb = document.getElementById("artFeedback");
+    const chosen = btn.getAttribute("data-art");
+    if(chosen === item.a){
+      state.artScore++;
+      state.artLocked = true;
+      btn.classList.add("opt-correct");
+      document.querySelectorAll("[data-art]").forEach(b=>b.disabled=true);
+      fb.textContent = "Richtig! ✅ " + item.a + " " + item.n;
+      fb.className = "feedback correct";
+      setTimeout(nextArticleQuestion, 1100);
+    } else {
+      state.artAttempts++;
+      btn.classList.add("opt-wrong");
+      btn.disabled = true;
+      if(state.artAttempts === 1){
+        fb.textContent = "Das ist leider nicht richtig. Versuch's noch mal! 💡 " + articleHint(item.n);
+      } else {
+        fb.textContent = "Fast! Es bleibt nur noch eine Möglichkeit – probier sie aus.";
+      }
+      fb.className = "feedback wrong";
+    }
+  });
+});
+document.getElementById("artHint").addEventListener("click", ()=>{
+  const item = state.artQueue[state.artIndex];
+  const fb = document.getElementById("artFeedback");
+  fb.textContent = "💡 " + articleHint(item.n);
+  fb.className = "feedback";
+});
+
+/* ---------------- GAP FILL (Multiple-Choice) ---------------- */
+function startGapFill(sec){
+  let pool = GAP_ITEMS.filter(g => g.k===state.chapter && (sec==="ALL" ? true : matchesGapSection(g, sec)));
+  if(pool.length === 0) pool = GAP_ITEMS.filter(g => g.k===state.chapter);
+  state.gapQueue = shuffle(pool);
+  state.gapIndex = 0; state.gapScore = 0;
+  renderGapFill();
+  showScreen("gap");
+}
+function matchesGapSection(g, sec){
+  return g.hint.startsWith(sec+":");
+}
+function renderGapFill(){
+  const item = state.gapQueue[state.gapIndex];
+  document.getElementById("gapCounter").textContent = (state.gapIndex+1)+" / "+state.gapQueue.length;
+  document.getElementById("gapProgress").style.width = Math.round((state.gapIndex/state.gapQueue.length)*100)+"%";
+  const sentence = (item.before ? item.before+" " : "") + "<span class='gap'>______</span>" + (item.after ? " "+item.after : "");
+  document.getElementById("gapSentence").innerHTML = sentence;
+  document.getElementById("gapFeedback").textContent = "";
+  document.getElementById("gapFeedback").className = "feedback";
+  state.gapAttempts = 0;
+  state.gapLocked = false;
+
+  const answerPool = [...new Set(GAP_ITEMS.filter(g=>g.k===state.chapter).map(g => g.answer))];
+  const distractors = shuffle(answerPool.filter(a => a !== item.answer)).slice(0,3);
+  const options = shuffle([item.answer, ...distractors]);
+  const wrap = document.getElementById("gapOptions");
+  wrap.innerHTML = "";
+  options.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.className = "btn-secondary";
+    btn.textContent = opt;
+    btn.dataset.opt = opt;
+    btn.addEventListener("click", ()=> onGapOptionClick(btn, item));
+    wrap.appendChild(btn);
+  });
+}
+document.getElementById("gapHint").addEventListener("click", ()=>{
+  const item = state.gapQueue[state.gapIndex];
+  const fb = document.getElementById("gapFeedback");
+  fb.textContent = "💡 Tipp: " + item.hint;
+  fb.className = "feedback";
+});
+function nextGapQuestion(){
+  if(state.gapIndex < state.gapQueue.length-1){
+    state.gapIndex++;
+    renderGapFill();
+  } else {
+    document.getElementById("gapProgress").style.width = "100%";
+    saveScore("gap", state.gapScore, state.gapQueue.length);
+    showResult(state.gapScore, state.gapQueue.length, "menu", ()=>startGapFill("ALL"), "Lückentext geschafft! ✏️");
+  }
+}
+function onGapOptionClick(btn, item){
+  if(state.gapLocked || btn.disabled) return;
+  const fb = document.getElementById("gapFeedback");
+  const chosen = btn.dataset.opt;
+  if(chosen === item.answer){
+    state.gapScore++;
+    state.gapLocked = true;
+    btn.classList.add("opt-correct");
+    document.querySelectorAll("#gapOptions button").forEach(b=>b.disabled=true);
+    fb.textContent = "Richtig! ✅";
+    fb.className = "feedback correct";
+    setTimeout(nextGapQuestion, 1100);
+  } else {
+    state.gapAttempts++;
+    btn.classList.add("opt-wrong");
+    btn.disabled = true;
+    fb.textContent = state.gapAttempts === 1
+      ? "Das ist leider nicht richtig. Versuch's noch mal! 💡 Tipp: " + item.hint
+      : "Fast! Es bleibt nur noch eine Möglichkeit.";
+    fb.className = "feedback wrong";
+  }
+}
+
+/* ---------------- GRAMMATIK ---------------- */
+function startGrammar(sec){
+  let pool = GRAMMAR_ITEMS.filter(g => g.k===state.chapter && (sec==="ALL" ? true : g.s===sec));
+  if(pool.length === 0) pool = GRAMMAR_ITEMS.filter(g => g.k===state.chapter);
+  state.gramQueue = shuffle(pool);
+  state.gramIndex = 0; state.gramScore = 0;
+  renderGrammar();
+  showScreen("grammar");
+}
+function renderGrammar(){
+  const item = state.gramQueue[state.gramIndex];
+  document.getElementById("gramCounter").textContent = (state.gramIndex+1)+" / "+state.gramQueue.length;
+  document.getElementById("gramProgress").style.width = Math.round((state.gramIndex/state.gramQueue.length)*100)+"%";
+  const sentenceEl = document.getElementById("gramSentence");
+  if(item.type === "choice"){
+    sentenceEl.textContent = item.prompt;
+  } else {
+    const afterJoin = item.after && /^[.,!?;:]/.test(item.after) ? item.after : (item.after ? " "+item.after : "");
+    const sentence = (item.before ? item.before+" " : "") + "<span class='gap'>______</span>" + afterJoin;
+    sentenceEl.innerHTML = sentence;
+  }
+  document.getElementById("gramFeedback").textContent = "";
+  document.getElementById("gramFeedback").className = "feedback";
+  state.gramAttempts = 0;
+  state.gramLocked = false;
+
+  const options = shuffle([item.answer, ...item.wrong]);
+  const wrap = document.getElementById("gramOptions");
+  wrap.innerHTML = "";
+  options.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.className = "btn-secondary" + (item.type==="choice" ? " opt-full" : "");
+    btn.textContent = opt;
+    btn.dataset.opt = opt;
+    btn.addEventListener("click", ()=> onGramOptionClick(btn, item));
+    wrap.appendChild(btn);
+  });
+}
+document.getElementById("gramHint").addEventListener("click", ()=>{
+  const item = state.gramQueue[state.gramIndex];
+  const fb = document.getElementById("gramFeedback");
+  fb.textContent = "💡 Tipp: " + item.hint;
+  fb.className = "feedback";
+});
+function nextGrammarQuestion(){
+  if(state.gramIndex < state.gramQueue.length-1){
+    state.gramIndex++;
+    renderGrammar();
+  } else {
+    document.getElementById("gramProgress").style.width = "100%";
+    saveScore("gram", state.gramScore, state.gramQueue.length);
+    showResult(state.gramScore, state.gramQueue.length, "menu", ()=>startGrammar("ALL"), "Grammatik geschafft! 🧩");
+  }
+}
+function onGramOptionClick(btn, item){
+  if(state.gramLocked || btn.disabled) return;
+  const fb = document.getElementById("gramFeedback");
+  const chosen = btn.dataset.opt;
+  if(chosen === item.answer){
+    state.gramScore++;
+    state.gramLocked = true;
+    btn.classList.add("opt-correct");
+    document.querySelectorAll("#gramOptions button").forEach(b=>b.disabled=true);
+    fb.textContent = "Richtig! ✅";
+    fb.className = "feedback correct";
+    setTimeout(nextGrammarQuestion, 1300);
+  } else {
+    state.gramAttempts++;
+    btn.classList.add("opt-wrong");
+    btn.disabled = true;
+    fb.textContent = state.gramAttempts === 1
+      ? "Das ist leider nicht richtig. Versuch's noch mal! 💡 Tipp: " + item.hint
+      : "Fast! Es bleibt nur noch eine Möglichkeit.";
+    fb.className = "feedback wrong";
+  }
+}
+
+/* ---------------- HÖREN ---------------- */
+function renderTrackList(){
+  const wrap = document.getElementById("trackListWrap");
+  const emptyMsg = document.getElementById("trackListEmpty");
+  wrap.innerHTML = "";
+  const tracks = LISTENING_TRACKS.filter(t => t.k === state.chapter);
+  if(tracks.length === 0){
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+  tracks.forEach(track=>{
+    const card = document.createElement("div");
+    card.className = "track-card";
+    const secLabel = (SECTION_LABELS_BY_CHAPTER[track.k] && SECTION_LABELS_BY_CHAPTER[track.k][track.s]) ? SECTION_LABELS_BY_CHAPTER[track.k][track.s] : ("Teil " + track.s);
+    card.innerHTML =
+      '<p class="tracktitle">🎧 ' + track.title + '</p>' +
+      '<p class="tracktask">' + secLabel + ' · ' + track.taskLabel + '</p>';
+    card.addEventListener("click", ()=> startTrack(track));
+    wrap.appendChild(card);
+  });
+}
+function startTrack(track){
+  state.hoerenTrack = track;
+  document.getElementById("hoerenTrackTitle").textContent = "🎧 " + track.title;
+  document.getElementById("hoerenTrackTask").textContent = "Teil " + track.s + " · " + track.taskLabel;
+  document.getElementById("hoerenAudio").src = track.audio;
+
+  document.getElementById("hoerenResultBlock").style.display = "none";
+  document.getElementById("hoerenQuestionsBlock").style.display = "none";
+
+  if(track.checklist){
+    document.getElementById("hoerenChecklistBlock").style.display = "block";
+    document.getElementById("hoerenChecklistInstruction").textContent = track.checklist.instruction;
+    const wrap = document.getElementById("hoerenChecklistWrap");
+    wrap.innerHTML = "";
+    track.checklist.topics.forEach(topic=>{
+      const label = document.createElement("label");
+      label.setAttribute("data-topic", topic.id);
+      label.innerHTML = '<input type="checkbox"> ' + topic.label;
+      wrap.appendChild(label);
+    });
+    document.getElementById("hoerenChecklistFeedback").textContent = "";
+    document.getElementById("hoerenChecklistFeedback").className = "feedback";
+  } else {
+    document.getElementById("hoerenChecklistBlock").style.display = "none";
+    startHoerenQuestions();
+  }
+  showScreen("hoeren-task");
+}
+document.getElementById("btnHoerenCheck2a").addEventListener("click", ()=>{
+  const track = state.hoerenTrack;
+  const labels = document.querySelectorAll("#hoerenChecklistWrap label");
+  let allCorrect = true;
+  labels.forEach(l=>{
+    const topic = l.getAttribute("data-topic");
+    const checked = l.querySelector("input").checked;
+    const shouldBeChecked = track.checklist.correct.includes(topic);
+    l.classList.remove("correct-yes","correct-no");
+    if(checked === shouldBeChecked){
+      if(shouldBeChecked) l.classList.add("correct-yes");
+    } else {
+      l.classList.add("correct-no");
+      allCorrect = false;
+    }
+  });
+  const fb = document.getElementById("hoerenChecklistFeedback");
+  fb.textContent = allCorrect ? "Richtig! ✅" : "Noch nicht ganz richtig – markierte Zeilen noch einmal prüfen.";
+  fb.className = "feedback " + (allCorrect ? "correct" : "wrong");
+});
+document.getElementById("btnHoerenToQuestions").addEventListener("click", ()=>{
+  document.getElementById("hoerenChecklistBlock").style.display = "none";
+  startHoerenQuestions();
+});
+function startHoerenQuestions(){
+  state.hoerenQueue = shuffle(state.hoerenTrack.questions);
+  state.hoerenQIndex = 0; state.hoerenScore = 0;
+  document.getElementById("hoerenQuestionsBlock").style.display = "block";
+  renderHoerenQuestion();
+}
+function renderHoerenQuestion(){
+  const item = state.hoerenQueue[state.hoerenQIndex];
+  document.getElementById("hoerenQCounter").textContent = (state.hoerenQIndex+1)+" / "+state.hoerenQueue.length;
+  document.getElementById("hoerenQProgress").style.width = Math.round((state.hoerenQIndex/state.hoerenQueue.length)*100)+"%";
+  document.getElementById("hoerenQSentence").textContent = item.q;
+  document.getElementById("hoerenQFeedback").textContent = "";
+  document.getElementById("hoerenQFeedback").className = "feedback";
+  state.hoerenAttempts = 0; state.hoerenLocked = false;
+  const options = shuffle([item.answer, ...item.wrong]);
+  const wrap = document.getElementById("hoerenQOptions");
+  wrap.innerHTML = "";
+  options.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.className = "btn-secondary opt-full";
+    btn.textContent = opt;
+    btn.dataset.opt = opt;
+    btn.addEventListener("click", ()=> onHoerenOptionClick(btn, item));
+    wrap.appendChild(btn);
+  });
+}
+function onHoerenOptionClick(btn, item){
+  if(state.hoerenLocked || btn.disabled) return;
+  const fb = document.getElementById("hoerenQFeedback");
+  if(btn.dataset.opt === item.answer){
+    state.hoerenScore++;
+    state.hoerenLocked = true;
+    btn.classList.add("opt-correct");
+    document.querySelectorAll("#hoerenQOptions button").forEach(b=>b.disabled=true);
+    fb.textContent = "Richtig! ✅";
+    fb.className = "feedback correct";
+    setTimeout(nextHoerenQuestion, 1200);
+  } else {
+    state.hoerenAttempts++;
+    btn.classList.add("opt-wrong");
+    btn.disabled = true;
+    fb.textContent = state.hoerenAttempts === 1
+      ? "Nicht ganz. 💡 Tipp: " + item.hint
+      : "Fast! Es bleibt nur noch eine Möglichkeit.";
+    fb.className = "feedback wrong";
+  }
+}
+function nextHoerenQuestion(){
+  if(state.hoerenQIndex < state.hoerenQueue.length - 1){
+    state.hoerenQIndex++;
+    renderHoerenQuestion();
+  } else {
+    document.getElementById("hoerenQProgress").style.width = "100%";
+    document.getElementById("hoerenQuestionsBlock").style.display = "none";
+    document.getElementById("hoerenResultScore").textContent = state.hoerenScore;
+    document.getElementById("hoerenResultTotal").textContent = state.hoerenQueue.length;
+    const ratio = state.hoerenScore / state.hoerenQueue.length;
+    document.getElementById("hoerenResultEmoji").textContent = ratio>=0.8 ? "🎉" : ratio>=0.5 ? "👍" : "💪";
+    document.getElementById("hoerenResultBlock").style.display = "block";
+  }
+}
+document.getElementById("btnHoerenRetry").addEventListener("click", ()=>{
+  startTrack(state.hoerenTrack);
+});
+
+/* ---------------- MATCHING ---------------- */
+function startMatching(sec){
+  let pool = MATCH_ITEMS.filter(m => m.k===state.chapter);
+  pool = shuffle(pool).slice(0, Math.min(6, pool.length));
+  state.matchPairs = pool;
+  state.matchSelectedWord = null;
+  state.matchSolved = 0;
+  renderMatching();
+  showScreen("match");
+}
+function renderMatching(){
+  const wordsCol = document.getElementById("matchWords");
+  const defsCol = document.getElementById("matchDefs");
+  wordsCol.innerHTML = ""; defsCol.innerHTML = "";
+  document.getElementById("matchDoneBtns").style.display = "none";
+  document.getElementById("matchCounter").textContent = state.matchSolved + " / " + state.matchPairs.length;
+
+  const words = shuffle(state.matchPairs.map((p,idx)=>({idx, text:p.w})));
+  const defs = shuffle(state.matchPairs.map((p,idx)=>({idx, text:p.d})));
+
+  words.forEach(w=>{
+    const el = document.createElement("div");
+    el.className = "match-item";
+    el.textContent = w.text;
+    el.dataset.idx = w.idx;
+    el.addEventListener("click", ()=> onMatchWordClick(el, w.idx));
+    wordsCol.appendChild(el);
+  });
+  defs.forEach(d=>{
+    const el = document.createElement("div");
+    el.className = "match-item";
+    el.textContent = d.text;
+    el.dataset.idx = d.idx;
+    el.addEventListener("click", ()=> onMatchDefClick(el, d.idx));
+    defsCol.appendChild(el);
+  });
+}
+function onMatchWordClick(el, idx){
+  if(el.classList.contains("correct")) return;
+  document.querySelectorAll("#matchWords .match-item").forEach(w=>w.classList.remove("selected"));
+  el.classList.add("selected");
+  state.matchSelectedWord = idx;
+}
+function onMatchDefClick(el, idx){
+  if(el.classList.contains("correct") || state.matchSelectedWord === null) return;
+  const wordEl = document.querySelector('#matchWords .match-item[data-idx="'+state.matchSelectedWord+'"]');
+  if(state.matchSelectedWord === idx){
+    el.classList.add("correct");
+    if(wordEl) wordEl.classList.add("correct");
+    state.matchSolved++;
+    state.matchSelectedWord = null;
+    document.getElementById("matchCounter").textContent = state.matchSolved + " / " + state.matchPairs.length;
+    if(state.matchSolved === state.matchPairs.length){
+      document.getElementById("matchDoneBtns").style.display = "flex";
+    }
+  } else {
+    el.classList.add("wrong-flash");
+    if(wordEl) wordEl.classList.add("wrong-flash");
+    setTimeout(()=>{
+      el.classList.remove("wrong-flash");
+      if(wordEl) wordEl.classList.remove("wrong-flash");
+    }, 500);
+  }
+}
+document.getElementById("matchAgain").addEventListener("click", ()=> startMatching("ALL"));
+
+/* ---------------- RESULT SCREEN ---------------- */
+function showResult(score, total, returnTo, retryFn, text){
+  document.getElementById("resultScore").textContent = score;
+  document.getElementById("resultTotal").textContent = total;
+  document.getElementById("resultText").textContent = text || "Gut gemacht!";
+  const ratio = total>0 ? score/total : 0;
+  document.getElementById("resultEmoji").textContent = ratio>=0.8 ? "🎉" : ratio>=0.5 ? "👍" : "💪";
+  state.resultReturnTo = returnTo;
+  state.resultRetryFn = retryFn;
+  showScreen("result");
+}
+document.getElementById("resultRetry").addEventListener("click", ()=>{
+  if(state.resultRetryFn) state.resultRetryFn();
+});
+
+/* ---------------- WORDLIST ---------------- */
+function renderWordlist(){
+  const tbody = document.querySelector("#wordlistTable tbody");
+  tbody.innerHTML = "";
+  document.getElementById("checkStatus").textContent = "";
+  document.getElementById("checkLegend").style.display = "none";
+  VOCAB.forEach((item, i)=>{
+    if(item.k !== state.chapter) return;
+    const tr = document.createElement("tr");
+    tr.id = "wl-row-"+i;
+    const translation = state.translations[item.t] || "";
+    tr.innerHTML = "<td>"+item.t+"</td><td>"+item.s+"</td><td><span class='check-icon' id='wl-check-"+i+"'></span><span id='wl-text-"+i+"'>"+(translation ? escapeHtml(translation) : "…")+"</span></td>";
+    tbody.appendChild(tr);
+  });
+}
+function escapeHtml(str){
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+document.getElementById("btnPrint").addEventListener("click", ()=> window.print());
+
+/* ---------------- ÜBERSETZUNGSPRÜFUNG (automatisch, unverbindlich) ----------------
+   Nutzt den kostenlosen, öffentlichen MyMemory-Übersetzungsdienst (kein API-Key,
+   kein Account, keine Kosten für die Lehrkraft nötig) und vergleicht die von den
+   Schüler:innen eingetragene Übersetzung grob mit einem Übersetzungsvorschlag.
+   Das ist KEINE zuverlässige Bewertung, sondern nur ein Hinweis. */
+function normalizeForCompare(s){
+  return (s||"").toLowerCase().trim()
+    .replace(/[.,!?;:()'"„“”‚’`]/g,"")
+    .replace(/\s+/g," ");
+}
+function levenshtein(a, b){
+  const m = a.length, n = b.length;
+  if(m === 0) return n;
+  if(n === 0) return m;
+  const dp = new Array(n+1);
+  for(let j=0;j<=n;j++) dp[j] = j;
+  for(let i=1;i<=m;i++){
+    let prev = dp[0];
+    dp[0] = i;
+    for(let j=1;j<=n;j++){
+      const tmp = dp[j];
+      dp[j] = a[i-1] === b[j-1] ? prev : 1 + Math.min(prev, dp[j], dp[j-1]);
+      prev = tmp;
+    }
+  }
+  return dp[n];
+}
+function looksLikeMatch(answer, candidate){
+  const a = normalizeForCompare(answer);
+  const c = normalizeForCompare(candidate);
+  if(!a || !c) return false;
+  if(a === c) return true;
+  if(a.length >= 3 && c.length >= 3 && (c.includes(a) || a.includes(c))) return true;
+  const dist = levenshtein(a, c);
+  const sim = 1 - dist / Math.max(a.length, c.length);
+  return sim >= 0.6;
+}
+async function fetchTranslationCandidates(germanText, targetCode){
+  const url = "https://api.mymemory.translated.net/get?q=" + encodeURIComponent(germanText) + "&langpair=de|" + targetCode;
+  const controller = new AbortController();
+  const timeout = setTimeout(()=>controller.abort(), 7000);
+  try{
+    const res = await fetch(url, {signal: controller.signal});
+    clearTimeout(timeout);
+    if(!res.ok) return null;
+    const data = await res.json();
+    const candidates = [];
+    if(data && data.responseData && data.responseData.translatedText) candidates.push(data.responseData.translatedText);
+    if(Array.isArray(data.matches)){
+      data.matches.forEach(m=>{ if(m && m.translation) candidates.push(m.translation); });
+    }
+    return candidates.length ? candidates : null;
+  }catch(e){
+    clearTimeout(timeout);
+    return null;
+  }
+}
+function setCheckIcon(i, kind){
+  const el = document.getElementById("wl-check-"+i);
+  if(!el) return;
+  if(kind === "ok"){ el.textContent = "✅"; el.className = "check-icon check-ok"; }
+  else if(kind === "warn"){ el.textContent = "⚠️"; el.className = "check-icon check-warn"; }
+  else if(kind === "na"){ el.textContent = "🔌"; el.className = "check-icon check-na"; }
+  else { el.textContent = ""; el.className = "check-icon"; }
+}
+async function checkAllTranslations(){
+  const btn = document.getElementById("btnCheckTranslations");
+  const status = document.getElementById("checkStatus");
+  const legend = document.getElementById("checkLegend");
+  legend.style.display = "block";
+
+  if(!state.langCode){
+    status.textContent = "Für deine gewählte Sprache ist die automatische Prüfung leider nicht verfügbar.";
+    return;
+  }
+  const toCheck = [];
+  VOCAB.forEach((item, i)=>{
+    if(item.k !== state.chapter) return;
+    const t = state.translations[item.t];
+    if(t && t.trim()) toCheck.push(i);
+  });
+  if(toCheck.length === 0){
+    status.textContent = "Noch keine eigenen Übersetzungen eingetragen – erst bei den Karteikarten übersetzen.";
+    return;
+  }
+
+  btn.disabled = true;
+  let done = 0, okCount = 0, warnCount = 0, naCount = 0;
+  for(const i of toCheck){
+    status.textContent = "Prüfe Übersetzungen … (" + (done+1) + " / " + toCheck.length + ")";
+    const item = VOCAB[i];
+    const answer = state.translations[item.t];
+    const candidates = await fetchTranslationCandidates(shortTerm(item.t), state.langCode);
+    if(!candidates){
+      setCheckIcon(i, "na");
+      naCount++;
+    } else {
+      const match = candidates.some(c => looksLikeMatch(answer, c));
+      setCheckIcon(i, match ? "ok" : "warn");
+      if(match) okCount++; else warnCount++;
+    }
+    done++;
+    await new Promise(r => setTimeout(r, 120));
+  }
+  btn.disabled = false;
+  status.textContent = "Fertig: ✅ " + okCount + " passt vermutlich · ⚠️ " + warnCount + " bitte selbst prüfen" + (naCount ? " · 🔌 " + naCount + " nicht prüfbar" : "") + ".";
+}
+document.getElementById("btnCheckTranslations").addEventListener("click", checkAllTranslations);
+</script>
+</body>
+</html>
