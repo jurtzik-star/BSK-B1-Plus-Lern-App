@@ -44,6 +44,15 @@
     letter-spacing:.04em;text-transform:uppercase;margin-left:8px;vertical-align:1px;
   }
   header.top .pill-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;}
+  header.top .feedback-link{
+    margin-left:auto;flex:none;align-self:flex-start;
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,0.22);color:#fff;text-decoration:none;
+    border-radius:999px;padding:7px 13px;font-size:0.78rem;font-weight:700;
+    white-space:nowrap;transition:background .15s;
+  }
+  header.top .feedback-link:hover{background:rgba(255,255,255,0.34);}
+  @media print{header.top .feedback-link{display:none !important;}}
   header.top .pill-row span{
     display:inline-flex;align-items:center;gap:5px;
     background:rgba(255,255,255,0.2);border-radius:999px;padding:3px 11px 3px 8px;font-size:0.76rem;font-weight:700;
@@ -76,11 +85,23 @@
   .menu-item{
     background:var(--card);border:2px solid var(--green-100);border-radius:14px;padding:16px;
     cursor:pointer;text-align:left;box-shadow:var(--shadow);transition:border-color .15s ease, transform .12s ease;
+    position:relative;
   }
   .menu-item:hover{border-color:var(--green-500);transform:translateY(-2px);}
   .menu-item .emoji{font-size:1.6rem;}
   .menu-item h3{margin:8px 0 4px;font-size:1.02rem;color:var(--green-900);}
   .menu-item p{margin:0;font-size:0.85rem;color:#5b6d62;}
+  .news-badge{
+    position:absolute;top:12px;right:12px;background:var(--red);color:#fff;
+    font-size:0.68rem;font-weight:800;letter-spacing:.03em;padding:2px 9px;border-radius:999px;
+  }
+  .news-entry{
+    border-left:3px solid var(--green-500);padding:2px 0 2px 14px;margin-bottom:18px;
+  }
+  .news-entry:last-child{margin-bottom:0;}
+  .news-entry .news-date{font-size:0.76rem;color:#7c8b81;font-weight:700;letter-spacing:.03em;}
+  .news-entry h3{margin:2px 0 4px;font-size:1rem;color:var(--green-900);}
+  .news-entry p{margin:0;font-size:0.9rem;color:#3d4a41;}
   .pill{
     display:inline-block;background:var(--green-100);color:var(--green-900);
     border-radius:999px;padding:3px 12px;font-size:0.78rem;font-weight:700;letter-spacing:.02em;
@@ -102,6 +123,11 @@
   .quiz-options button:disabled{opacity:0.55;cursor:default;}
   .quiz-options button.opt-full{display:block;width:100%;text-align:left;min-width:0;}
   audio.listen-audio{width:100%;margin:6px 0 4px;}
+  .lesen-reference{
+    background:var(--green-50);border:1px solid var(--green-100);border-radius:12px;
+    padding:14px 16px;margin:0 0 14px;font-size:0.92rem;color:var(--green-900);
+    max-height:280px;overflow-y:auto;
+  }
   .checklist{display:flex;flex-direction:column;gap:8px;margin:10px 0 4px;}
   .checklist label{
     display:flex;align-items:center;gap:10px;background:var(--green-50);border:2px solid var(--green-100);
@@ -173,6 +199,10 @@
   .chapter-card .chaptitle{font-weight:700;color:var(--green-900);font-size:1.02rem;}
   .chapter-card .chapthemes{font-size:0.82rem;color:#5b6d62;margin:0 0 4px;}
   .chapter-card .chapmeta{font-size:0.76rem;color:#8a978f;}
+  .chapter-card.locked{cursor:default;opacity:0.55;background:#f2f4f2;border-color:#e2e6e2;}
+  .chapter-card.locked:hover{border-color:#e2e6e2;transform:none;}
+  .chapter-card.locked .chapnum{background:#e2e6e2;color:#8a978f;}
+  .chapter-card.locked .chaptitle{color:#8a978f;}
   .section-label-small{font-size:0.76rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#8a978f;margin:18px 0 8px;}
   @media print{
     header.top, .menu-grid, .row-btns, footer.note, #btnPrint{display:none !important;}
@@ -191,8 +221,12 @@
         <span>📚 Wortschatz</span>
         <span>🧩 Grammatik</span>
         <span>🎧 Hören</span>
+        <span>📖 Lesen</span>
+        <span>✍️ Schreiben</span>
       </div>
     </div>
+    <a class="feedback-link" id="feedbackLink" target="_blank" rel="noopener"
+       href="https://docs.google.com/forms/d/e/1FAIpQLSeji_Gi5iASf-XnitHoQeQJ3p-PIcKqEmzZ3_i9qlRs9Hx5Tw/viewform">💬 Feedback</a>
   </header>
 
   <!-- START SCREEN -->
@@ -252,6 +286,7 @@
     </div>
     <div id="currentChapterWrap"></div>
     <div id="pastChaptersWrap"></div>
+    <div id="futureChaptersWrap"></div>
   </section>
 
   <!-- MENU SCREEN -->
@@ -265,6 +300,12 @@
     </div>
 
     <div class="menu-grid">
+      <div class="menu-item" data-go="neuigkeiten" style="grid-column:1/-1;">
+        <span class="emoji">🆕</span>
+        <h3>Neuigkeiten</h3>
+        <p>Was ist neu in der App?</p>
+        <span class="news-badge" id="newsBadge" style="display:none;">NEU</span>
+      </div>
       <div class="menu-item" data-go="flashcards">
         <span class="emoji">🗂️</span>
         <h3>Karteikarten</h3>
@@ -299,11 +340,34 @@
         <h3>Hören</h3>
         <p>Höre den Dialog und beantworte die Fragen.</p>
       </div>
+      <div class="menu-item" data-go="lesen">
+        <span class="emoji">📖</span>
+        <h3>Lesen</h3>
+        <p>Lies den Text und beantworte die Fragen.</p>
+      </div>
+      <div class="menu-item" data-go="schreiben">
+        <span class="emoji">✍️</span>
+        <h3>Schreiben</h3>
+        <p>Bearbeite eine Schreibaufgabe und erhalte eine Rückmeldung.</p>
+      </div>
       <div class="menu-item" data-go="wordlist" style="grid-column:1/-1;">
         <span class="emoji">📋</span>
         <h3>Meine Wortliste</h3>
         <p>Alle Wörter des Kapitels mit deinen eigenen Übersetzungen – zum Ausdrucken.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- NEUIGKEITEN -->
+  <section id="screen-neuigkeiten" class="screen">
+    <div class="card">
+      <div class="topline" style="margin-bottom:0;">
+        <p style="margin:0;">🆕 Neuigkeiten in der App</p>
+        <button class="btn-ghost" data-back="menu" style="font-size:0.82rem;">← Zurück zum Menü</button>
+      </div>
+    </div>
+    <div class="card" id="newsListWrap">
+      <div id="newsList"></div>
     </div>
   </section>
 
@@ -455,6 +519,52 @@
         <div class="row-btns" style="justify-content:center;">
           <button class="btn-secondary" data-back="hoeren-list">Zurück zu den Hörübungen</button>
           <button class="btn-primary" id="btnHoerenRetry">Nochmal üben</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LESEN: TRACK-LISTE -->
+  <section id="screen-lesen-list" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="menu">← Menü</button>
+      </div>
+      <p style="margin-top:0;font-weight:700;color:var(--green-900);">Leseübungen dieses Kapitels</p>
+      <div id="lesenListWrap"></div>
+      <p class="hint-text" id="lesenListEmpty" style="display:none;">Für dieses Kapitel gibt es noch keine Leseübung.</p>
+    </div>
+  </section>
+
+  <!-- LESEN: EINE AUFGABE -->
+  <section id="screen-lesen-task" class="screen">
+    <div class="card">
+      <div class="topline">
+        <button class="btn-ghost" data-back="lesen-list">← Leseübungen</button>
+      </div>
+      <h2 class="tasktitle" id="lesenTrackTitle" style="font-size:1.02rem;color:var(--green-900);margin:0 0 4px;">—</h2>
+      <p class="hint-text" id="lesenTrackTask" style="text-align:left;margin:0 0 10px;">—</p>
+      <div class="lesen-reference" id="lesenReference"></div>
+
+      <div id="lesenQuestionsBlock" style="display:none;">
+        <div class="topline" style="margin:18px 0 0;">
+          <span class="pill" id="lesenQCounter">1 / 10</span>
+        </div>
+        <div class="progress-wrap"><div class="progress-bar" id="lesenQProgress"></div></div>
+        <p class="fill-sentence" id="lesenQSentence">—</p>
+        <div class="quiz-options" id="lesenQOptions"></div>
+        <div class="feedback" id="lesenQFeedback"></div>
+      </div>
+
+      <div id="lesenResultBlock" style="display:none;">
+        <div class="score-box">
+          <div style="font-size:2rem;" id="lesenResultEmoji">🎉</div>
+          <div class="big"><span id="lesenResultScore">0</span>/<span id="lesenResultTotal">0</span></div>
+          <p id="lesenResultText">Gut gemacht!</p>
+        </div>
+        <div class="row-btns" style="justify-content:center;">
+          <button class="btn-secondary" data-back="lesen-list">Zurück zu den Leseübungen</button>
+          <button class="btn-primary" id="btnLesenRetry">Nochmal üben</button>
         </div>
       </div>
     </div>
@@ -1514,6 +1624,72 @@ const LISTENING_TRACKS = [
   }
 ];
 
+const LESEN_TRACKS = [
+  {
+    id:"bskb1p-lesen-teil1", k:1, teil:1,
+    title:"Teil 1 · Infoportal \"Beruflicher Neustart in Deutschland\"",
+    taskLabel:"Verzeichnis lesen und die passende Rubrik finden",
+    referenceHtml:
+      '<p style="margin:0 0 8px;font-weight:700;color:var(--green-900);">Verzeichnis</p>' +
+      '<ul style="margin:0;padding-left:20px;line-height:1.7;">' +
+      '<li>Schulabschlüsse nachholen</li><li>Ausbildung finden</li>' +
+      '<li>Weiterbildung &amp; Umschulung</li><li>Anerkennung ausländischer Abschlüsse</li>' +
+      '<li>Bewerbung schreiben</li><li>Finanzielle Unterstützung</li>' +
+      '<li>Sprachkurse für den Beruf</li><li>Beratung &amp; Coaching</li></ul>',
+    questions:[
+      {q:"Sie haben in Ihrem Heimatland eine Ausbildung gemacht und möchten wissen, ob diese in Deutschland gilt.", answer:"Anerkennung ausländischer Abschlüsse", wrong:["Ausbildung finden","andere Rubrik"], hint:"Es geht darum, ob ein bereits vorhandener Abschluss gültig ist, nicht um eine neue Ausbildung."},
+      {q:"Sie möchten Ihren Hauptschulabschluss nachträglich machen.", answer:"Schulabschlüsse nachholen", wrong:["Weiterbildung & Umschulung","andere Rubrik"], hint:"Es geht um einen Schulabschluss, nicht um eine berufliche Weiterbildung."},
+      {q:"Sie suchen finanzielle Hilfe, weil Sie während einer Umschulung kein Gehalt bekommen.", answer:"Finanzielle Unterstützung", wrong:["Weiterbildung & Umschulung","andere Rubrik"], hint:"Es geht ums Geld, nicht um die Umschulung selbst."},
+      {q:"Sie wissen nicht, welcher Beruf zu Ihnen passt, und möchten sich persönlich beraten lassen.", answer:"Beratung & Coaching", wrong:["Ausbildung finden","andere Rubrik"], hint:"Es geht um ein persönliches Gespräch, nicht um die konkrete Suche."},
+      {q:"Sie brauchen Hilfe, um ein gutes Bewerbungsschreiben zu verfassen.", answer:"Bewerbung schreiben", wrong:["Beratung & Coaching","andere Rubrik"], hint:"Es geht konkret um das Schreiben eines Dokuments."}
+    ]
+  },
+  {
+    id:"bskb1p-lesen-teil2", k:1, teil:2,
+    title:"Teil 2 · Anzeigen zur Berufsorientierung",
+    taskLabel:"Situation der passenden Anzeige zuordnen",
+    referenceHtml:
+      '<p style="margin:0 0 8px;font-weight:700;color:var(--green-900);">Anzeigen</p>' +
+      '<ul style="margin:0;padding-left:20px;line-height:1.7;">' +
+      '<li><b>a</b> Berufsberatung der Arbeitsagentur (kostenlos, ohne Termin)</li>' +
+      '<li><b>b</b> Deutschkurs "Deutsch im Beruf B2" (berufsbezogen)</li>' +
+      '<li><b>c</b> Praktikum in einem Handwerksbetrieb (4 Wochen)</li>' +
+      '<li><b>d</b> Online-Datenbank zur Anerkennung ausländischer Abschlüsse</li>' +
+      '<li><b>e</b> Bewerbungstraining für Wiedereinsteiger:innen (Wochenendkurs)</li>' +
+      '<li><b>f</b> Stellenanzeige: Lagerhelfer:in gesucht (Vollzeit, sofort)</li>' +
+      '<li><b>g</b> Mentoring-Programm: erfahrene Fachkräfte begleiten Neueinsteiger:innen</li>' +
+      '<li><b>h</b> Informationsabend "Ausbildung in Deutschland verstehen"</li></ul>',
+    questions:[
+      {q:"Sie möchten herausfinden, ob Ihr ausländisches Diplom in Deutschland anerkannt wird.", answer:"d", wrong:["h","X"], hint:"Es geht um die Prüfung eines konkreten Abschlusses, nicht um allgemeine Informationen zur Ausbildung."},
+      {q:"Sie möchten vor einem Vorstellungsgespräch üben, wie man sich richtig bewirbt.", answer:"e", wrong:["a","X"], hint:"Es geht um konkretes Üben/Training, nicht um eine allgemeine Beratung."},
+      {q:"Sie möchten im Betrieb selbst sehen, wie die Arbeit in Ihrem Wunschberuf aussieht.", answer:"c", wrong:["f","X"], hint:"Es geht ums Kennenlernen des Berufs, nicht um eine feste Stelle."},
+      {q:"Sie suchen jemanden mit Erfahrung, der Sie am Anfang im neuen Job unterstützt.", answer:"g", wrong:["a","X"], hint:"Es geht um persönliche Begleitung über längere Zeit, nicht um eine einmalige Beratung."},
+      {q:"Sie brauchen sofort einen Job und suchen etwas ohne besondere Qualifikation.", answer:"f", wrong:["c","X"], hint:"Es geht um eine feste, bezahlte Stelle ohne Vorkenntnisse."}
+    ]
+  },
+  {
+    id:"bskb1p-lesen-teil5", k:1, teil:5,
+    title:"Teil 5 · E-Mail von der Anerkennungsstelle",
+    taskLabel:"Lücken im Brief ergänzen",
+    referenceHtml:
+      '<div style="line-height:1.7;">' +
+      '<p>Sehr geehrter Herr Diallo,</p>' +
+      '<p>vielen Dank für Ihren Antrag auf Anerkennung Ihres Berufsabschlusses. Wir haben Ihre Unterlagen geprüft: Ihr Abschluss <b>(40)</b> ___ teilweise anerkannt. Es fehlen noch praktische Kenntnisse, die Sie in einer Anpassungsqualifizierung nachholen <b>(41)</b> ___.</p>' +
+      '<p><b>(42)</b> ___ Sie Fragen zu den nächsten Schritten haben, wenden Sie sich gerne an unsere Beratungsstelle. Die Qualifizierung dauert in der Regel sechs Monate; die Kosten übernimmt in vielen Fällen die Arbeitsagentur.</p>' +
+      '<p>Bitte senden Sie uns bis zum 30. Oktober eine Kopie Ihres gültigen Aufenthaltstitels und bringen Sie zum Beratungstermin auch Ihren Lebenslauf <b>(43)</b> ___.</p>' +
+      '<p>Für Rückfragen stehen wir <b>(44)</b> ___ jederzeit zur Verfügung. Wir wünschen <b>(45)</b> ___ viel Erfolg auf Ihrem weiteren Weg.</p>' +
+      '<p>Mit freundlichen Grüßen<br>Anerkennungsstelle für Berufsabschlüsse</p></div>',
+    questions:[
+      {q:"Lücke (40):", answer:"wurde", wrong:["ist","hat"], hint:"Vorgangspassiv in der Vergangenheit: „Ihr Abschluss wurde ... anerkannt.\""},
+      {q:"Lücke (41):", answer:"können", wrong:["müssen","sollen"], hint:"Es ist eine Möglichkeit, kein Zwang."},
+      {q:"Lücke (42):", answer:"Wenn", wrong:["Als","Wann"], hint:"Es geht um eine Bedingung (falls), nicht um einen Zeitpunkt in der Vergangenheit oder eine Frage."},
+      {q:"Lücke (43):", answer:"mit", wrong:["dabei","her"], hint:"mitbringen ist ein trennbares Verb."},
+      {q:"Lücke (44):", answer:"Ihnen", wrong:["euch","Sie"], hint:"Höfliche Anrede, Dativ."},
+      {q:"Lücke (45):", answer:"Ihnen", wrong:["dir","euch"], hint:"Höfliche Anrede, Dativ."}
+    ]
+  }
+];
+
 const SECTION_LABELS_BY_CHAPTER = {
   1: {"A": "A · Schule, Ausbildung, Weiterbildung", "B": "B · Lebenswege", "C": "C · Fit für den Arbeitsmarkt", "D": "D · Bald am Ziel!?", "ALL": "Alle Wörter (A–D)"},
   2: {"A": "A · Wie finde ich Arbeit?", "B": "B · Arbeitsvermittlung in Deutschland", "C": "C · Stellenanzeigen verstehen", "D": "D · Informationsbogen bei Zeitarbeit", "ALL": "Alle Wörter (A–D)"},
@@ -1688,11 +1864,25 @@ document.getElementById("selLang").addEventListener("change", (e)=>{
   document.getElementById("otherLangWrap").style.display = e.target.value==="Andere" ? "block" : "none";
 });
 
+/* Feedback-Link: Namen aus dem Startbildschirm als vorausgefüllten Wert
+   ins Google-Formular übernehmen, damit er nicht doppelt eingetippt
+   werden muss (Feld-ID "Name" im Formular: entry.1635921128). */
+const FEEDBACK_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeji_Gi5iASf-XnitHoQeQJ3p-PIcKqEmzZ3_i9qlRs9Hx5Tw/viewform";
+function updateFeedbackLink(name){
+  const link = document.getElementById("feedbackLink");
+  if(!link) return;
+  const trimmed = (name||"").trim();
+  link.href = trimmed
+    ? FEEDBACK_BASE_URL + "?usp=pp_url&entry.1635921128=" + encodeURIComponent(trimmed)
+    : FEEDBACK_BASE_URL;
+}
+
 /* Gespeicherte Angaben (Name/Sprache) vorausfüllen, damit man sie nicht bei
    jedem Besuch neu eingeben muss. */
 (function prefillFromStorage(){
   if(!SAVED) return;
   if(SAVED.name) document.getElementById("inpName").value = SAVED.name;
+  updateFeedbackLink(SAVED.name);
   const sel = document.getElementById("selLang");
   if(SAVED.rawLang && [...sel.options].some(o=>o.value===SAVED.rawLang)){
     sel.value = SAVED.rawLang;
@@ -1721,6 +1911,7 @@ document.getElementById("inpName").addEventListener("input", ()=>{
     inp.classList.remove("input-error");
     document.getElementById("nameError").style.display = "none";
   }
+  updateFeedbackLink(inp.value);
 });
 document.getElementById("btnStart").addEventListener("click", ()=>{
   const nameInput = document.getElementById("inpName");
@@ -1757,7 +1948,8 @@ document.getElementById("btnStart").addEventListener("click", ()=>{
 function renderChapterPicker(){
   const curWrap = document.getElementById("currentChapterWrap");
   const pastWrap = document.getElementById("pastChaptersWrap");
-  curWrap.innerHTML = ""; pastWrap.innerHTML = "";
+  const futureWrap = document.getElementById("futureChaptersWrap");
+  curWrap.innerHTML = ""; pastWrap.innerHTML = ""; futureWrap.innerHTML = "";
 
   const curLabel = document.createElement("p");
   curLabel.className = "section-label-small";
@@ -1765,32 +1957,35 @@ function renderChapterPicker(){
   curWrap.appendChild(curLabel);
   curWrap.appendChild(buildChapterCard(CURRENT_CHAPTER, true));
 
-  // In der Testphase (vor dem eigentlichen Kursstart) sollen alle bereits
-  // gebauten Kapitel sichtbar und ausprobierbar sein, auch die, die noch nicht
-  // "dran" sind. TESTPHASE einfach auf false stellen, kurz bevor der Kurs live
-  // mit Kapitel 1 startet - dann werden spätere Kapitel wieder automatisch
-  // ausgeblendet, bis sie mit CURRENT_CHAPTER als aktuell markiert werden.
-  const TESTPHASE = true;
-  const others = RELEASED_CHAPTERS.filter(k => TESTPHASE ? k !== CURRENT_CHAPTER : k < CURRENT_CHAPTER).sort((a,b)=>a-b);
-  if(others.length){
-    const pastLabel = document.createElement("p");
-    pastLabel.className = "section-label-small";
-    pastLabel.textContent = "Frühere Kapitel · zur Wiederholung";
-    pastWrap.appendChild(pastLabel);
-    others.forEach(k => pastWrap.appendChild(buildChapterCard(k, false)));
+  const pastLabel = document.createElement("p");
+  pastLabel.className = "section-label-small";
+  pastLabel.textContent = "Frühere Kapitel · zur Wiederholung";
+  pastWrap.appendChild(pastLabel);
+  const past = RELEASED_CHAPTERS.filter(k => k < CURRENT_CHAPTER).sort((a,b)=>a-b);
+  past.forEach(k => pastWrap.appendChild(buildChapterCard(k, false)));
+
+  const future = RELEASED_CHAPTERS.filter(k => k > CURRENT_CHAPTER).sort((a,b)=>a-b);
+  if(future.length){
+    const futureLabel = document.createElement("p");
+    futureLabel.className = "section-label-small";
+    futureLabel.textContent = "Spätere Kapitel";
+    futureWrap.appendChild(futureLabel);
+    future.forEach(k => futureWrap.appendChild(buildChapterCard(k, false, true)));
   }
 }
-function buildChapterCard(k, isCurrent){
+function buildChapterCard(k, isCurrent, isLocked){
   const meta = CHAPTER_META[k] || {title:"", themes:""};
   const wordCount = VOCAB.filter(v=>v.k===k).length;
   const card = document.createElement("div");
-  card.className = "chapter-card" + (isCurrent ? " current" : "");
+  card.className = "chapter-card" + (isCurrent ? " current" : "") + (isLocked ? " locked" : "");
   card.innerHTML =
     '<div class="chaphead"><span class="chapnum">' + k + '</span>' +
     '<span class="chaptitle">Kapitel ' + k + ' · ' + meta.title + '</span></div>' +
     '<p class="chapthemes">' + meta.themes + '</p>' +
-    '<p class="chapmeta">' + wordCount + ' Wörter' + (isCurrent ? "" : " · Wiederholung") + '</p>';
-  card.addEventListener("click", ()=> selectChapter(k));
+    '<p class="chapmeta">' + (isLocked ? "Kommt später" : (wordCount + ' Wörter' + (isCurrent ? "" : " · Wiederholung"))) + '</p>';
+  if(!isLocked){
+    card.addEventListener("click", ()=> selectChapter(k));
+  }
   return card;
 }
 function selectChapter(k){
@@ -1803,6 +1998,7 @@ function selectChapter(k){
   document.getElementById("menuChapterHint").textContent = "Kapitel " + k + " · " + meta.title + ": " + meta.themes;
   document.getElementById("wordlistTitle").textContent = "Meine Wortliste – Kapitel " + k;
   renderScoreBadges();
+  updateNewsBadge();
   showScreen("menu");
 }
 document.getElementById("btnSwitchChapter").addEventListener("click", ()=>{
@@ -1868,12 +2064,212 @@ function sendHoerenBeacon(track, score, total){
   }catch(e){ /* Übermittlung fehlgeschlagen - Übung läuft trotzdem normal weiter */ }
 }
 
+/* Sendet zusätzlich, sobald eine Leseübung fertig beantwortet ist (Ergebnis-
+   Bildschirm erreicht), einmalig Name, Titel der Übung und Ergebnis ans
+   Google-Formular des jeweiligen Kapitels (nur wenn dafür entryLeseuebung/
+   entryLeseErgebnis in FORM_CONFIG hinterlegt sind - bis diese Felder im
+   Formular angelegt sind, passiert hier bewusst nichts). */
+function sendLesenBeacon(track, score, total){
+  const cfg = FORM_CONFIG[track.k];
+  if(!cfg || !cfg.entryLeseuebung || !cfg.entryLeseErgebnis) return;
+  const params = new URLSearchParams();
+  params.append(cfg.entryName, state.name || "Unbekannt");
+  params.append(cfg.entryLeseuebung, track.title);
+  params.append(cfg.entryLeseErgebnis, score + " von " + total + " richtig");
+  try{
+    if(navigator.sendBeacon){
+      navigator.sendBeacon(cfg.url, params);
+    } else {
+      fetch(cfg.url, {method:"POST", mode:"no-cors", body: params, keepalive:true});
+    }
+  }catch(e){ /* Übermittlung fehlgeschlagen - Übung läuft trotzdem normal weiter */ }
+}
+
+/* ---------------- LESEN ---------------- */
+function renderLesenList(){
+  const wrap = document.getElementById("lesenListWrap");
+  const emptyMsg = document.getElementById("lesenListEmpty");
+  wrap.innerHTML = "";
+  const tracks = LESEN_TRACKS.filter(t => t.k === state.chapter);
+  if(tracks.length === 0){
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+  tracks.forEach(track=>{
+    const card = document.createElement("div");
+    card.className = "track-card";
+    card.innerHTML =
+      '<p class="tracktitle">📖 ' + track.title + '</p>' +
+      '<p class="tracktask">' + track.taskLabel + '</p>';
+    card.addEventListener("click", ()=> startLesenTrack(track));
+    wrap.appendChild(card);
+  });
+}
+function startLesenTrack(track){
+  state.lesenTrack = track;
+  document.getElementById("lesenTrackTitle").textContent = "📖 " + track.title;
+  document.getElementById("lesenTrackTask").textContent = track.taskLabel;
+  document.getElementById("lesenReference").innerHTML = track.referenceHtml;
+  document.getElementById("lesenResultBlock").style.display = "none";
+  startLesenQuestions();
+  showScreen("lesen-task");
+}
+function startLesenQuestions(){
+  // Bei Lesen bleibt die Reihenfolge der Fragen bewusst wie im Text (z.B. Lücke
+  // 40, 41, 42, ... oder Situation 1, 2, 3, ...) - anders als bei Hören/Grammatik
+  // wird hier NICHT gemischt, weil die Aufgaben sich auf den oben stehenden
+  // Referenztext beziehen und in dessen Reihenfolge bearbeitet werden sollen.
+  state.lesenQueue = state.lesenTrack.questions.slice();
+  state.lesenQIndex = 0; state.lesenScore = 0;
+  document.getElementById("lesenQuestionsBlock").style.display = "block";
+  renderLesenQuestion();
+}
+function renderLesenQuestion(){
+  const item = state.lesenQueue[state.lesenQIndex];
+  document.getElementById("lesenQCounter").textContent = (state.lesenQIndex+1)+" / "+state.lesenQueue.length;
+  document.getElementById("lesenQProgress").style.width = Math.round((state.lesenQIndex/state.lesenQueue.length)*100)+"%";
+  document.getElementById("lesenQSentence").textContent = item.q;
+  document.getElementById("lesenQFeedback").textContent = "";
+  document.getElementById("lesenQFeedback").className = "feedback";
+  state.lesenAttempts = 0; state.lesenLocked = false;
+  const options = shuffle([item.answer, ...item.wrong]);
+  const wrap = document.getElementById("lesenQOptions");
+  wrap.innerHTML = "";
+  options.forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.className = "btn-secondary opt-full";
+    btn.textContent = opt;
+    btn.dataset.opt = opt;
+    btn.addEventListener("click", ()=> onLesenOptionClick(btn, item));
+    wrap.appendChild(btn);
+  });
+}
+function onLesenOptionClick(btn, item){
+  if(state.lesenLocked || btn.disabled) return;
+  const fb = document.getElementById("lesenQFeedback");
+  if(btn.dataset.opt === item.answer){
+    state.lesenScore++;
+    state.lesenLocked = true;
+    btn.classList.add("opt-correct");
+    document.querySelectorAll("#lesenQOptions button").forEach(b=>b.disabled=true);
+    fb.textContent = "Richtig! ✅";
+    fb.className = "feedback correct";
+    setTimeout(nextLesenQuestion, 1200);
+  } else {
+    state.lesenAttempts++;
+    btn.classList.add("opt-wrong");
+    btn.disabled = true;
+    fb.textContent = state.lesenAttempts === 1
+      ? "Nicht ganz. 💡 Tipp: " + item.hint
+      : "Fast! Es bleibt nur noch eine Möglichkeit.";
+    fb.className = "feedback wrong";
+  }
+}
+function nextLesenQuestion(){
+  if(state.lesenQIndex < state.lesenQueue.length - 1){
+    state.lesenQIndex++;
+    renderLesenQuestion();
+  } else {
+    document.getElementById("lesenQProgress").style.width = "100%";
+    document.getElementById("lesenQuestionsBlock").style.display = "none";
+    document.getElementById("lesenResultScore").textContent = state.lesenScore;
+    document.getElementById("lesenResultTotal").textContent = state.lesenQueue.length;
+    const ratio = state.lesenScore / state.lesenQueue.length;
+    document.getElementById("lesenResultEmoji").textContent = ratio>=0.8 ? "🎉" : ratio>=0.5 ? "👍" : "💪";
+    document.getElementById("lesenResultBlock").style.display = "block";
+    sendLesenBeacon(state.lesenTrack, state.lesenScore, state.lesenQueue.length);
+  }
+}
+document.getElementById("btnLesenRetry").addEventListener("click", ()=>{
+  startLesenTrack(state.lesenTrack);
+});
+
+/* ---------------- NEUIGKEITEN ----------------
+   Kurze, chronologische Liste, in der neue Funktionen der App kurz erklärt
+   werden. Neuer Eintrag = einfach oben in NEWS ergänzen (neuestes zuerst).
+   Solange der neueste Eintrag noch nicht angesehen wurde, zeigt die Kachel
+   ein "NEU"-Badge (Speicherung pro Gerät im localStorage, keine Übertragung). */
+const NEWS = [
+  {
+    id: "2026-09-lesen-schreiben",
+    date: "September 2026",
+    title: "Neu: Lesen und Schreiben direkt aus der App",
+    text: "Über die Kachel „📖 Lesen“ kannst du jetzt eine Leseübung zum aktuellen Kapitel bearbeiten. Über die Kachel „✍️ Schreiben“ kannst du eine passende Schreibaufgabe bearbeiten und automatisch eine Rückmeldung dazu bekommen."
+  }
+];
+const NEWS_SEEN_KEY = "bskb1plus_news_last_seen_id";
+function renderNews(){
+  const wrap = document.getElementById("newsList");
+  wrap.innerHTML = "";
+  NEWS.forEach(entry=>{
+    const div = document.createElement("div");
+    div.className = "news-entry";
+    div.innerHTML =
+      '<div class="news-date">' + entry.date + '</div>' +
+      '<h3>' + entry.title + '</h3>' +
+      '<p>' + entry.text + '</p>';
+    wrap.appendChild(div);
+  });
+}
+function updateNewsBadge(){
+  const badge = document.getElementById("newsBadge");
+  if(!badge) return;
+  let lastSeen = "";
+  try{ lastSeen = localStorage.getItem(NEWS_SEEN_KEY) || ""; }catch(e){}
+  const hasUnread = NEWS.length > 0 && NEWS[0].id !== lastSeen;
+  badge.style.display = hasUnread ? "inline-block" : "none";
+}
+function openNews(){
+  renderNews();
+  showScreen("neuigkeiten");
+  if(NEWS.length > 0){
+    try{ localStorage.setItem(NEWS_SEEN_KEY, NEWS[0].id); }catch(e){}
+  }
+  updateNewsBadge();
+}
+updateNewsBadge();
+
+/* ---------------- SCHREIBEN -> Verlinkung zur Schreibtraining-App ----------------
+   Öffnet die separate Schreibtraining-App (schreibtraining.jurtzik-lernapps.de)
+   in einem neuen Tab und gibt Name, Kurs sowie - falls für das aktuelle Kapitel
+   hinterlegt - eine passende Aufgabe direkt mit (siehe Deep-Linking in deren app.js).
+   Ist für ein Kapitel noch keine Aufgabe hinterlegt, öffnet die Schreibtraining-App
+   ganz normal mit ihrer eigenen Aufgabenauswahl. */
+const SCHREIBTRAINING_BASE_URL = "https://schreibtraining.jurtzik-lernapps.de/";
+const SCHREIBTRAINING_KURS = "BSK-B1+ Rottweil (KL T. Jurtzik)";
+/* Pro Kapitel eine oder mehrere passende Aufgaben-IDs aus der
+   Schreibtraining-App (tasks.js) hinterlegen. Bei mehreren IDs wird bei
+   jedem Aufruf zufällig eine davon ausgewählt. Ist für ein Kapitel noch
+   keine Aufgabe hinterlegt, öffnet die Schreibtraining-App ganz normal
+   mit ihrer eigenen Aufgabenauswahl. */
+const SCHREIBEN_TASK_BY_CHAPTER = {
+  1: ["bskb1p-dtz-001"]
+  // weitere Kapitel ergänzen, sobald passende Aufgaben in der
+  // Schreibtraining-App (tasks.js) angelegt sind, z.B. 2: ["bskb1p-dtz-00x"]
+};
+function openSchreibtraining(){
+  const params = new URLSearchParams();
+  if(state.name) params.set("name", state.name);
+  params.set("kurs", SCHREIBTRAINING_KURS);
+  let taskIds = SCHREIBEN_TASK_BY_CHAPTER[state.chapter];
+  if(taskIds && !Array.isArray(taskIds)) taskIds = [taskIds];
+  if(taskIds && taskIds.length){
+    const taskId = taskIds[Math.floor(Math.random() * taskIds.length)];
+    params.set("taskId", taskId);
+  }
+  window.open(SCHREIBTRAINING_BASE_URL + "?" + params.toString(), "_blank", "noopener");
+}
+
 /* ---------------- MENU -> SECTION PICKER ---------------- */
 document.querySelectorAll(".menu-item[data-go]").forEach(item=>{
   item.addEventListener("click", ()=>{
     const mode = item.getAttribute("data-go");
     if(mode === "wordlist"){ renderWordlist(); showScreen("wordlist"); return; }
     if(mode === "hoeren"){ renderTrackList(); showScreen("hoeren-list"); return; }
+    if(mode === "neuigkeiten"){ openNews(); return; }
+    if(mode === "lesen"){ renderLesenList(); showScreen("lesen-list"); return; }
+    if(mode === "schreiben"){ openSchreibtraining(); return; }
     openSectionPicker(mode);
   });
 });
