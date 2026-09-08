@@ -1697,9 +1697,9 @@ const SECTION_LABELS_BY_CHAPTER = {
 };
 
 const FORM_CONFIG = {
-  1: {url:"https://docs.google.com/forms/d/e/1FAIpQLScL2DTVoRW0b6ai_hmAIU81A829PqqCGqkHD9AZ4a8Pyc0s7g/formResponse", entryName:"entry.2141485338", entryMinutes:"entry.423765705", entryTrack:"entry.1245216086", entryResult:"entry.166313472"},
-  2: {url:"https://docs.google.com/forms/d/e/1FAIpQLScA70TNFJncO6uNAFZsmjMfQtU4T4kU6YuZULo4jZaM4P1r_w/formResponse", entryName:"entry.1949479733", entryMinutes:"entry.733490098", entryTrack:"entry.162201742", entryResult:"entry.1598738478"},
-  3: {url:"https://docs.google.com/forms/d/e/1FAIpQLScPSCb6e1jA1tOkr0rEXoBDfrGZCdId6AnRHINq6TBKzLYImg/formResponse", entryName:"entry.1554780966", entryMinutes:"entry.1979927512", entryTrack:"entry.466014823", entryResult:"entry.13902839"}
+  1: {url:"https://docs.google.com/forms/d/e/1FAIpQLScL2DTVoRW0b6ai_hmAIU81A829PqqCGqkHD9AZ4a8Pyc0s7g/formResponse", entryName:"entry.2141485338", entryMinutes:"entry.423765705", entryTrack:"entry.1245216086", entryResult:"entry.166313472", entryLeseuebung:"entry.1689963637", entryLeseErgebnis:"entry.883124553"},
+  2: {url:"https://docs.google.com/forms/d/e/1FAIpQLScA70TNFJncO6uNAFZsmjMfQtU4T4kU6YuZULo4jZaM4P1r_w/formResponse", entryName:"entry.1949479733", entryMinutes:"entry.733490098", entryTrack:"entry.162201742", entryResult:"entry.1598738478", entryLeseuebung:"entry.1660239969", entryLeseErgebnis:"entry.168968430"},
+  3: {url:"https://docs.google.com/forms/d/e/1FAIpQLScPSCb6e1jA1tOkr0rEXoBDfrGZCdId6AnRHINq6TBKzLYImg/formResponse", entryName:"entry.1554780966", entryMinutes:"entry.1979927512", entryTrack:"entry.466014823", entryResult:"entry.13902839", entryLeseuebung:"entry.549847834", entryLeseErgebnis:"entry.966069862"}
 };
 /* Zuordnung der Sprachauswahl (Startbildschirm) zu ISO-639-1-Codes für die
    automatische Übersetzungsprüfung. Sprachen ohne Eintrag (z. B. "Andere")
@@ -1866,14 +1866,15 @@ document.getElementById("selLang").addEventListener("change", (e)=>{
 
 /* Feedback-Link: Namen aus dem Startbildschirm als vorausgefüllten Wert
    ins Google-Formular übernehmen, damit er nicht doppelt eingetippt
-   werden muss (Feld-ID "Name" im Formular: entry.1635921128). */
-const FEEDBACK_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSeji_Gi5iASf-XnitHoQeQJ3p-PIcKqEmzZ3_i9qlRs9Hx5Tw/viewform";
+   werden muss (Feld-ID "Name" im eigenen BSK-B1+-Feedback-Formular:
+   entry.1308738824). Eigenes Formular, getrennt von der B1-App. */
+const FEEDBACK_BASE_URL = "https://docs.google.com/forms/d/e/1FAIpQLSc6cMQU_X_dnfWgl4fHtLSxbB7vrSskhRqafgiTr7LMeDHMWQ/viewform";
 function updateFeedbackLink(name){
   const link = document.getElementById("feedbackLink");
   if(!link) return;
   const trimmed = (name||"").trim();
   link.href = trimmed
-    ? FEEDBACK_BASE_URL + "?usp=pp_url&entry.1635921128=" + encodeURIComponent(trimmed)
+    ? FEEDBACK_BASE_URL + "?usp=pp_url&entry.1308738824=" + encodeURIComponent(trimmed)
     : FEEDBACK_BASE_URL;
 }
 
