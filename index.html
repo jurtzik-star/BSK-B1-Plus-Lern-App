@@ -106,6 +106,17 @@
   .news-entry .news-date{font-size:0.76rem;color:#7c8b81;font-weight:700;letter-spacing:.03em;}
   .news-entry h3{margin:2px 0 4px;font-size:1rem;color:var(--green-900);}
   .news-entry p{margin:0;font-size:0.9rem;color:#3d4a41;}
+  .wissen-titel{font-size:1.2rem;font-weight:800;color:var(--green-900);margin:0 0 6px;}
+  .wissen-einleitung{font-size:0.9rem;color:#5b6d62;margin:0 0 16px;}
+  .wissen-wort{border-top:1px solid var(--green-100);padding:14px 0;}
+  .wissen-wort:first-child{border-top:none;padding-top:0;}
+  .wissen-wort .wort{font-weight:800;color:var(--green-900);font-size:1.05rem;margin-bottom:4px;}
+  .wissen-wort .erklaerung{font-size:0.92rem;color:#3d4a41;margin:0 0 8px;line-height:1.5;}
+  .wissen-beispiele{background:var(--green-50);border:2px dashed var(--green-500);border-radius:10px;padding:10px 14px 10px 30px;margin:0;}
+  .wissen-beispiele li{font-style:italic;color:var(--green-900);font-size:0.88rem;margin-bottom:5px;}
+  .wissen-beispiele li:last-child{margin-bottom:0;}
+  .wissen-nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;flex-wrap:wrap;}
+  .wissen-counter{font-size:0.78rem;color:#7c8b81;font-weight:700;letter-spacing:.02em;}
   .pill{
     display:inline-block;background:var(--green-100);color:var(--green-900);
     border-radius:999px;padding:3px 12px;font-size:0.78rem;font-weight:700;letter-spacing:.02em;
@@ -332,6 +343,12 @@
         <p>Was ist neu in der App?</p>
         <span class="news-badge" id="newsBadge" style="display:none;">NEU</span>
       </div>
+      <div class="menu-item" data-go="wissen">
+        <span class="emoji">💡</span>
+        <h3>Gut zu wissen</h3>
+        <p>Feine Unterschiede zwischen ähnlichen Wörtern erklärt.</p>
+        <span class="news-badge" id="wissenBadge" style="display:none;">NEU</span>
+      </div>
       <div class="menu-item" data-go="flashcards">
         <span class="emoji">🗂️</span>
         <h3>Karteikarten</h3>
@@ -404,6 +421,24 @@
     </div>
     <div class="card" id="newsListWrap">
       <div id="newsList"></div>
+    </div>
+  </section>
+
+  <!-- GUT ZU WISSEN -->
+  <section id="screen-wissen" class="screen">
+    <div class="card">
+      <div class="topline" style="margin-bottom:0;">
+        <p style="margin:0;">💡 Gut zu wissen</p>
+        <button class="btn-ghost" data-back="menu" style="font-size:0.82rem;">← Zurück zum Menü</button>
+      </div>
+    </div>
+    <div class="card" id="wissenCardWrap">
+      <div id="wissenContent"></div>
+      <div class="wissen-nav">
+        <button class="btn-secondary" id="btnWissenPrev" style="font-size:0.85rem;">← Voriges Thema</button>
+        <span class="wissen-counter" id="wissenCounter"></span>
+        <button class="btn-secondary" id="btnWissenNext" style="font-size:0.85rem;">Nächstes Thema →</button>
+      </div>
     </div>
   </section>
 
@@ -1723,7 +1758,129 @@ const LESEN_TRACKS = [
       {q:"Lücke (44):", answer:"Ihnen", wrong:["euch","Sie"], hint:"Höfliche Anrede, Dativ."},
       {q:"Lücke (45):", answer:"Ihnen", wrong:["dir","euch"], hint:"Höfliche Anrede, Dativ."}
     ]
+  },
+  {
+    id:"bskb1p-lesen-k2-teil3", k:2, teil:3,
+    title:"Teil 3 · Aushang: Infoabend bei der Arbeitsagentur",
+    taskLabel:"Text lesen: Richtig oder falsch?",
+    referenceHtml:
+      '<div style="line-height:1.7;">' +
+      '<p style="font-weight:700;color:var(--green-900);margin:0 0 8px;">Infoabend: Wege in den deutschen Arbeitsmarkt</p>' +
+      '<p>Die Arbeitsagentur lädt am 14. November ab 18 Uhr zu einem kostenlosen Infoabend ein. Themen sind unter anderem die Anerkennung ausländischer Berufsabschlüsse, das Schreiben einer deutschen Bewerbung und die Angebote der Zeitarbeit.</p>' +
+      '<p>Der Abend findet im Berufsinformationszentrum, Bahnhofstraße 22, statt und dauert etwa zwei Stunden. Im Anschluss besteht die Möglichkeit, sich in kleinen Gruppen individuell beraten zu lassen.</p>' +
+      '<p>Eine Anmeldung ist nicht nötig, es wird aber um pünktliches Erscheinen gebeten, da die Plätze im Beratungsraum begrenzt sind. Ein Dolmetscher für Englisch ist auf Anfrage vorhanden; bitte melden Sie diesen Wunsch bis zum 10. November telefonisch an.</p></div>',
+    questions:[
+      {q:"Der Infoabend kostet eine Teilnahmegebühr.", answer:"falsch", wrong:["richtig"], hint:"Im Text steht ausdrücklich „kostenlos“."},
+      {q:"Beim Infoabend geht es unter anderem um die Anerkennung ausländischer Berufsabschlüsse.", answer:"richtig", wrong:["falsch"], hint:"Dieses Thema wird im ersten Absatz genannt."},
+      {q:"Nach dem Vortrag gibt es keine Möglichkeit für persönliche Fragen.", answer:"falsch", wrong:["richtig"], hint:"Der Text erwähnt eine individuelle Beratung in kleinen Gruppen im Anschluss."},
+      {q:"Eine vorherige Anmeldung zum Infoabend ist Pflicht.", answer:"falsch", wrong:["richtig"], hint:"Laut Text ist eine Anmeldung nicht nötig."},
+      {q:"Ein Dolmetscher für Englisch kann auf Anfrage organisiert werden.", answer:"richtig", wrong:["falsch"], hint:"Das steht im letzten Satz des Textes."}
+    ]
+  },
+  {
+    id:"bskb1p-lesen-k2-teil4", k:2, teil:4,
+    title:"Teil 4 · Bericht: Stellenanzeigen richtig lesen",
+    taskLabel:"Text lesen und Fragen beantworten",
+    referenceHtml:
+      '<div style="line-height:1.7;">' +
+      '<p style="font-weight:700;color:var(--green-900);margin:0 0 8px;">Stellenanzeigen richtig lesen</p>' +
+      '<p>Wer auf Jobsuche ist, stößt schnell auf viele unterschiedliche Stellenanzeigen – doch nicht jede Formulierung darin ist auf den ersten Blick verständlich. Ein genauer Blick lohnt sich, denn zwischen den Zeilen steckt oft wichtige Information.</p>' +
+      '<p>Begriffe wie „Berufserfahrung wünschenswert“ bedeuten meist, dass eine Bewerbung auch ohne jahrelange Erfahrung Aussicht auf Erfolg hat, während „mehrjährige Berufserfahrung erforderlich“ eine echte Voraussetzung beschreibt. Auch Angaben zur Arbeitszeit verdienen Aufmerksamkeit: „Vollzeit mit Flexibilität“ kann bedeuten, dass gelegentlich auch abends oder am Wochenende gearbeitet wird.</p>' +
+      '<p>Besonders wichtig ist der Abschnitt mit den Anforderungen: Hier lohnt es sich, genau zu prüfen, welche Qualifikationen zwingend nötig sind und welche nur von Vorteil wären. Wer unsicher ist, ob die eigenen Kenntnisse ausreichen, kann sich trotzdem bewerben – Personalabteilungen suchen selten Kandidatinnen und Kandidaten, die zu hundert Prozent auf jedes Kriterium passen.</p></div>',
+    questions:[
+      {q:"Was bedeutet laut Text die Formulierung „Berufserfahrung wünschenswert“?", answer:"Eine Bewerbung hat auch ohne jahrelange Erfahrung Aussicht auf Erfolg", wrong:["Berufserfahrung ist zwingend erforderlich","Nur erfahrene Bewerber werden akzeptiert"], hint:"Der Text unterscheidet „wünschenswert“ von „erforderlich“."},
+      {q:"Was kann „Vollzeit mit Flexibilität“ laut Text bedeuten?", answer:"Gelegentliches Arbeiten abends oder am Wochenende", wrong:["Eine Teilzeitstelle mit freier Zeiteinteilung","Feste Arbeitszeiten von Montag bis Freitag"], hint:"Der zweite Absatz erklärt diesen Begriff bei der Arbeitszeit."},
+      {q:"Worauf sollte man laut Text im Anforderungsabschnitt besonders achten?", answer:"Welche Qualifikationen zwingend nötig sind und welche nur von Vorteil wären", wrong:["Nur auf das Gehalt","Nur auf den Standort der Firma"], hint:"Der dritte Absatz beschreibt genau diesen Unterschied."},
+      {q:"Was rät der Text Personen, die sich bei den eigenen Kenntnissen unsicher sind?", answer:"Sich trotzdem zu bewerben", wrong:["Auf die Bewerbung besser zu verzichten","Erst eine Weiterbildung zu machen"], hint:"Der letzte Satz ermutigt ausdrücklich zur Bewerbung."},
+      {q:"Warum, laut Text, muss man nicht zu hundert Prozent auf jedes Kriterium passen?", answer:"Weil Personalabteilungen selten so perfekt passende Kandidatinnen und Kandidaten suchen", wrong:["Weil die Anforderungen in Anzeigen nie ernst gemeint sind","Weil Erfahrung generell keine Rolle spielt"], hint:"Das steht im letzten Satz des Textes."}
+    ]
+  },
+  {
+    id:"bskb1p-lesen-k2-teil5", k:2, teil:5,
+    title:"Teil 5 · E-Mail: Einladung zum Vorstellungsgespräch",
+    taskLabel:"Lücken im Brief ergänzen",
+    referenceHtml:
+      '<div style="line-height:1.7;">' +
+      '<p>Sehr geehrter Herr Öztürk,</p>' +
+      '<p>vielen Dank für Ihre Bewerbung als Lagerlogistiker bei unserem Unternehmen. Ihre Unterlagen haben uns überzeugt, und wir möchten Sie gerne <b>(40)</b> ___ einem persönlichen Gespräch einladen.</p>' +
+      '<p>Das Gespräch <b>(41)</b> ___ am 22. November um 10 Uhr in unserem Personalbüro statt und dauert etwa 45 Minuten. <b>(42)</b> ___ Sie an diesem Termin verhindert sind, melden Sie sich bitte bis zum 18. November bei uns.</p>' +
+      '<p>Bitte bringen Sie zum Gespräch Ihren Ausweis sowie Kopien Ihrer Zeugnisse <b>(43)</b> ___. Der Parkplatz vor dem Gebäude steht Ihnen kostenlos zur Verfügung.</p>' +
+      '<p>Wir freuen uns auf ein persönliches Kennenlernen und wünschen <b>(44)</b> ___ eine gute Anreise. Bei Fragen erreichen Sie <b>(45)</b> ___ jederzeit telefonisch.</p>' +
+      '<p>Mit freundlichen Grüßen<br>Die Personalabteilung</p></div>',
+    questions:[
+      {q:"Lücke (40):", answer:"zu", wrong:["nach","für"], hint:"jemanden zu etwas einladen – feste Präposition."},
+      {q:"Lücke (41):", answer:"findet", wrong:["kommt","macht"], hint:"Feste Wendung: ein Gespräch findet statt."},
+      {q:"Lücke (42):", answer:"Falls", wrong:["Obwohl","Während"], hint:"Es geht um eine mögliche Bedingung."},
+      {q:"Lücke (43):", answer:"mit", wrong:["dabei","her"], hint:"mitbringen ist ein trennbares Verb."},
+      {q:"Lücke (44):", answer:"Ihnen", wrong:["dir","euch"], hint:"Höfliche Anrede, Dativ."},
+      {q:"Lücke (45):", answer:"uns", wrong:["sich","euch"], hint:"1. Person Plural, da die Personalabteilung schreibt."}
+    ]
   }
+,
+  {
+    id:"bskb1p-lesen-k3-teil1", k:3, teil:1,
+    title:"Teil 1 · Infoportal \"Der neue Arbeitsplatz\"",
+    taskLabel:"Verzeichnis lesen und die passende Rubrik finden",
+    referenceHtml:
+      '<p style="margin:0 0 8px;font-weight:700;color:var(--green-900);">Verzeichnis</p>' +
+      '<ul style="margin:0;padding-left:20px;line-height:1.7;">' +
+      '<li>Der erste Arbeitstag</li><li>Einarbeitung &amp; Probezeit</li>' +
+      '<li>Kolleginnen &amp; Kollegen kennenlernen</li><li>Teambesprechungen</li>' +
+      '<li>Weiterbildung im Betrieb</li><li>Arbeitszeit &amp; Pausen</li>' +
+      '<li>Fragen zum Arbeitsvertrag</li><li>Konflikte am Arbeitsplatz</li></ul>',
+    questions:[
+      {q:"Sie möchten wissen, worauf Sie an Ihrem ersten Tag im neuen Betrieb achten sollten.", answer:"Der erste Arbeitstag", wrong:["Einarbeitung & Probezeit","andere Rubrik"], hint:"Es geht speziell um den ersten Tag, nicht um die gesamte Probezeit."},
+      {q:"Sie möchten sich in der Freizeit beruflich weiterqualifizieren.", answer:"Weiterbildung im Betrieb", wrong:["Einarbeitung & Probezeit","andere Rubrik"], hint:"Es geht um zusätzliche Qualifikation, nicht um die normale Einarbeitung."},
+      {q:"Sie haben ein Problem mit einem Kollegen und wissen nicht, wie Sie es ansprechen sollen.", answer:"Konflikte am Arbeitsplatz", wrong:["Kolleginnen & Kollegen kennenlernen","andere Rubrik"], hint:"Es geht um ein konkretes Problem, nicht ums Kennenlernen."},
+      {q:"Sie möchten wissen, wie eine typische Teambesprechung in Deutschland abläuft.", answer:"Teambesprechungen", wrong:["Kolleginnen & Kollegen kennenlernen","andere Rubrik"], hint:"Es geht um den Ablauf von Besprechungen im Team."},
+      {q:"Sie sind unsicher, wie viele Pausen Ihnen laut Vertrag zustehen.", answer:"Arbeitszeit & Pausen", wrong:["Fragen zum Arbeitsvertrag","andere Rubrik"], hint:"Es geht konkret um Pausenregelungen, nicht um allgemeine Vertragsfragen."}
+    ]
+  },
+  {
+    id:"bskb1p-lesen-k3-teil2", k:3, teil:2,
+    title:"Teil 2 · Anzeigen zum neuen Arbeitsplatz",
+    taskLabel:"Situation der passenden Anzeige zuordnen",
+    referenceHtml:
+      '<p style="margin:0 0 8px;font-weight:700;color:var(--green-900);">Anzeigen</p>' +
+      '<ul style="margin:0;padding-left:20px;line-height:1.7;">' +
+      '<li><b>a</b> Interner Mentoring-Kreis für neue Mitarbeitende</li>' +
+      '<li><b>b</b> Betriebliches Deutschcoaching (kostenlos für alle Beschäftigten)</li>' +
+      '<li><b>c</b> Kurs "Erfolgreich im Team kommunizieren" (Abendkurs)</li>' +
+      '<li><b>d</b> Beratung zu Arbeitszeitmodellen durch den Betriebsrat</li>' +
+      '<li><b>e</b> Willkommensfrühstück für alle neuen Kolleginnen und Kollegen</li>' +
+      '<li><b>f</b> Schulung "Sicheres Arbeiten in der Produktion"</li>' +
+      '<li><b>g</b> Anonyme Beratungsstelle bei Konflikten am Arbeitsplatz</li>' +
+      '<li><b>h</b> Sprechstunde der Personalabteilung (donnerstags, ohne Termin)</li></ul>',
+    questions:[
+      {q:"Sie sind neu im Betrieb und möchten andere neue Kolleginnen und Kollegen kennenlernen.", answer:"e", wrong:["a","X"], hint:"Es geht um ein gemeinsames Treffen für Neue, nicht um eine feste Begleitung über längere Zeit."},
+      {q:"Sie möchten eine erfahrene Person, die Sie in den ersten Monaten regelmäßig begleitet.", answer:"a", wrong:["e","X"], hint:"Es geht um eine längere, feste Begleitung, nicht um ein einmaliges Treffen."},
+      {q:"Sie haben einen Streit mit einer Kollegin und möchten sich vertraulich beraten lassen.", answer:"g", wrong:["h","X"], hint:"Es geht um Vertraulichkeit bei einem Konflikt, nicht um allgemeine Personalfragen."},
+      {q:"Sie möchten Ihr Deutsch speziell für den Beruf verbessern.", answer:"b", wrong:["c","X"], hint:"Es geht ums Sprachenlernen, nicht um Kommunikationstechniken im Team."},
+      {q:"Sie möchten wissen, ob Teilzeit für Ihre Stelle möglich wäre.", answer:"d", wrong:["h","X"], hint:"Es geht um Arbeitszeitmodelle, dafür ist laut Anzeige der Betriebsrat zuständig."}
+    ]
+  },
+  {
+    id:"bskb1p-lesen-k3-teil5", k:3, teil:5,
+    title:"Teil 5 · E-Mail vom Teamleiter",
+    taskLabel:"Lücken im Brief ergänzen",
+    referenceHtml:
+      '<div style="line-height:1.7;">' +
+      '<p>Liebe Frau Ivanova,</p>' +
+      '<p>herzlich willkommen im Team! Ich freue mich, dass Sie ab Montag bei uns <b>(40)</b> ___ anfangen. Ihr Arbeitsplatz im Großraumbüro im 2. Stock ist bereits vorbereitet.</p>' +
+      '<p>Am ersten Tag <b>(41)</b> ___ wir uns um 8:30 Uhr am Empfang, damit ich Ihnen das Gebäude zeigen kann. <b>(42)</b> ___ Sie vorher noch Fragen haben, erreichen Sie mich jederzeit per E-Mail.</p>' +
+      '<p>Bitte bringen Sie zum ersten Tag Ihren Ausweis <b>(43)</b> ___, damit die Personalabteilung Ihren Zugang einrichten kann. Um 12 Uhr laden wir Sie zu einem gemeinsamen Mittagessen mit dem Team ein.</p>' +
+      '<p>Ich wünsche <b>(44)</b> ___ einen guten Start und freue <b>(45)</b> ___ schon auf die Zusammenarbeit.</p>' +
+      '<p>Herzliche Grüße<br>Ihr Teamleiter</p></div>',
+    questions:[
+      {q:"Lücke (40):", answer:"offiziell", wrong:["offizielle","offiziellen"], hint:"Adverb, es gibt kein Nomen, das es beschreiben müsste."},
+      {q:"Lücke (41):", answer:"treffen", wrong:["sehen","finden"], hint:"sich treffen ist die passende Wendung für eine Verabredung."},
+      {q:"Lücke (42):", answer:"Falls", wrong:["Obwohl","Während"], hint:"Es geht um eine mögliche Bedingung."},
+      {q:"Lücke (43):", answer:"mit", wrong:["dabei","her"], hint:"mitbringen ist ein trennbares Verb."},
+      {q:"Lücke (44):", answer:"Ihnen", wrong:["dir","euch"], hint:"Höfliche Anrede, Dativ."},
+      {q:"Lücke (45):", answer:"mich", wrong:["sich","uns"], hint:"sich freuen auf: 1. Person Singular, da der Teamleiter allein schreibt."}
+    ]
+  }
+
 ];
 
 const SECTION_LABELS_BY_CHAPTER = {
@@ -2325,6 +2482,92 @@ function openNews(){
 }
 updateNewsBadge();
 
+/* ---------------- GUT ZU WISSEN ----------------
+   Feine Bedeutungsunterschiede zwischen ähnlichen Wörtern, zum
+   Durchblättern (ein Thema nach dem anderen). Neues Thema = einfach
+   oben in WISSEN ergänzen (neuestes zuerst) - gleiches Prinzip wie
+   bei NEWS oben. Jedes Thema: { id, date, titel, einleitung (optional),
+   woerter: [ { wort, erklaerung, beispiele: [...] }, ... ] }. */
+const WISSEN = [
+  {
+    id: "2026-09-erfahrung-erlebnis",
+    date: "September 2026",
+    titel: "Erfahrung, Erlebnis",
+    einleitung: "Zwei Wörter aus dem Berufsleben, die oft verwechselt werden.",
+    woerter: [
+      {
+        wort: "die Erfahrung",
+        erklaerung: "Wissen oder Können, das man über längere Zeit durch viele Situationen gesammelt hat. Erfahrung sagt: Man hat etwas oft gemacht und daraus gelernt.",
+        beispiele: [
+          "Sie hat viel Erfahrung im Kundenservice.",
+          "Mit der Zeit sammelt man Erfahrung in diesem Beruf.",
+          "Aus Erfahrung weiß ich, dass man früh anfangen sollte."
+        ]
+      },
+      {
+        wort: "das Erlebnis",
+        erklaerung: "Ein einzelnes Ereignis, das man persönlich mitgemacht hat – meist etwas Besonderes, das man sich merkt. Ein Erlebnis ist ein Moment, keine Sammlung von Wissen.",
+        beispiele: [
+          "Der erste Arbeitstag war für mich ein besonderes Erlebnis.",
+          "Das war ein tolles Erlebnis – ich werde es nie vergessen.",
+          "Erzählen Sie von einem Erlebnis, das Sie beruflich geprägt hat."
+        ]
+      }
+    ]
+  }
+];
+const WISSEN_SEEN_KEY = "bskb1plus_wissen_last_seen_id";
+let wissenIndex = 0;
+function renderWissenEntry(){
+  const entry = WISSEN[wissenIndex];
+  const content = document.getElementById("wissenContent");
+  if(!entry){ content.innerHTML = "<p>Bald gibt es hier die ersten Themen.</p>"; }
+  else{
+    let html = '<h3 class="wissen-titel">' + entry.titel + '</h3>';
+    if(entry.einleitung) html += '<p class="wissen-einleitung">' + entry.einleitung + '</p>';
+    entry.woerter.forEach(w=>{
+      html += '<div class="wissen-wort"><div class="wort">' + w.wort + '</div><p class="erklaerung">' + w.erklaerung + '</p>';
+      if(w.beispiele && w.beispiele.length){
+        html += '<ul class="wissen-beispiele">' + w.beispiele.map(b=>'<li>'+b+'</li>').join("") + '</ul>';
+      }
+      html += '</div>';
+    });
+    content.innerHTML = html;
+  }
+  const counter = document.getElementById("wissenCounter");
+  if(counter) counter.textContent = WISSEN.length ? ("Thema " + (wissenIndex+1) + " von " + WISSEN.length) : "";
+}
+function updateWissenBadge(){
+  const badge = document.getElementById("wissenBadge");
+  if(!badge) return;
+  let lastSeen = "";
+  try{ lastSeen = localStorage.getItem(WISSEN_SEEN_KEY) || ""; }catch(e){}
+  const hasUnread = WISSEN.length > 0 && WISSEN[0].id !== lastSeen;
+  badge.style.display = hasUnread ? "inline-block" : "none";
+}
+function openWissen(){
+  wissenIndex = 0;
+  renderWissenEntry();
+  showScreen("wissen");
+  if(WISSEN.length > 0){
+    try{ localStorage.setItem(WISSEN_SEEN_KEY, WISSEN[0].id); }catch(e){}
+  }
+  updateWissenBadge();
+}
+const btnWissenPrev = document.getElementById("btnWissenPrev");
+const btnWissenNext = document.getElementById("btnWissenNext");
+if(btnWissenPrev) btnWissenPrev.addEventListener("click", ()=>{
+  if(!WISSEN.length) return;
+  wissenIndex = (wissenIndex - 1 + WISSEN.length) % WISSEN.length;
+  renderWissenEntry();
+});
+if(btnWissenNext) btnWissenNext.addEventListener("click", ()=>{
+  if(!WISSEN.length) return;
+  wissenIndex = (wissenIndex + 1) % WISSEN.length;
+  renderWissenEntry();
+});
+updateWissenBadge();
+
 /* ---------------- SCHREIBEN -> Verlinkung zur Schreibtraining-App ----------------
    Öffnet die separate Schreibtraining-App (schreibtraining.jurtzik-lernapps.de)
    in einem neuen Tab und gibt Name, Kurs sowie - falls für das aktuelle Kapitel
@@ -2394,6 +2637,7 @@ document.querySelectorAll(".menu-item[data-go]").forEach(item=>{
     if(mode === "wordlist"){ currentExerciseMode = "wordlist"; renderWordlist(); showScreen("wordlist"); return; }
     if(mode === "hoeren"){ currentExerciseMode = "hoeren"; renderTrackList(); showScreen("hoeren-list"); return; }
     if(mode === "neuigkeiten"){ openNews(); return; }
+    if(mode === "wissen"){ openWissen(); return; }
     if(mode === "lesen"){ currentExerciseMode = "lesen"; renderLesenList(); showScreen("lesen-list"); return; }
     if(mode === "schreiben"){ openSchreibtraining(); return; }
     if(mode === "sprechen"){ openSprechtraining(); return; }
