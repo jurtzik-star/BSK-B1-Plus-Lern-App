@@ -3431,6 +3431,15 @@ function updateFooterText(){
   el.textContent = text;
 }
 function showScreen(id){
+  /* Hören-Audio stoppen, wenn die Hören-Aufgabe verlassen wird (Menü, Kapitel-
+     wechsel, andere Übung ...). Ohne das spielt der <audio>-Player im
+     Hintergrund weiter, weil sein src nur beim Klick auf einen Track in
+     startTrack() gesetzt wird - man hört dann z. B. in Kapitel 2 noch das
+     Audio, das man vorher in Kapitel 1 gestartet hatte. */
+  if(id !== "hoeren-task"){
+    const hoerenAudioEl = document.getElementById("hoerenAudio");
+    if(hoerenAudioEl && !hoerenAudioEl.paused){ hoerenAudioEl.pause(); }
+  }
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById("screen-"+id).classList.add("active");
   if(id === "menu" || id === "chapters" || id === "start"){ currentExerciseMode = null; }
