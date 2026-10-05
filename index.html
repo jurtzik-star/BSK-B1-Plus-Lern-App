@@ -3685,7 +3685,13 @@ document.getElementById("btnSwitchChapter").addEventListener("click", ()=>{
    ergibt das wieder die korrekte Gesamtzeit, ohne Doppelzählung. */
 let usageSessionStart = null;
 let usageChapterAtStart = null;
+/* Seit 05.10.2026: gemeldet wird nur noch die AKTIVE Übungszeit (dieselbe
+   Messung wie für das Lerntagebuch: 15-Sekunden-Takt, zählt nur bei sichtbarer
+   App und Eingabe/Audio in den letzten 3 Minuten). Vorher zählte die Uhrzeit
+   seit dem Öffnen – ein offen gelassener Tab ergab bis zu 90 Min. pro Meldung. */
+let usageAktivSek = 0;
 function startUsageTracking(){
+  usageAktivSek = 0;
   usageSessionStart = Date.now();
   usageChapterAtStart = state.chapter;
 }
@@ -3700,8 +3706,9 @@ function sendUsageBeacon(){
   // offen gelassener Tab (kein aktives Lernen, aber "visibilitychange"/"pagehide"
   // feuert trotzdem) als extrem lange Lernzeit gezählt wird.
   const USAGE_MAX_MINUTES = 90;
-  const minutes = Math.min(Math.round(((Date.now() - usageSessionStart) / 60000) * 10) / 10, USAGE_MAX_MINUTES);
+  const minutes = Math.min(Math.round((usageAktivSek / 60) * 10) / 10, USAGE_MAX_MINUTES);
   if(minutes < 0.1) return;
+  usageAktivSek = 0;
   usageSessionStart = Date.now();
   const params = new URLSearchParams();
   params.append(cfg.entryName, state.name);
@@ -4842,6 +4849,7 @@ setInterval(()=>{
   const aktiv = (Date.now() - lernzeitLastActivity) < LERNZEIT_INAKTIV_SEK*1000 || lernzeitAudioLaeuft();
   if(!aktiv) return;
   const k = String(state.chapter);
+  if(usageSessionStart && String(usageChapterAtStart) === k) usageAktivSek += LERNZEIT_TICK_SEK;
   // Vor dem Hochzählen den aktuellen Stand neu lesen: Ist die App in mehreren
   // Tabs offen, würden sich die Tabs sonst gegenseitig die Zeit überschreiben.
   try{ lernzeitData = JSON.parse(localStorage.getItem(LERNZEIT_STORAGE_KEY) || "{}") || lernzeitData; }catch(e){}
